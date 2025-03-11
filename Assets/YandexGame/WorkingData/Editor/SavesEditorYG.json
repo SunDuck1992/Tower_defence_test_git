@@ -1,0 +1,40 @@
+{
+    "idSave": 6,
+    "isFirstSession": false,
+    "language": "ru",
+    "promptDone": false,
+    "money": 1,
+    "newPlayerName": "Hello!",
+    "openLevels": [
+        false,
+        true,
+        false
+    ],
+    "leaderScore": 1,
+    "miniGunIsBuyed": false,
+    "gold": 290,
+    "gem": 5,
+    "waveCount": 1,
+    "enemyCount": 5,
+    "upgradeDamageLevel": -1,
+    "upgradeSpeedWeaponLevel": 1,
+    "upgradeHealthLevel": -1,
+    "upgradeEnemyLevel": 1,
+    "goldScaleLevel": 1,
+    "weaponIndex": -1,
+    "UpgradeLevelTower": -1,
+    "weaponsIsBuyed": [
+        true,
+        false,
+        false
+    ],
+    "buildedAreas": [
+        {
+            "name": "BuildArea",
+            "value": 0,
+            "isBuilded": true,
+            "improveLevel": -1
+        }
+    ],
+    "destroyedTowers": []
+}
