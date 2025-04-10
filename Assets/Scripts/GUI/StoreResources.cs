@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Zenject;
-using YG;
 using TMPro;
-using System;
+using UnityEngine;
+using YG;
+using Zenject;
 
 public class StoreResources : MonoBehaviour
 {

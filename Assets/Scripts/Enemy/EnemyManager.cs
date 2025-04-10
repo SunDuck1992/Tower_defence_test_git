@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using YG;
-using Zenject;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyManager
 {

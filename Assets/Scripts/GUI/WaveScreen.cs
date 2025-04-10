@@ -1,15 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Zenject;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using YG;
-using YG.Utils.LB;
-using Agava.YandexGames;
-
+using Zenject;
 
 public class WaveScreen : MonoBehaviour
 {

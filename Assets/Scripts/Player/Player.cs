@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
-using Zenject;
 using YG;
+using Zenject;
 
 public class Player : GameUnit
 {

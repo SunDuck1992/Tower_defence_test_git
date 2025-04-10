@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using YG;
 using UnityEngine.SceneManagement;
+using YG;
 
 public class GameOver : MonoBehaviour
 {

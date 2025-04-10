@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 using YG;
-using System.Reflection;
+using Zenject;
 
 public class BuildScreen : MonoBehaviour
 {

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class MashineGunTowerPool : BasePool<GameUnit>
 {
     public MashineGunTowerPool(GameUnit prefab) : base(prefab)

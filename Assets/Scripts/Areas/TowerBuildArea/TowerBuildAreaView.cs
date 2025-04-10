@@ -9,8 +9,8 @@ public class TowerBuildAreaView : MonoBehaviour
     [SerializeField] private float _scaleChangeZ;
 
     private TowerBuildArea _towerBuildArea;
-    private Vector3 _scaleChange;
-    private Transform _transform;
+    //private Vector3 _scaleChange;
+    //private Transform _transform;
 
     [SerializeField] TowerSelectionView _towerSelectionView;
     [SerializeField] Image _fillImage;
@@ -26,8 +26,8 @@ public class TowerBuildAreaView : MonoBehaviour
 
     private void Awake()
     {
-        _transform = transform;
-        _scaleChange = new Vector3(_scaleChangeX, 0, _scaleChangeZ);
+        //_transform = transform;
+        //_scaleChange = new Vector3(_scaleChangeX, 0, _scaleChangeZ);
         _towerBuildArea = GetComponentInParent<TowerBuildArea>();
 
         _canvas = GetComponentInChildren<Canvas>();

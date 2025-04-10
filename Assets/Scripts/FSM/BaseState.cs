@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public abstract class BaseState<T> : IState
     where T : class, IStateMachineOwner

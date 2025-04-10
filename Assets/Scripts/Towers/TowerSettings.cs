@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = nameof(TowerSettings), menuName = "GameData/" + nameof(TowerSettings))]
 public class TowerSettings : ScriptableObject

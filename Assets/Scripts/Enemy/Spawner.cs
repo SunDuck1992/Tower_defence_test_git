@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 using YG;
+using Zenject;
 
 public class Spawner : MonoBehaviour
 {
