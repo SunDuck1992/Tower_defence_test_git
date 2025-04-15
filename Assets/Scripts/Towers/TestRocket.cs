@@ -7,12 +7,12 @@ public class TestRocket : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _duration;
 
+    public event Action<Rocket> Died;
+    public event Action<Enemy> HitTower;
+
     public float Speed => _speed;
     public float Damage { get; set; }
     public GameUnit Target { get; set; }
-
-    public event Action<Rocket> Died;
-    public event Action<Enemy> HitTower;
 
     private void Start()
     {

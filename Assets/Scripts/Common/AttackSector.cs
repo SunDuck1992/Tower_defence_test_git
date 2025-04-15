@@ -7,7 +7,6 @@ public class AttackSector : MonoBehaviour
     [SerializeField] private float _radius;
 
     private Transform[] _points;
-
     public Stack<Transform> freePoints = new Stack<Transform>();
 
     private void Start()
@@ -26,28 +25,6 @@ public class AttackSector : MonoBehaviour
 
             currentAngle += angle;
         }
-
-        //if (GetComponent<Player>())
-        //{
-        //    _points[0] = new GameObject().transform;
-        //    _points[0].position = GetPointOnCircule(currentAngle);
-        //    _points[0].SetParent(transform);
-        //    freePoints.Push(_points[0]);
-
-        //    currentAngle += 90;
-        //}
-        //else
-        //{
-        //    for (int i = 0; i < _sectorPoints; i++)
-        //    {
-        //        _points[i] = new GameObject().transform;
-        //        _points[i].position = GetPointOnCircule(currentAngle);
-        //        _points[i].SetParent(transform);
-        //        freePoints.Push(_points[i]);
-
-        //        currentAngle += angle;
-        //    }
-        //}
     }
 
     private void OnDrawGizmos()

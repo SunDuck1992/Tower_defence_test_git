@@ -5,8 +5,8 @@ public class AnimationEventListener : MonoBehaviour
 {
     public UnityEvent Attack;
 
-   public void EventAttack()
+    public void EventAttack()
     {
-       Attack.Invoke();
+        Attack.Invoke();
     }
 }

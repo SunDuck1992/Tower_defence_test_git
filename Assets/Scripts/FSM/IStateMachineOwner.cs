@@ -1,4 +1,4 @@
 public interface IStateMachineOwner
 {
-    IStateMachine StateMachine { get; }
+    public IStateMachine StateMachine { get; }
 }

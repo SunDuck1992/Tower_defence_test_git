@@ -21,7 +21,7 @@ public class Player : GameUnit
     }
 
     [Inject]
-    public void Construct(PlayerUpgradeSystem playerUpgradeSystem, GameConfigProxy gameConfigProxy, TargetController targetController)
+    public void Construct(PlayerUpgradeSystem playerUpgradeSystem, TargetController targetController)
     {
         _playerUpgradeSystem = playerUpgradeSystem;
         _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged += IncreaseHealth;

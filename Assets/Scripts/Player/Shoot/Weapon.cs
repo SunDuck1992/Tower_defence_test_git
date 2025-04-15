@@ -17,11 +17,11 @@ public abstract class Weapon : MonoBehaviour
     private int _maxIncreaseFirerateLevel = 5;
     private int _maxIncreaseDamageLevel = 10;
 
+    public event Action MaxLevelIncreased;
+
     public Transform WeaponPoint => _weaponPoint;
     public float FireRate => _firerate;
     public int CountBullet => _countBullet;
-
-    public event Action MaxLevelIncreased;
 
     public void Shoot(Bullet bullet)
     {

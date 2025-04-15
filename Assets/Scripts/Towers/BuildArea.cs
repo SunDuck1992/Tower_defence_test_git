@@ -30,7 +30,6 @@ public class BuildArea : MonoBehaviour
 
     private bool _isEnter;
 
-    public Canvas Canvas => _canvas;
     public Transform BuildPoint => _buildPoint;
     public Tower CurrentTower => _currentTower;
     public bool OnBuild { get; set; }
@@ -70,11 +69,6 @@ public class BuildArea : MonoBehaviour
                 }
             }
         }
-
-        //if (YandexGame.savesData.UpgradeLevelTower != -1)
-        //{
-        //    _improveLevel = YandexGame.savesData.UpgradeLevelTower;
-        //}
     }
 
     private void OnTriggerEnter(Collider other)

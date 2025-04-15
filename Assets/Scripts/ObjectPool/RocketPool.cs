@@ -12,7 +12,6 @@ public class RocketPool : BasePool<Rocket>
 
     protected override void OnDespawn(Rocket despawnObject)
     {
-        //Debug.LogWarning("Я умер - ракета!");
         despawnObject.gameObject.SetActive(false);
         despawnObject.Died -= Despawn;
     }

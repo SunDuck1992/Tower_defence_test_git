@@ -21,22 +21,6 @@ public class TargetController
         }
     }
 
-    //public GameUnit CheckTargetsToPlayer(GameUnit gameUnit)
-    //{
-    //    for (int i = 0; i < _towers.Count; i++)
-    //    {
-    //        foreach(var tower in _towers)
-    //        {
-    //            if(tower is Player player)
-    //            {
-    //                return gameUnit;
-    //            }
-    //        }          
-    //    }
-
-    //    return null;
-    //}
-
     public void RemoveTarget(GameUnit gameUnit)
     {
         _enemies.Remove(gameUnit);

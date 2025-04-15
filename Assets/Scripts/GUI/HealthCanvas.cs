@@ -10,16 +10,9 @@ public class HealthCanvas : MonoBehaviour
 
     private void Start()
     {
-        Debug.LogWarning($"MaxHealth: {_gameUnit.MaxHealth}, Health: {_gameUnit.Health}");
-
-        //_slider.maxValue = _gameUnit.MaxHealth;
-        //_slider.value = _gameUnit.Health;
         _slider.value = _slider.maxValue;
         _slider.gameObject.SetActive(!_isHideble);
-
         _gameUnit.HealthChanged += ChangeValue;
-
-        //Debug.LogWarning(_slider.maxValue + " - maxValueSlider, " + _slider.value + " - sliderValue");
     }
 
     private void Update()
@@ -30,7 +23,6 @@ public class HealthCanvas : MonoBehaviour
     private void OnDestroy()
     {
         _gameUnit.HealthChanged -= ChangeValue;
-
     }
 
     private void ChangeValue(bool isReseted)
@@ -48,10 +40,7 @@ public class HealthCanvas : MonoBehaviour
             }
         }
 
-        //_slider.value =_gameUnit.Health;
         _slider.value = _gameUnit.Health / _gameUnit.MaxHealth;
-
-        //Debug.LogWarning(_slider.maxValue + " - maxValueSlider, " + _slider.value + " - slederValue");
     }
 
     private IEnumerator Hide()

@@ -10,16 +10,16 @@ public abstract class GameUnit : MonoBehaviour
     private float _health;
     private bool _isDead;
 
-    public float Health => _health;
-    public float MaxHealth => _maxHealth;
-    public bool IsDead => _isDead;
-
-    public AttackSector AttackSector { get; private set; }
-
     public UnityEvent<GameUnit> DiedComplete;
     public UnityEvent<GameUnit> DiedStart;
     public event Action OnDied;
     public event Action<bool> HealthChanged;
+
+    public float Health => _health;
+    public float MaxHealth => _maxHealth;
+    public bool IsDead => _isDead;
+    public AttackSector AttackSector { get; private set; }
+
 
     protected virtual void Awake()
     {
@@ -30,7 +30,6 @@ public abstract class GameUnit : MonoBehaviour
     {
         _health = _maxHealth;
         _isDead = false;
-        //Debug.LogWarning("OnEnable, health -  " + _health + ", maxHealth - " + _maxHealth);
     }
 
     public void TakeDamage(float damage)

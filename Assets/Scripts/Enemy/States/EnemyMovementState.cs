@@ -9,19 +9,8 @@ public class EnemyMovementState : BaseState<Enemy>
 
     public override void Update()
     {
-        //if(Owner.Target == null)
-        //{
-        //    Debug.LogWarning("таргет нуль иду в айдл");
-        //    Owner.StateMachine.SwitchState<EnemyIdleState, Enemy>(Owner);
-        //}
-
         if (Owner.Target.AttackSector.freePoints.Count == 0)
         {
-            //if(Owner.Target == Owner.TargetController.CheckTargetsToPlayer(Owner.Target))
-            //{
-            //    return;
-            //}
-
             float distanceToTarget = Vector3.Distance(Owner.transform.position, Owner.Target.transform.position);
 
             if (distanceToTarget <= _radius)
@@ -40,7 +29,6 @@ public class EnemyMovementState : BaseState<Enemy>
 
         Owner.TargetAttackPoint = Owner.Target.AttackSector.freePoints.Peek();
         NavMesh.SamplePosition(Owner.TargetAttackPoint.position, out var hit, 1, NavMesh.AllAreas);
-
         Owner.Agent.SetDestination(hit.position);
 
         float distance = Vector3.Distance(Owner.transform.position, Owner.TargetAttackPoint.position);

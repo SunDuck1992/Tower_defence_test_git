@@ -7,16 +7,12 @@ public class TowerBuildAreaView : MonoBehaviour
 {
     [SerializeField] private float _scaleChangeX;
     [SerializeField] private float _scaleChangeZ;
-
-    private TowerBuildArea _towerBuildArea;
-    //private Vector3 _scaleChange;
-    //private Transform _transform;
-
     [SerializeField] TowerSelectionView _towerSelectionView;
     [SerializeField] Image _fillImage;
     [SerializeField] private float _pingPongHalfScaleDuration = 0.5f;
     [SerializeField] private Vector3 _pingPongScaleAddition = new Vector3(0.2f, 0.2f, 0);
 
+    private TowerBuildArea _towerBuildArea;
     private Canvas _canvas;
     private Transform _canvasTransform;
     private Coroutine _pingPongScale;
@@ -25,11 +21,8 @@ public class TowerBuildAreaView : MonoBehaviour
     private float _pingPongScaleDuration;
 
     private void Awake()
-    {
-        //_transform = transform;
-        //_scaleChange = new Vector3(_scaleChangeX, 0, _scaleChangeZ);
+    {  
         _towerBuildArea = GetComponentInParent<TowerBuildArea>();
-
         _canvas = GetComponentInChildren<Canvas>();
     }
 

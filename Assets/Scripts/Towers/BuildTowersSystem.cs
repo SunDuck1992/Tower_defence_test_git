@@ -15,11 +15,7 @@ public class BuildTowersSystem
     private WaveScreen _waveScreen;
     private Tower _towerBuild;
     private List<Tower> _allTowers = new();
-
     private Dictionary<BuildArea, Tower> _towerAreaLocations = new();
-
-    public BuildArea CurrentBuildArea => _currentBuildArea;
-    public Dictionary<BuildArea, Tower> TowerAreaLocations => _towerAreaLocations;
 
     public BuildTowersSystem(SceneSettings sceneSettings, TowerSettings towerSettings, TargetController targetController, BulletPool bulletPool, UISettings uiSettings, PlayerWallet playerWallet, WaveScreen waveScreen, RocketPool rocketPool)
     {
@@ -57,10 +53,12 @@ public class BuildTowersSystem
         _waveScreen.OnEndBattle -= UpdateTowersSaveInfo;
     }
 
-    public TowerSettings TowerSettings { get; }
-
     public event Action<BuildArea> InteractBuildArea;
     public event Action DeInteractBuildArea;
+
+    public BuildArea CurrentBuildArea => _currentBuildArea;
+    public Dictionary<BuildArea, Tower> TowerAreaLocations => _towerAreaLocations;
+    public TowerSettings TowerSettings { get; }
 
     public void OnInteractBuildArea(BuildArea buildArea)
     {

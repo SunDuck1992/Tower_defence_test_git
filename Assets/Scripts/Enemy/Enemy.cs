@@ -12,11 +12,10 @@ public class Enemy : GameUnit, IStateMachineOwner
     [SerializeField] private Animator _animator;
     [SerializeField] private AnimationEventListener _listener;
     [SerializeField] private float _damage;
-    [SerializeField] private float _duration;
     [SerializeField] private int _award;
     [SerializeField] private Transform _deathParticlePoint;
     [SerializeField] private Transform _hitParticlePoint;
-    [SerializeField] private Transform _bulletTarfet;
+    [SerializeField] private Transform _bulletTarget;
     [SerializeField] private ParticleSystem _deathParticle;
     [SerializeField] private ParticleSystem _hitParticle;
     [SerializeField] private GameObject _freezePartical; 
@@ -25,14 +24,12 @@ public class Enemy : GameUnit, IStateMachineOwner
     public GameUnit Target { get; set; }
     public Transform TargetAttackPoint { get; set; }
     public Transform DeathParticlePoint => _deathParticlePoint;
-    public Transform BulletTarget => _bulletTarfet;
+    public Transform BulletTarget => _bulletTarget;
     public NavMeshAgent Agent => _agent;
     public Animator Animator => _animator;
     public AnimationEventListener Listener => _listener;
     public float Damage => _damage;
-    public float Duration => _duration;
     public int Award => _award;
-
     public IStateMachine StateMachine { get; private set; }
 
     protected override void Awake()

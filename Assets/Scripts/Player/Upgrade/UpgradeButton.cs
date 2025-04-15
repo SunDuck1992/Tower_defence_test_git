@@ -10,10 +10,10 @@ public class UpgradeButton : MonoBehaviour
 
     private int _countClicked;
 
+    public event Action<Upgrade> Clicked;
+
     public int MaxLevelUpgrade => _maxLevelUpgrade;
     public int CountClicked => _countClicked;
-
-    public event Action<Upgrade> Clicked;
 
     private void OnEnable()
     {

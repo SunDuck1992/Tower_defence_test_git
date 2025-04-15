@@ -11,29 +11,25 @@ public class Bullet : MonoBehaviour
     private bool _hasHitTarget;
     private Coroutine _coroutine;
 
-    public float Damage { get; set; }
-
     public event Action<Bullet> Died;
     public event Action<Enemy> Hit;
     public event Action<Enemy> HitTower;
+
+    public float Damage { get; set; }
 
     private void OnEnable()
     {
         _hasHitTarget = false;
         _coroutine = StartCoroutine(SelfDestructionCoroutine());
-        //Invoke("SelfDestraction", 5f);
     }
 
     private void OnDisable()
     {
         StopCoroutine(_coroutine);
-        //StopAllCoroutines();
     }
 
     private void Update()
     {
-        //Vector3 direction = (_targetPosition.position - transform.position);
-
         transform.Translate(Vector3.forward * _speed * Time.deltaTime);
 
         float targetY = _targetPosition.position.y;
@@ -51,7 +47,6 @@ public class Bullet : MonoBehaviour
         {
             _hasHitTarget = true;
             Instantiate(_hitBulletParticle, enemy.DeathParticlePoint.position, Quaternion.identity);
-            //ShowAction.instance.SetInfoAction("Hit", 0, 0, 1);
 
             Hit?.Invoke(enemy);
             HitTower?.Invoke(enemy);
@@ -71,11 +66,6 @@ public class Bullet : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, PlayerShooter.Radius);
     }
 
-    //private void SelfDestraction()
-    //{
-    //    Died?.Invoke(this);
-    //}
-
     private IEnumerator SelfDestructionCoroutine()
     {
         yield return new WaitForSeconds(5);
@@ -83,7 +73,6 @@ public class Bullet : MonoBehaviour
         if (!_hasHitTarget)
         {
             Died?.Invoke(this);
-            //ShowAction.instance.SetInfoAction("Hit", 0, 1, 0);
         }
     }
 }

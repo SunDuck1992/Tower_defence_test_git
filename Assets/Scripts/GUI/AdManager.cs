@@ -8,7 +8,6 @@ public class AdManager : MonoBehaviour
     [SerializeField] private GameOver _gameOver;
 
     private PlayerWallet _playerWallet;
-
     private int _gemCountRevard = 3;
 
     [Inject]

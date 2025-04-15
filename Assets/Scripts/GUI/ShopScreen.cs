@@ -21,7 +21,6 @@ public class ShopScreen : MonoBehaviour
     [SerializeField] private Button _miniGunButton;
     [SerializeField] private GameObject _weaponPanel;
     [SerializeField] private Image _ADImage;
-
     [SerializeField] private List<LocalizationFont> _localizationFonts;
 
     private PlayerShooter _playerShooter;
@@ -30,9 +29,6 @@ public class ShopScreen : MonoBehaviour
     private Coroutine _coroutine;
     private float _duration = 2f;
     private int _levelForMiniGun = 7;
-    //private string _needMoreGoldText = "Need more gold";
-
-    //public bool MiniGunIsBuyed { get; set; }
 
     [Inject]
     public void Construct(PlayerShooter playerShooter, PlayerWallet playerWallet, SceneSettings sceneSettings)
@@ -109,11 +105,6 @@ public class ShopScreen : MonoBehaviour
         if (_levelForMiniGun <= _sceneSettings.Spawner.WaveCount)
         {
             _miniGunButton.interactable = true;
-            Debug.LogWarning(_levelForMiniGun + " - " + _sceneSettings.Spawner.WaveCount);
-        }
-        else
-        {
-            Debug.LogWarning("need more level");
         }
     }
 
@@ -143,17 +134,6 @@ public class ShopScreen : MonoBehaviour
                 {
                     _buttons[i].sprite = _buyedSprite;
                 }
-            }
-        }
-    }
-
-    private void LoadSettings()
-    {
-        for (int i = 0; i < _items.Count; i++)
-        {
-            if (_items[i].isBuyed)
-            {
-                ChangeButtonSprite(i);
             }
         }
     }
@@ -196,7 +176,6 @@ public class ShopScreen : MonoBehaviour
         }
 #endif
 
-        //nextTexts.text = _needMoreGoldText;
         nextTexts.color = Color.red;
 
         yield return new WaitForSeconds(0.5f);

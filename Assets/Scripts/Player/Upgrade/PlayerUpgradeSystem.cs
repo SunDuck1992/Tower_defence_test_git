@@ -94,7 +94,6 @@ public class PlayerUpgradeSystem
         if (YandexGame.savesData.upgradeDamageLevel != -1)
         {
             UpgradeData.UpgradeDamageLevel.Value = YandexGame.savesData.upgradeDamageLevel;
-            Debug.LogWarning("UpgradeDamageLevel - " + UpgradeData.UpgradeDamageLevel.Value + ", yandexUpgrade - " + YandexGame.savesData.upgradeDamageLevel);
         }
 
         if (YandexGame.savesData.upgradeSpeedWeaponLevel != -1)
@@ -105,7 +104,6 @@ public class PlayerUpgradeSystem
         if (YandexGame.savesData.upgradeHealthLevel != -1)
         {
             UpgradeData.UpgradeHealthLevel.Value = YandexGame.savesData.upgradeHealthLevel;
-            Debug.LogWarning("UpgradeDamageLevel - " + UpgradeData.UpgradeHealthLevel.Value + ", yandexUpgrade - " + YandexGame.savesData.upgradeHealthLevel);
         }
     }
 }

@@ -3,7 +3,6 @@ public class EnemyIdleState : BaseState<Enemy>
     public override void Enter()
     {
         Owner.Target = Owner.TargetController.GetTarget(Owner, 1000);
-        //Debug.LogWarning("Пришел в айдл ищу новую цель");
     }
 
     public override void Update()

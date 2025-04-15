@@ -11,14 +11,15 @@ public class EnemyDieState : BaseState<Enemy>
         int typeDie = Random.Range(0, 2);
 
         Owner.Agent.enabled = false;
-
         Owner.Animator.SetTrigger("Die");
         Owner.Animator.SetInteger("TypeDie", typeDie);
     }
 
     public override void Update()
     {
-        if ((Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die02") || Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die01")) && !_hasDied)
+        if ((Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die02") ||
+             Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die01")) &&
+             !_hasDied)
         {
             if (Owner.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
             {

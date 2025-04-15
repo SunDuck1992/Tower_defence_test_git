@@ -122,10 +122,6 @@ public class PlayerShooter : MonoBehaviour
                         Bullet bullet = _bulletPool.Spawn();
                         bullet.GetTargetPosition(_target);
                         bullet.Hit += OnHit;
-                        //ShowAction.instance.SetInfoAction("Hit", 1, 0, 0);
-
-
-
                         bullet.Died += BulletComplete;
 
                         CurrentWeapon.Shoot(bullet);
@@ -168,8 +164,6 @@ public class PlayerShooter : MonoBehaviour
 
     private void OnHit(Enemy enemy)
     {
-        Debug.LogWarning("Я попала - пуля");
-
         if (_isMassiveDamage)
         {
             var enemies = _targetController.GetAllTargets(enemy, Radius, true);
@@ -191,7 +185,6 @@ public class PlayerShooter : MonoBehaviour
     {
         bullet.Hit -= OnHit;
         bullet.Died -= BulletComplete;
-        //ShowAction.instance.SetInfoAction("Hit", 0, 1, 0);
     }
 
     private void SetCurrentWeapon()

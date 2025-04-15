@@ -16,7 +16,6 @@ public class WaveScreen : MonoBehaviour
     private EnemyManager _enemyManager;
     private Spawner _spawner;
     private SceneSettings _sceneSettings;
-    private EnemyImprover _enemyImprover;
 
     public UnityEvent WaveComplete;
     public event Action OnEndBattle;
@@ -26,12 +25,11 @@ public class WaveScreen : MonoBehaviour
     public int WaveCount { get; private set; }
 
     [Inject]
-    public void Construct(EnemyManager enemyManager, SceneSettings sceneSettings, EnemyImprover enemyImprover)
+    public void Construct(EnemyManager enemyManager, SceneSettings sceneSettings)
     {
         _enemyManager = enemyManager;
         _spawner = sceneSettings.Spawner;
         _sceneSettings = sceneSettings;
-        _enemyImprover = enemyImprover;
     }
 
     private void Start()
@@ -40,7 +38,6 @@ public class WaveScreen : MonoBehaviour
 
         _enemyManager.EnemyDied += UpdateProgressBar;
         OnEndBattle += ShowBuildAreas;
-        //OnEndBattle += _enemyImprover.Improve;
         OnEndBattle += DisableMusic;
         OnEndBattle += SaveLeaderData;
         OnEndBattle += SaveWaweInfo;
@@ -51,7 +48,6 @@ public class WaveScreen : MonoBehaviour
     {
         _enemyManager.EnemyDied -= UpdateProgressBar;
         OnEndBattle -= ShowBuildAreas;
-        //OnEndBattle -= _enemyImprover.Improve;
         OnEndBattle -= DisableMusic;
         OnEndBattle -= SaveLeaderData;
         OnEndBattle -= SaveWaweInfo;

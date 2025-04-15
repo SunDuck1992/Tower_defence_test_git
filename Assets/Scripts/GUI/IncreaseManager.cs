@@ -10,7 +10,7 @@ public class IncreaseManager : MonoBehaviour
     {
         foreach (UpgradeButton upgradeButton in _upgradeButtons)
         {
-            if(upgradeButton != null)
+            if (upgradeButton != null)
             {
                 if (upgradeButton.CountClicked == upgradeButton.MaxLevelUpgrade)
                 {
@@ -22,7 +22,6 @@ public class IncreaseManager : MonoBehaviour
                     }
                 }
             }
-            
         }
     }
 }

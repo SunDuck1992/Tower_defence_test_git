@@ -31,7 +31,6 @@ public class BuildScreen : MonoBehaviour
     private SceneSettings _sceneSettings;
     private PlayerWallet _playerWallet;
     private Tower _tower;
-    private Sprite _currentSprite;
     private float _duration = 2f;
     private bool[] _isCoroutineRunning = new bool[5];
 
@@ -80,11 +79,9 @@ public class BuildScreen : MonoBehaviour
 
                     if (!_sceneSettings.BuildPoints[i].OnBuild)
                     {
-                        Debug.LogWarning(YandexGame.savesData.buildedAreas[j].isBuilded + " - возможность постройки, " + YandexGame.savesData.buildedAreas[j].name + " - имя");
                         _buildTowerSystem.BuildTower(_buildTowerSystem.TowerSettings.Datas[YandexGame.savesData.buildedAreas[j].value].Prefab);
                         _tower = _buildTowerSystem.GetBuildTower();
                         _buildTowerSystem.CurrentBuildArea.SetCurrentTower(_tower);
-                        //_currentSprite = _buildTowerSystem.TowerSettings.Datas[YandexGame.savesData.buildedAreas[j].value].Sprite;
                         _buildTowerSystem.CurrentBuildArea.SpriteValue = YandexGame.savesData.buildedAreas[j].value;
                     }
                 }
@@ -104,10 +101,7 @@ public class BuildScreen : MonoBehaviour
                 _buildTowerSystem.BuildTower(_buildTowerSystem.TowerSettings.Datas[index].Prefab);
                 _tower = _buildTowerSystem.GetBuildTower();
                 _buildTowerSystem.CurrentBuildArea.SetCurrentTower(_tower);
-                _currentSprite = _buildTowerSystem.TowerSettings.Datas[index].Sprite;
                 _buildTowerSystem.CurrentBuildArea.SpriteValue = index;
-
-                //YandexGame.savesData.buildAreas.Add(_buildTowerSystem.CurrentBuildArea);
 
                 if (YandexGame.savesData.buildedAreas.Count == 0)
                 {
@@ -125,7 +119,6 @@ public class BuildScreen : MonoBehaviour
                             YandexGame.savesData.buildedAreas[i].value = index;
                             areaFound = true;
 
-                            Debug.LogWarning(YandexGame.savesData.buildedAreas[i].isBuilded + " - Build");
                             break;
                         }
                     }
@@ -164,8 +157,6 @@ public class BuildScreen : MonoBehaviour
                         YandexGame.savesData.buildedAreas[i].isBuilded = false;
                         _playerWallet.SaveWallet();
                         YandexGame.SaveProgress();
-
-                        Debug.LogWarning(YandexGame.savesData.buildedAreas[i].isBuilded + " - Destroy");
                     }
                 }
             }
@@ -249,11 +240,6 @@ public class BuildScreen : MonoBehaviour
         }
     }
 
-    private void ChangeImproveLevel(BuildArea buildArea)
-    {
-        _improveLevelText.text = _buildTowerSystem.CurrentBuildArea.ImproveLevel.ToString();
-    }
-
     private void HideBuildScreen()
     {
         _panel.SetActive(false);
@@ -298,7 +284,6 @@ public class BuildScreen : MonoBehaviour
         }
 #endif
 
-        //nextTexts.text = _needMoreGoldText;
         nextTexts.color = Color.red;
 
         yield return new WaitForSeconds(0.5f);

@@ -6,7 +6,6 @@ public class AppearanceEnemy : MonoBehaviour
     [SerializeField] private List<GameObject> _bodies;
     [SerializeField] private List<GameObject> _glowes;
 
-
     private void OnEnable()
     {
         int randomBodies = Random.Range(0, _bodies.Count);

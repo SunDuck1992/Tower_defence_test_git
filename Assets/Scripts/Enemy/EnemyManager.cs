@@ -5,7 +5,6 @@ using YG;
 public class EnemyManager
 {
     private readonly EnemyPool _enemyPool;
-    private readonly SceneSettings _sceneSettings;
     private readonly UISettings _uiSettings;
     private readonly TargetController _targetController;
     private readonly PlayerWallet _playerWallet;
@@ -13,10 +12,10 @@ public class EnemyManager
 
     public event Action EnemyDied;
 
-    public EnemyManager(EnemyPool enemyPool, SceneSettings sceneSettings, UISettings uISettings, TargetController targetController, PlayerWallet playerWallet, EnemyImprover enemyImprover)
+    public EnemyManager(EnemyPool enemyPool, UISettings uISettings, TargetController targetController,
+                        PlayerWallet playerWallet, EnemyImprover enemyImprover)
     {
         _enemyPool = enemyPool;
-        _sceneSettings = sceneSettings;
         _uiSettings = uISettings;
         _targetController = targetController;
         _playerWallet = playerWallet;

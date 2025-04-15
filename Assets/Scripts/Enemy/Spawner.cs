@@ -42,8 +42,6 @@ public class Spawner : MonoBehaviour
 
     public void SpawnOnClick()
     {
-        //Transform point = _sceneSettings.Points[Random.Range(0, _sceneSettings.Points.Count)];
-
         for (int i = 0; i < _countEnemies; i++)
         {
             Transform point = _sceneSettings.Points[Random.Range(0, _sceneSettings.Points.Count)];

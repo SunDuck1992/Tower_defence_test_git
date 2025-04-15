@@ -18,11 +18,11 @@ public class PlayerWallet
         YandexGame.GetDataEvent -= SetValue;
     }
 
-    public int Gold => _gold;
-    public int Gem => _gem;
-
     public event Action<int> GoldChanged;
     public event Action<int> GemChanged;
+
+    public int Gold => _gold;
+    public int Gem => _gem;
 
     public void AddGold(int gold)
     {

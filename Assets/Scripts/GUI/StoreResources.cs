@@ -17,7 +17,6 @@ public class StoreResources : MonoBehaviour
     [SerializeField] private List<LocalizationFont> _localizationFonts;
 
     private PlayerWallet _playerWallet;
-
     private int _gemCount = 1;
     private float _duration = 2f;
     private Coroutine _coroutine;
@@ -83,7 +82,6 @@ public class StoreResources : MonoBehaviour
         }
 #endif
 
-        //nextTexts.text = _needMoreGoldText;
         nextTexts.color = Color.red;
 
         yield return new WaitForSeconds(0.5f);

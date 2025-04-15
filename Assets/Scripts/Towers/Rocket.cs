@@ -13,16 +13,15 @@ public class Rocket : MonoBehaviour
     private ParticleSystem _particle;
     private bool _isParticle;
 
+    public event Action<Rocket> Died;
+    public event Action<Enemy> HitTower;
+
     public float Speed => _speed;
     public float Damage { get; set; }
     public GameUnit Target { get; set; }
 
-    public event Action<Rocket> Died;
-    public event Action<Enemy> HitTower;
-
     private void OnEnable()
     {
-        //Invoke("SelfDestraction", 7f);
         StartCoroutine(FlyToTarget());
     }
 
@@ -50,11 +49,6 @@ public class Rocket : MonoBehaviour
             StopCoroutine(FlyToTarget());
             Died?.Invoke(this);
         }
-    }
-
-    private void SelfDestraction()
-    {
-        Died?.Invoke(this);
     }
 
     public IEnumerator FlyToTarget()

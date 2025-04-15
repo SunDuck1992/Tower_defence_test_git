@@ -4,7 +4,6 @@ public class EnemyAttackState : BaseState<Enemy>
 {
     public override void Enter()
     {
-        //Debug.LogWarning("Пришел в аттак стейт энему");
         int typeAttack = Random.Range(0, 3);
 
         Owner.transform.forward = Owner.Target.transform.position - Owner.transform.position;

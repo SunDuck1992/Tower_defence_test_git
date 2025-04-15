@@ -12,13 +12,12 @@ public class ActivateBonusButton : MonoBehaviour
     private PlayerWallet _playerWallet;
     private WaveScreen _waveScreen;
     private Button _button;
+    private bool _isButtonPressed = false;
 
     public UnityEvent<int> EnableBonus;
     public UnityEvent<int> DisableBonus;
 
     public bool IsActive { get; private set; }
-
-    private bool _isButtonPressed = false;
 
     [Inject]
     public void Construct(PlayerWallet playerWallet, WaveScreen waveScreen)
