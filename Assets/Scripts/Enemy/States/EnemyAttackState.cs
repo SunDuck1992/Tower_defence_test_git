@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class EnemyAttackState : BaseState<Enemy>
 {
+    private int _typeAttackCount = 3;
+
     public override void Enter()
     {
-        int typeAttack = Random.Range(0, 3);
+        int typeAttack = Random.Range(0, _typeAttackCount);
 
         Owner.transform.forward = Owner.Target.transform.position - Owner.transform.position;
         Owner.Animator.SetTrigger("Attack");

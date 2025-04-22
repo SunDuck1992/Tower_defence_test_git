@@ -3,6 +3,7 @@ using UnityEngine;
 public class ArrayBulletShoot : Weapon
 {
     private int _count;
+    private int _spreadAngle = 5;
 
     protected override void CreateBullet(Bullet bullet)
     {
@@ -16,7 +17,7 @@ public class ArrayBulletShoot : Weapon
 
         if(_count > 0)
         {
-            WeaponPoint.localRotation = Quaternion.Euler(Vector3.up * (_count == 1 ? -5 : 5));
+            WeaponPoint.localRotation = Quaternion.Euler(Vector3.up * (_count == 1 ? -_spreadAngle : _spreadAngle));
         }
 
             base.CreateBullet(bullet);

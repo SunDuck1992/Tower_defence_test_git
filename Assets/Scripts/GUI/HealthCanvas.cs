@@ -12,7 +12,7 @@ public class HealthCanvas : MonoBehaviour
     {
         _slider.value = _slider.maxValue;
         _slider.gameObject.SetActive(!_isHideble);
-        _gameUnit.HealthChanged += ChangeValue;
+        _gameUnit.HealthChanged += OnChangeValue;
     }
 
     private void Update()
@@ -22,10 +22,19 @@ public class HealthCanvas : MonoBehaviour
 
     private void OnDestroy()
     {
-        _gameUnit.HealthChanged -= ChangeValue;
+        _gameUnit.HealthChanged -= OnChangeValue;
     }
 
-    private void ChangeValue(bool isReseted)
+    private IEnumerator Hide()
+    {
+        _slider.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        _slider.gameObject.SetActive(false);
+    }
+
+    private void OnChangeValue(bool isReseted)
     {
         if (_isHideble)
         {
@@ -41,14 +50,5 @@ public class HealthCanvas : MonoBehaviour
         }
 
         _slider.value = _gameUnit.Health / _gameUnit.MaxHealth;
-    }
-
-    private IEnumerator Hide()
-    {
-        _slider.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(2f);
-
-        _slider.gameObject.SetActive(false);
-    }
+    }   
 }

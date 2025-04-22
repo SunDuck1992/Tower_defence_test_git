@@ -17,7 +17,6 @@ public abstract class GameUnit : MonoBehaviour
 
     public float Health => _health;
     public float MaxHealth => _maxHealth;
-    public bool IsDead => _isDead;
     public AttackSector AttackSector { get; private set; }
 
 

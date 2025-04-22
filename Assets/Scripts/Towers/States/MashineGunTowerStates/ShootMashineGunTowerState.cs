@@ -15,7 +15,7 @@ public class ShootMashineGunTowerState : BaseState<MashineGunTower>
         Owner.CreateShootparticle();
 
         _bullet.HitTower += OnHit;
-        _bullet.Died += BulletComplete;
+        _bullet.Died += OnBulletComplete;
 
         Owner.StateMachine.SwitchState<ReloadMashineGunTowerState, MashineGunTower>(Owner);
     }
@@ -25,9 +25,9 @@ public class ShootMashineGunTowerState : BaseState<MashineGunTower>
         enemy.TakeDamage(_bullet.Damage);
     }
 
-    private void BulletComplete(Bullet bullet)
+    private void OnBulletComplete(Bullet bullet)
     {
         bullet.HitTower -= OnHit;
-        bullet.Died -= BulletComplete;
+        bullet.Died -= OnBulletComplete;
     }
 }

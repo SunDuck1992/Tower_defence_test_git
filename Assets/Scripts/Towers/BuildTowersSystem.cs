@@ -35,10 +35,10 @@ public class BuildTowersSystem
         _uiSettings.RepairTowersButton.EnableBonus.AddListener(RepairTowers);
         _uiSettings.RepairTowersButton.DisableBonus.AddListener(RepairTowers);
 
-        _waveScreen.OnEndBattle += ResetTowerHealth;
-        _waveScreen.OnEndBattle += _playerWallet.SaveWallet;
+        _waveScreen.OnEndBattle += OnResetTowerHealth;
+        _waveScreen.OnEndBattle += _playerWallet.OnSaveWallet;
         _waveScreen.OnEndBattle += YandexGame.SaveProgress;
-        _waveScreen.OnEndBattle += UpdateTowersSaveInfo;
+        _waveScreen.OnEndBattle += OnUpdateTowersSaveInfo;
 
         _rocketPool = rocketPool;
         _targetController.AddTarget(sceneSettings.Base, true);
@@ -47,10 +47,10 @@ public class BuildTowersSystem
 
     ~BuildTowersSystem()
     {
-        _waveScreen.OnEndBattle -= ResetTowerHealth;
-        _waveScreen.OnEndBattle -= _playerWallet.SaveWallet;
+        _waveScreen.OnEndBattle -= OnResetTowerHealth;
+        _waveScreen.OnEndBattle -= _playerWallet.OnSaveWallet;
         _waveScreen.OnEndBattle -= YandexGame.SaveProgress;
-        _waveScreen.OnEndBattle -= UpdateTowersSaveInfo;
+        _waveScreen.OnEndBattle -= OnUpdateTowersSaveInfo;
     }
 
     public event Action<BuildArea> InteractBuildArea;
@@ -126,15 +126,6 @@ public class BuildTowersSystem
         }
     }
 
-    private void ResetTowerHealth()
-    {
-        for (int i = 0; i < _targetController.Towers.Count; i++)
-        {
-            var tower = _targetController.Towers[i];
-            tower.ResetHealth();
-        }
-    }
-
     private void Destroy(GameUnit gameUnit)
     {
         gameUnit.DiedComplete.RemoveAllListeners();
@@ -184,7 +175,7 @@ public class BuildTowersSystem
         gameUnit.gameObject.SetActive(false);
     }
 
-    private void UpdateTowersSaveInfo()
+    private void OnUpdateTowersSaveInfo()
     {
         for (int i = 0; i < YandexGame.savesData.buildedAreas.Count; i++)
         {
@@ -199,5 +190,14 @@ public class BuildTowersSystem
 
         YandexGame.savesData.destroyedTowers.Clear();
         YandexGame.SaveProgress();
+    }
+
+    private void OnResetTowerHealth()
+    {
+        for (int i = 0; i < _targetController.Towers.Count; i++)
+        {
+            var tower = _targetController.Towers[i];
+            tower.ResetHealth();
+        }
     }
 }

@@ -1,8 +1,10 @@
 public class EnemyIdleState : BaseState<Enemy>
 {
+    private int _maxRadius = 1000;
+
     public override void Enter()
     {
-        Owner.Target = Owner.TargetController.GetTarget(Owner, 1000);
+        Owner.Target = Owner.TargetController.GetTarget(Owner, _maxRadius);
     }
 
     public override void Update()

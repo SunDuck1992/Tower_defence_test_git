@@ -23,18 +23,14 @@ public class ResourcesScreen : MonoBehaviour
         _goldValueText.text = _playerWallet.Gold.ToString();
         _gemValueText.text = _playerWallet.Gem.ToString();
 
-        _playerWallet.GoldChanged += UpdateGoldDisplay;
-        _playerWallet.GemChanged += UpdateResourcesScreen;
+        _playerWallet.GoldChanged += OnUpdateGoldDisplay;
+        _playerWallet.GemChanged += OnUpdateResourcesScreen;
     }
 
-    private void UpdateResourcesScreen(int targetGem)
+    private void OnDestroy()
     {
-        _gemValueText.text = targetGem.ToString();
-    }
-
-    private void UpdateGoldDisplay(int targetGold)
-    {
-        StartCoroutine(UpdateGoldCourutine(targetGold));
+        _playerWallet.GemChanged -= OnUpdateResourcesScreen;
+        _playerWallet.GoldChanged -= OnUpdateGoldDisplay;
     }
 
     private IEnumerator UpdateGoldCourutine(int targetGold)
@@ -54,9 +50,13 @@ public class ResourcesScreen : MonoBehaviour
         _goldValueText.text = targetGold.ToString();
     }
 
-    private void OnDestroy()
+    private void OnUpdateGoldDisplay(int targetGold)
     {
-        _playerWallet.GemChanged -= UpdateResourcesScreen;
-        _playerWallet.GoldChanged -= UpdateGoldDisplay;
+        StartCoroutine(UpdateGoldCourutine(targetGold));
+    }
+
+    private void OnUpdateResourcesScreen(int targetGem)
+    {
+        _gemValueText.text = targetGem.ToString();
     }
 }

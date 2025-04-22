@@ -16,7 +16,6 @@ public class Rocket : MonoBehaviour
     public event Action<Rocket> Died;
     public event Action<Enemy> HitTower;
 
-    public float Speed => _speed;
     public float Damage { get; set; }
     public GameUnit Target { get; set; }
 

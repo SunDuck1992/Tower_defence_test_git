@@ -10,8 +10,6 @@ public class EnemyManager
     private readonly PlayerWallet _playerWallet;
     private readonly EnemyImprover _enemyImprover;
 
-    public event Action EnemyDied;
-
     public EnemyManager(EnemyPool enemyPool, UISettings uISettings, TargetController targetController,
                         PlayerWallet playerWallet, EnemyImprover enemyImprover)
     {
@@ -31,6 +29,8 @@ public class EnemyManager
         _uiSettings.SlowEnemyButton.DisableBonus.RemoveAllListeners();
     }
 
+    public event Action EnemyDied;
+
     public void Create(Vector3 point)
     {
         Enemy enemy = _enemyPool.Spawn() as Enemy;
@@ -49,8 +49,8 @@ public class EnemyManager
             for (int i = 0; i < _targetController.Enemies.Count; i++)
             {
                 var enemy = _targetController.Enemies[i] as Enemy;
-                enemy.ChangeSpeedModifyier(0.5f);
-                enemy.Animator.SetFloat("Speed", 0.5f);
+                enemy.ChangeSpeedModifyier(enemy.SlowSpeed);
+                enemy.Animator.SetFloat("Speed", enemy.SlowSpeed);
                 enemy.SwitchFreezePartical(true);
             }
         }
@@ -61,8 +61,8 @@ public class EnemyManager
         for (int i = 0; i < _targetController.Enemies.Count; i++)
         {
             var enemy = _targetController.Enemies[i] as Enemy;
-            enemy.ChangeSpeedModifyier(1f);
-            enemy.Animator.SetFloat("Speed", 1f);
+            enemy.ChangeSpeedModifyier(enemy.FullSpeed);
+            enemy.Animator.SetFloat("Speed", enemy.FullSpeed);
             enemy.SwitchFreezePartical(false);
         }
     }

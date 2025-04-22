@@ -28,14 +28,14 @@ public class ActivateBonusButton : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerWallet.GemChanged += InteractButton;
-        _waveScreen.OnStartBattle += CheckInteractButton;
+        _playerWallet.GemChanged += OnInteractButton;
+        _waveScreen.OnStartBattle += OnCheckInteractButton;
     }
 
     private void OnDisable()
     {
-        _playerWallet.GemChanged -= InteractButton;
-        _waveScreen.OnStartBattle += CheckInteractButton;
+        _playerWallet.GemChanged -= OnInteractButton;
+        _waveScreen.OnStartBattle += OnCheckInteractButton;
     }
 
     private void Start()
@@ -67,7 +67,7 @@ public class ActivateBonusButton : MonoBehaviour
         IsActive = false;
     }
 
-    private void InteractButton(int countGem)
+    private void OnInteractButton(int countGem)
     {
         if (_waveScreen.IsBattle)
         {
@@ -86,7 +86,7 @@ public class ActivateBonusButton : MonoBehaviour
         }
     }
 
-    private void CheckInteractButton()
+    private void OnCheckInteractButton()
     {
         if (_waveScreen.IsBattle)
         {

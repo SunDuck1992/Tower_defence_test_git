@@ -43,11 +43,11 @@ public class PlayerShooter : MonoBehaviour
         _playerUpgradeSystem = playerUpgradeSystem;
         _damage = gameConfigProxy.Config.PlayerConfig.Damage;
 
-        YandexGame.GetDataEvent += SetCurrentWeapon;
-        SetCurrentWeapon();
+        YandexGame.GetDataEvent += OnSetCurrentWeapon;
+        OnSetCurrentWeapon();
 
-        _playerUpgradeSystem.UpgradeData.UpgradeDamageLevel.ValueChanged += UpdateDamage;
-        _playerUpgradeSystem.UpgradeData.UpgradeShootSpeedLevel.ValueChanged += UpdateShootSpeed;
+        _playerUpgradeSystem.UpgradeData.UpgradeDamageLevel.ValueChanged += OnUpdateDamage;
+        _playerUpgradeSystem.UpgradeData.UpgradeShootSpeedLevel.ValueChanged += OnUpdateShootSpeed;
         _uISettings.MassDamageButton.EnableBonus.AddListener(ActivateMassDamage);
         _uISettings.MassDamageButton.DisableBonus.AddListener(DeactivateMassDamage);
 
@@ -61,31 +61,10 @@ public class PlayerShooter : MonoBehaviour
         _uISettings.MassDamageButton.DisableBonus.RemoveAllListeners();       
     }
 
-    public void ChangeWeapon(int indexWeapon)
-    {
-        if (CurrentWeapon != null)
-        {
-            CurrentWeapon?.DeActivate();
-        }
-
-        _weaponIndex = indexWeapon;
-        CurrentWeapon = _weapons[_weaponIndex];
-        CurrentWeapon.Activate();
-        UpdateShootSpeed();
-        UpdateDamage();
-    }
-
-    private void OnDestroy()
-    {
-        _playerUpgradeSystem.UpgradeData.UpgradeDamageLevel.ValueChanged -= UpdateDamage;
-        _playerUpgradeSystem.UpgradeData.UpgradeShootSpeedLevel.ValueChanged -= UpdateShootSpeed;
-        YandexGame.GetDataEvent -= SetCurrentWeapon;
-    }
-
     private void Start()
     {
-        UpdateShootSpeed();
-        UpdateDamage();
+        OnUpdateShootSpeed();
+        OnUpdateDamage();
         StartCoroutine(Shoot());
     }
 
@@ -105,38 +84,25 @@ public class PlayerShooter : MonoBehaviour
         }
     }
 
-    private IEnumerator Shoot()
+    private void OnDestroy()
     {
-        while (true)
+        _playerUpgradeSystem.UpgradeData.UpgradeDamageLevel.ValueChanged -= OnUpdateDamage;
+        _playerUpgradeSystem.UpgradeData.UpgradeShootSpeedLevel.ValueChanged -= OnUpdateShootSpeed;
+        YandexGame.GetDataEvent -= OnSetCurrentWeapon;
+    }
+
+    public void ChangeWeapon(int indexWeapon)
+    {
+        if (CurrentWeapon != null)
         {
-            _target = _targetController.GetTarget(_self, 16, true);
-
-            if (_target != null)
-            {
-                if(_currentDistance < ShootDistance)
-                {
-                    IsShooting = true;
-
-                    for (int i = 0; i < CurrentWeapon.CountBullet; i++)
-                    {
-                        Bullet bullet = _bulletPool.Spawn();
-                        bullet.GetTargetPosition(_target);
-                        bullet.Hit += OnHit;
-                        bullet.Died += BulletComplete;
-
-                        CurrentWeapon.Shoot(bullet);
-                    }
-
-                    yield return new WaitForSeconds(_couldown);
-                }               
-            }
-            else
-            {
-                IsShooting = false;
-            }
-
-            yield return null;
+            CurrentWeapon?.DeActivate();
         }
+
+        _weaponIndex = indexWeapon;
+        CurrentWeapon = _weapons[_weaponIndex];
+        CurrentWeapon.Activate();
+        OnUpdateShootSpeed();
+        OnUpdateDamage();
     }
 
     public void ActivateMassDamage(int cost)
@@ -152,12 +118,12 @@ public class PlayerShooter : MonoBehaviour
         _isMassiveDamage = false;
     }
 
-    public void UpdateShootSpeed()
+    public void OnUpdateShootSpeed()
     {
         _couldown = CurrentWeapon.ChangeFirerate(_playerUpgradeSystem.UpgradeData.UpgradeShootSpeedLevel.Value);
     }
 
-    private void UpdateDamage()
+    private void OnUpdateDamage()
     {
         _damage = CurrentWeapon.ChangeDamage(_playerUpgradeSystem.UpgradeData.UpgradeDamageLevel.Value);
     }
@@ -181,13 +147,47 @@ public class PlayerShooter : MonoBehaviour
         enemy.TakeDamage(_damage);       
     }
 
-    private void BulletComplete(Bullet bullet)
+    private IEnumerator Shoot()
     {
-        bullet.Hit -= OnHit;
-        bullet.Died -= BulletComplete;
+        while (true)
+        {
+            _target = _targetController.GetTarget(_self, 16, true);
+
+            if (_target != null)
+            {
+                if (_currentDistance < ShootDistance)
+                {
+                    IsShooting = true;
+
+                    for (int i = 0; i < CurrentWeapon.CountBullet; i++)
+                    {
+                        Bullet bullet = _bulletPool.Spawn();
+                        bullet.GetTargetPosition(_target);
+                        bullet.Hit += OnHit;
+                        bullet.Died += OnBulletComplete;
+
+                        CurrentWeapon.Shoot(bullet);
+                    }
+
+                    yield return new WaitForSeconds(_couldown);
+                }
+            }
+            else
+            {
+                IsShooting = false;
+            }
+
+            yield return null;
+        }
     }
 
-    private void SetCurrentWeapon()
+    private void OnBulletComplete(Bullet bullet)
+    {
+        bullet.Hit -= OnHit;
+        bullet.Died -= OnBulletComplete;
+    }
+
+    private void OnSetCurrentWeapon()
     {
         if (YandexGame.savesData.weaponIndex != -1)
         {

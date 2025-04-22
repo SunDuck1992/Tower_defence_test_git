@@ -18,12 +18,12 @@ public class AdManager : MonoBehaviour
 
     private void OnEnable()
     {
-        YandexGame.RewardVideoEvent += Revarded;
+        YandexGame.RewardVideoEvent += OnRevarded;
     }
 
     private void OnDisable()
     {
-        YandexGame.RewardVideoEvent -= Revarded;
+        YandexGame.RewardVideoEvent -= OnRevarded;
     }
 
     public void ShowFullScreenAd()
@@ -44,7 +44,7 @@ public class AdManager : MonoBehaviour
         }
     }
 
-    private void Revarded(int id)
+    private void OnRevarded(int id)
     {
         if (id == 1)
         {

@@ -14,19 +14,19 @@ public class PlayerUpgradeSystem
 {
     public PlayerUpgradeSystem()
     {
-        YandexGame.GetDataEvent += SetUpgradeLevels;
+        YandexGame.GetDataEvent += OnSetUpgradeLevels;
 
-        SetUpgradeLevels();
+        OnSetUpgradeLevels();
     }
 
     ~PlayerUpgradeSystem()
     {
-        YandexGame.GetDataEvent -= SetUpgradeLevels;
+        YandexGame.GetDataEvent -= OnSetUpgradeLevels;
     }
 
     public UpgradeData UpgradeData { get; private set; } = new UpgradeData();
 
-    public void ApplyUpgrade(Upgrade upgrade)
+    public void OnApplyUpgrade(Upgrade upgrade)
     {
         switch (upgrade)
         {
@@ -89,7 +89,7 @@ public class PlayerUpgradeSystem
         }
     }
 
-    private void SetUpgradeLevels()
+    private void OnSetUpgradeLevels()
     {
         if (YandexGame.savesData.upgradeDamageLevel != -1)
         {

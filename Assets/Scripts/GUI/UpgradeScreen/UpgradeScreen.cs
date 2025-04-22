@@ -15,7 +15,7 @@ public class UpgradeScreen : MonoBehaviour
 
         for (int i = 0; i < _upgradeButtons.Count; i++)
         {
-            _upgradeButtons[i].Clicked += _playerUpgradeSystem.ApplyUpgrade;
+            _upgradeButtons[i].Clicked += _playerUpgradeSystem.OnApplyUpgrade;
         }
     }
 
@@ -23,7 +23,7 @@ public class UpgradeScreen : MonoBehaviour
     {
         for (int i = 0; i < _upgradeButtons.Count; i++)
         {
-            _upgradeButtons[i].Clicked -= _playerUpgradeSystem.ApplyUpgrade;
+            _upgradeButtons[i].Clicked -= _playerUpgradeSystem.OnApplyUpgrade;
         }
     }
 }

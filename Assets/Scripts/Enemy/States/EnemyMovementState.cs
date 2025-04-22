@@ -4,6 +4,9 @@ using UnityEngine.AI;
 public class EnemyMovementState : BaseState<Enemy>
 {
     private float _radius = 6f;
+    private float _minDistance = 1.5f;
+    private float _randomPointRadius = 2.5f;
+    private float _actionDelay = 0.3f;
     private Vector3 _randomPoint;
     private float _timer;
 
@@ -17,10 +20,10 @@ public class EnemyMovementState : BaseState<Enemy>
             {
                 if (_timer <= Time.time)
                 {
-                    _randomPoint = Owner.transform.position + Random.insideUnitSphere * 2.5f;
+                    _randomPoint = Owner.transform.position + Random.insideUnitSphere * _randomPointRadius;
                     _randomPoint.y = Owner.transform.position.y;
                     Owner.Agent.SetDestination(_randomPoint);
-                    _timer = Time.time + 0.3f;
+                    _timer = Time.time + _actionDelay;
                 }
             }
 
@@ -33,7 +36,7 @@ public class EnemyMovementState : BaseState<Enemy>
 
         float distance = Vector3.Distance(Owner.transform.position, Owner.TargetAttackPoint.position);
 
-        if (Owner.Agent.path.corners.Length > 1 & distance <= 1.5f)
+        if (Owner.Agent.path.corners.Length > 1 & distance <= _minDistance)
         {
             Owner.TargetAttackPoint = Owner.Target.AttackSector.freePoints.Pop();
             Owner.StateMachine.SwitchState<EnemyAttackState, Enemy>(Owner);

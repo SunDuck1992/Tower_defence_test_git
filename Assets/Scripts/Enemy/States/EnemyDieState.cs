@@ -3,12 +3,13 @@ using UnityEngine;
 public class EnemyDieState : BaseState<Enemy>
 {
     private float _timer = 1.5f;
+    private int _typeDieCount = 2;
     private bool _hasDied;
 
     public override void Enter()
     {
         _hasDied = false;
-        int typeDie = Random.Range(0, 2);
+        int typeDie = Random.Range(0, _typeDieCount);
 
         Owner.Agent.enabled = false;
         Owner.Animator.SetTrigger("Die");

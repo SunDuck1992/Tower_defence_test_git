@@ -9,20 +9,12 @@ public class AbilityManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _waveScreen.OnEndBattle += TurnOffTheButton;
+        _waveScreen.OnEndBattle += OnTurnOffTheButton;
     }
 
     private void OnDisable()
     {
-        _waveScreen.OnEndBattle -= TurnOffTheButton;
-    }
-
-    private void TurnOffTheButton()
-    {
-        for (int i = 0; i < _buttons.Count; i++)
-        {
-            _buttons[i].interactable = false;
-        }
+        _waveScreen.OnEndBattle -= OnTurnOffTheButton;
     }
 
     public void TurnOnTheButton()
@@ -30,6 +22,14 @@ public class AbilityManager : MonoBehaviour
         for (int i = 0; i < _buttons.Count; i++)
         {
             _buttons[i].interactable = true;
+        }
+    }
+
+    private void OnTurnOffTheButton()
+    {
+        for (int i = 0; i < _buttons.Count; i++)
+        {
+            _buttons[i].interactable = false;
         }
     }
 }

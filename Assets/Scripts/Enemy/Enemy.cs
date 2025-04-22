@@ -31,11 +31,17 @@ public class Enemy : GameUnit, IStateMachineOwner
     public float Damage => _damage;
     public int Award => _award;
     public IStateMachine StateMachine { get; private set; }
+    public float FullSpeed { get; private set; } = 1f;
+    public float SlowSpeed { get; private set; } = 0.5f;
 
     protected override void Awake()
     {
         StateMachine = new StateMachine();
         ChangeSpeedModifyier(1);
+    }
+    private void Update()
+    {
+        StateMachine.UpdateState();
     }
 
     public void Enable()
@@ -56,11 +62,6 @@ public class Enemy : GameUnit, IStateMachineOwner
             _maxHealth = ConstHealth + (health * YandexGame.savesData.upgradeEnemyLevel);
             _damage = ConstDamage + (damage * YandexGame.savesData.upgradeEnemyLevel);
         }
-    }
-
-    private void Update()
-    {
-        StateMachine.UpdateState();
     }
 
     public void Die()
@@ -86,11 +87,6 @@ public class Enemy : GameUnit, IStateMachineOwner
     public void SwitchFreezePartical(bool value)
     {
         _freezePartical.SetActive(value);
-    }
-
-    public void ShowHealthInfo()
-    {
-        Debug.LogWarning(_maxHealth + " - maxHealth Enemy");
     }
 
     public void DestroyTarget()

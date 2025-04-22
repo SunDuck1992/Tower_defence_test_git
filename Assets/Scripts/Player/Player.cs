@@ -24,16 +24,16 @@ public class Player : GameUnit
     public void Construct(PlayerUpgradeSystem playerUpgradeSystem, TargetController targetController)
     {
         _playerUpgradeSystem = playerUpgradeSystem;
-        _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged += IncreaseHealth;
+        _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged += OnIncreaseHealth;
         targetController.AddTarget(this, true);
     }
 
     private void OnDestroy()
     {
-        _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged -= IncreaseHealth;
+        _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged -= OnIncreaseHealth;
     }
 
-    private void IncreaseHealth()
+    private void OnIncreaseHealth()
     {
         if(_maxIncreaseHealthLevel >= YandexGame.savesData.upgradeHealthLevel)
         {

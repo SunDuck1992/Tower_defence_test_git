@@ -40,8 +40,8 @@ public class BuildScreen : MonoBehaviour
         _playerWallet = playerWallet;
         _buildTowerSystem = buildTowersSystem;
         _sceneSettings = sceneSettings;
-        _buildTowerSystem.InteractBuildArea += ShowBuildScreen;
-        _buildTowerSystem.DeInteractBuildArea += HideBuildScreen;
+        _buildTowerSystem.InteractBuildArea += OnShowBuildScreen;
+        _buildTowerSystem.DeInteractBuildArea += OnHideBuildScreen;
     }
 
     private void Start()
@@ -89,6 +89,12 @@ public class BuildScreen : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        _buildTowerSystem.InteractBuildArea -= OnShowBuildScreen;
+        _buildTowerSystem.DeInteractBuildArea -= OnHideBuildScreen;
+    }
+
     public void OnClickButtonBuild(int index)
     {
         int costTower = _buildTowerSystem.TowerSettings.Datas[index].Cost;
@@ -97,7 +103,7 @@ public class BuildScreen : MonoBehaviour
         {
             if (_playerWallet.TrySpendGold(costTower))
             {
-                _playerWallet.SaveWallet();
+                _playerWallet.OnSaveWallet();
                 _buildTowerSystem.BuildTower(_buildTowerSystem.TowerSettings.Datas[index].Prefab);
                 _tower = _buildTowerSystem.GetBuildTower();
                 _buildTowerSystem.CurrentBuildArea.SetCurrentTower(_tower);
@@ -155,7 +161,7 @@ public class BuildScreen : MonoBehaviour
                     if (YandexGame.savesData.buildedAreas[i].name == _buildTowerSystem.CurrentBuildArea.name)
                     {
                         YandexGame.savesData.buildedAreas[i].isBuilded = false;
-                        _playerWallet.SaveWallet();
+                        _playerWallet.OnSaveWallet();
                         YandexGame.SaveProgress();
                     }
                 }
@@ -179,7 +185,7 @@ public class BuildScreen : MonoBehaviour
         {
             if (_playerWallet.TrySpendGold(_improveCost))
             {
-                _playerWallet.SaveWallet();
+                _playerWallet.OnSaveWallet();
                 _buildTowerSystem.CurrentBuildArea.IncreaseImproveLevel(_buildTowerSystem);
                 tower.ImproveTower(_buildTowerSystem.CurrentBuildArea.ImproveLevel);
                 _improveLevelText.text = _buildTowerSystem.CurrentBuildArea.ImproveLevel.ToString();
@@ -199,51 +205,6 @@ public class BuildScreen : MonoBehaviour
         {
             _increaseButton.interactable = false;
         }
-    }
-
-    private void OnDestroy()
-    {
-        _buildTowerSystem.InteractBuildArea -= ShowBuildScreen;
-        _buildTowerSystem.DeInteractBuildArea -= HideBuildScreen;
-    }
-
-    private void ShowBuildScreen(BuildArea buildArea)
-    {
-        if (_buildTowerSystem.TowerAreaLocations.ContainsKey(buildArea))
-        {
-            _secondPanel.SetActive(true);
-            _currentImage.sprite = _buildTowerSystem.TowerSettings.Datas[_buildTowerSystem.CurrentBuildArea.SpriteValue].Sprite;
-            _improveLevelText.text = _buildTowerSystem.CurrentBuildArea.ImproveLevel.ToString();
-
-            if (_buildTowerSystem.CurrentBuildArea.ImproveLevel < _buildTowerSystem.CurrentBuildArea.MaxImproveLevel)
-            {
-                _increaseButton.interactable = true;
-            }
-            else
-            {
-                _increaseButton.interactable = false;
-            }
-        }
-        else
-        {
-            _panel.SetActive(true);
-
-            for (int i = 0; i < _towerCostTexts.Count; i++)
-            {
-                _towerCostTexts[i].text = _buildTowerSystem.TowerSettings.Datas[i].Cost.ToString();
-            }
-
-            for (int i = 0; i < _towerImages.Count; i++)
-            {
-                _towerImages[i].sprite = _buildTowerSystem.TowerSettings.Datas[i].Sprite;
-            }
-        }
-    }
-
-    private void HideBuildScreen()
-    {
-        _panel.SetActive(false);
-        _secondPanel.SetActive(false);
     }
 
     private IEnumerator ChangeText(int index)
@@ -303,6 +264,45 @@ public class BuildScreen : MonoBehaviour
 
         _isCoroutineRunning[index] = false;
     }
+
+    private void OnShowBuildScreen(BuildArea buildArea)
+    {
+        if (_buildTowerSystem.TowerAreaLocations.ContainsKey(buildArea))
+        {
+            _secondPanel.SetActive(true);
+            _currentImage.sprite = _buildTowerSystem.TowerSettings.Datas[_buildTowerSystem.CurrentBuildArea.SpriteValue].Sprite;
+            _improveLevelText.text = _buildTowerSystem.CurrentBuildArea.ImproveLevel.ToString();
+
+            if (_buildTowerSystem.CurrentBuildArea.ImproveLevel < _buildTowerSystem.CurrentBuildArea.MaxImproveLevel)
+            {
+                _increaseButton.interactable = true;
+            }
+            else
+            {
+                _increaseButton.interactable = false;
+            }
+        }
+        else
+        {
+            _panel.SetActive(true);
+
+            for (int i = 0; i < _towerCostTexts.Count; i++)
+            {
+                _towerCostTexts[i].text = _buildTowerSystem.TowerSettings.Datas[i].Cost.ToString();
+            }
+
+            for (int i = 0; i < _towerImages.Count; i++)
+            {
+                _towerImages[i].sprite = _buildTowerSystem.TowerSettings.Datas[i].Sprite;
+            }
+        }
+    }
+
+    private void OnHideBuildScreen()
+    {
+        _panel.SetActive(false);
+        _secondPanel.SetActive(false);
+    }   
 
     [Serializable]
     public class LocalizationFont

@@ -7,6 +7,7 @@ public class ShootRocketTowerState : BaseState<RocketTower>
 
     private Rocket _rocket;
     private float _multyplieMassiveDamage = 0.5f;
+    private float _damageRadius = 3f;
 
     public override void Enter()
     {
@@ -17,27 +18,6 @@ public class ShootRocketTowerState : BaseState<RocketTower>
     {
         Collider[] colliders = Physics.OverlapSphere(Owner.ShotPoint.position, 1f);
         return !colliders.Any(c => c.GetComponent<Rocket>() != null);
-    }
-
-    private void OnHit(Enemy enemy)
-    {
-        enemy.TakeDamage(_rocket.Damage);
-
-        var enemies = enemy.TargetController.GetAllTargets(enemy, 3f, true);
-
-        foreach (var unit in enemies)
-        {
-            if (unit != enemy)
-            {
-                unit.TakeDamage(_rocket.Damage * _multyplieMassiveDamage);
-            }
-        }
-    }
-
-    private void RocketComplete(Rocket rocket)
-    {
-        _rocket.HitTower -= OnHit;
-        _rocket.Died -= RocketComplete;
     }
 
     private void PushRocket()
@@ -59,6 +39,27 @@ public class ShootRocketTowerState : BaseState<RocketTower>
         _rocket.transform.forward = Owner.ShotPoint.forward;
 
         _rocket.HitTower += OnHit;
-        _rocket.Died += RocketComplete;
+        _rocket.Died += OnRocketComplete;
+    }
+
+    private void OnHit(Enemy enemy)
+    {
+        enemy.TakeDamage(_rocket.Damage);
+
+        var enemies = enemy.TargetController.GetAllTargets(enemy, _damageRadius, true);
+
+        foreach (var unit in enemies)
+        {
+            if (unit != enemy)
+            {
+                unit.TakeDamage(_rocket.Damage * _multyplieMassiveDamage);
+            }
+        }
+    }
+
+    private void OnRocketComplete(Rocket rocket)
+    {
+        _rocket.HitTower -= OnHit;
+        _rocket.Died -= OnRocketComplete;
     }
 }

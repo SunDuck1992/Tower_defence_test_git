@@ -34,24 +34,24 @@ public class WaveScreen : MonoBehaviour
 
     private void Start()
     {
-        ShowBuildAreas();
+        OnShowBuildAreas();
 
-        _enemyManager.EnemyDied += UpdateProgressBar;
-        OnEndBattle += ShowBuildAreas;
-        OnEndBattle += DisableMusic;
-        OnEndBattle += SaveLeaderData;
-        OnEndBattle += SaveWaweInfo;
-        OnEndBattle += SaveEnemyLevelUpgrade;
+        _enemyManager.EnemyDied += OnUpdateProgressBar;
+        OnEndBattle += OnShowBuildAreas;
+        OnEndBattle += OnDisableMusic;
+        OnEndBattle += OnSaveLeaderData;
+        OnEndBattle += OnSaveWaweInfo;
+        OnEndBattle += OnSaveEnemyLevelUpgrade;
     }
 
     private void OnDestroy()
     {
-        _enemyManager.EnemyDied -= UpdateProgressBar;
-        OnEndBattle -= ShowBuildAreas;
-        OnEndBattle -= DisableMusic;
-        OnEndBattle -= SaveLeaderData;
-        OnEndBattle -= SaveWaweInfo;
-        OnEndBattle -= SaveEnemyLevelUpgrade;
+        _enemyManager.EnemyDied -= OnUpdateProgressBar;
+        OnEndBattle -= OnShowBuildAreas;
+        OnEndBattle -= OnDisableMusic;
+        OnEndBattle -= OnSaveLeaderData;
+        OnEndBattle -= OnSaveWaweInfo;
+        OnEndBattle -= OnSaveEnemyLevelUpgrade;
     }
 
     public void StartBattle()
@@ -71,7 +71,7 @@ public class WaveScreen : MonoBehaviour
         }
     }
 
-    private void UpdateProgressBar()
+    private void OnUpdateProgressBar()
     {
         _progressWaveBar.value++;
         _countEnemiesProgressText.text = $"{_progressWaveBar.value} / {_spawner.MaxCountEnemies}";
@@ -84,7 +84,7 @@ public class WaveScreen : MonoBehaviour
         }
     }
 
-    private void ShowBuildAreas()
+    private void OnShowBuildAreas()
     {
         if (_progressWaveBar.value >= _spawner.MaxCountEnemies)
         {
@@ -98,23 +98,23 @@ public class WaveScreen : MonoBehaviour
         }
     }
 
-    private void SaveLeaderData()
+    private void OnSaveLeaderData()
     {
         YandexGame.savesData.leaderScore += 1;
     }
 
-    private void SaveWaweInfo()
+    private void OnSaveWaweInfo()
     {
         YandexGame.savesData.waveCount = _spawner.WaveCount;
         YandexGame.savesData.enemyCount = _spawner.CountEnemies;
     }
 
-    private void DisableMusic()
+    private void OnDisableMusic()
     {
         _backGroundMusic.SetActive(false);
     }
 
-    private void SaveEnemyLevelUpgrade()
+    private void OnSaveEnemyLevelUpgrade()
     {
         if(YandexGame.savesData.upgradeEnemyLevel == -1)
         {

@@ -5,8 +5,10 @@ using Zenject;
 public class Spawner : MonoBehaviour
 {
     private int _countEnemies;
+    private int _enemyIncrement = 2;
     private EnemyManager _enemyManager;
     private SceneSettings _sceneSettings;
+
 
     public int CountEnemies => _countEnemies;
     public int WaveCount { get; private set; }
@@ -50,7 +52,7 @@ public class Spawner : MonoBehaviour
 
         MaxCountEnemies = _countEnemies;
         WaveCount++;
-        _countEnemies += 2;
+        _countEnemies += _enemyIncrement;
         
         SetGoldScaleLevel();
     }

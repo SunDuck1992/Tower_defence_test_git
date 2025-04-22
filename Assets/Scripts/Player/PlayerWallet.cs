@@ -5,17 +5,19 @@ public class PlayerWallet
 {
     private int _gold;
     private int _gem;
+    private int _startGold = 300;
+    private int _startGem = 5;
 
     public PlayerWallet()
     {
-        YandexGame.GetDataEvent += SetValue;
+        YandexGame.GetDataEvent += OnSetValue;
 
-        SetValue();
+        OnSetValue();
     }
 
     ~PlayerWallet()
     {
-        YandexGame.GetDataEvent -= SetValue;
+        YandexGame.GetDataEvent -= OnSetValue;
     }
 
     public event Action<int> GoldChanged;
@@ -63,17 +65,17 @@ public class PlayerWallet
         return false;
     }
 
-    public void SaveWallet()
+    public void OnSaveWallet()
     {
         YandexGame.savesData.gold = _gold;
         YandexGame.savesData.gem = _gem;
     }
 
-    private void SetValue()
+    private void OnSetValue()
     {
         if (YandexGame.savesData.gold == -1)
         {
-            _gold = 300;
+            _gold = _startGold;
         }
         else
         {
@@ -82,7 +84,7 @@ public class PlayerWallet
 
         if (YandexGame.savesData.gem == -1)
         {
-            _gem = 5;
+            _gem = _startGem;
         }
         else
         {

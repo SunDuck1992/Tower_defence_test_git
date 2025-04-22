@@ -13,6 +13,7 @@ public abstract class Tower : GameUnit, IStateMachineOwner
 
     private float _improveDamage = 0.3f;
     private float _improveHealth = 2f;
+    private float _healDelay = 1.5f;
     private float _currentDamage;
     private ParticleSystem _particle;
     private Coroutine _coroutine;
@@ -68,7 +69,6 @@ public abstract class Tower : GameUnit, IStateMachineOwner
     {
         _currentDamage = _damage + (level * _improveDamage);
         _maxHealth = _maxHealth + (level * _improveHealth);
-
     }
 
     public void EnableHealParticle()
@@ -78,7 +78,7 @@ public abstract class Tower : GameUnit, IStateMachineOwner
         _particle.transform.rotation = _healParticalPoint.rotation;
         _particle.transform.SetParent(transform);
 
-        _coroutine = StartCoroutine(DestroyParticleAfterDelay(_particle, 1.5f));
+        _coroutine = StartCoroutine(DestroyParticleAfterDelay(_particle, _healDelay));
     }
 
     public void CreateShootparticle()
