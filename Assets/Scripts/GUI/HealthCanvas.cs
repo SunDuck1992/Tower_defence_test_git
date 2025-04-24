@@ -1,54 +1,58 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Unit;
 
-public class HealthCanvas : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private GameUnit _gameUnit;
-    [SerializeField] private Slider _slider;
-    [SerializeField] private bool _isHideble;
-
-    private void Start()
+    public class HealthCanvas : MonoBehaviour
     {
-        _slider.value = _slider.maxValue;
-        _slider.gameObject.SetActive(!_isHideble);
-        _gameUnit.HealthChanged += OnChangeValue;
-    }
+        [SerializeField] private GameUnit _gameUnit;
+        [SerializeField] private Slider _slider;
+        [SerializeField] private bool _isHideble;
 
-    private void Update()
-    {
-        transform.rotation = Quaternion.identity;
-    }
-
-    private void OnDestroy()
-    {
-        _gameUnit.HealthChanged -= OnChangeValue;
-    }
-
-    private IEnumerator Hide()
-    {
-        _slider.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(2f);
-
-        _slider.gameObject.SetActive(false);
-    }
-
-    private void OnChangeValue(bool isReseted)
-    {
-        if (_isHideble)
+        private void Start()
         {
-            if (isReseted)
-            {
-                _slider.gameObject.SetActive(false);
-            }
-            else
-            {
-                StopAllCoroutines();
-                StartCoroutine(Hide());
-            }
+            _slider.value = _slider.maxValue;
+            _slider.gameObject.SetActive(!_isHideble);
+            _gameUnit.HealthChanged += OnChangeValue;
         }
 
-        _slider.value = _gameUnit.Health / _gameUnit.MaxHealth;
-    }   
+        private void Update()
+        {
+            transform.rotation = Quaternion.identity;
+        }
+
+        private void OnDestroy()
+        {
+            _gameUnit.HealthChanged -= OnChangeValue;
+        }
+
+        private IEnumerator Hide()
+        {
+            _slider.gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(2f);
+
+            _slider.gameObject.SetActive(false);
+        }
+
+        private void OnChangeValue(bool isReseted)
+        {
+            if (_isHideble)
+            {
+                if (isReseted)
+                {
+                    _slider.gameObject.SetActive(false);
+                }
+                else
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(Hide());
+                }
+            }
+
+            _slider.value = _gameUnit.Health / _gameUnit.MaxHealth;
+        }
+    }
 }

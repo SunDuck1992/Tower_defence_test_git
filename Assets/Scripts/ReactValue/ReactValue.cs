@@ -1,18 +1,21 @@
 using System;
 
-public class ReactValue<T>
+namespace React
 {
-    private T _value;
-
-    public T Value 
+    public class ReactValue<T>
     {
-        get => _value;
-        set
-        {
-            _value = value;
-            ValueChanged?.Invoke();
-        }
-    }
+        private T _value;
 
-    public event Action ValueChanged;
+        public T Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                ValueChanged?.Invoke();
+            }
+        }
+
+        public event Action ValueChanged;
+    }
 }

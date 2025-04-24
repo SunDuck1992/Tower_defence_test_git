@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AnimationEventListener : MonoBehaviour
+namespace EnemySpace
 {
-    public UnityEvent Attack;
-
-    public void EventAttack()
+    public class AnimationEventListener : MonoBehaviour
     {
-        Attack.Invoke();
+        public UnityEvent Attack;
+
+        public void EventAttack()
+        {
+            Attack.Invoke();
+        }
     }
 }

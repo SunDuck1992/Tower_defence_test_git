@@ -1,3 +1,8 @@
-public class BaseUnit : Tower
-{   
+using TowerSpace;
+
+namespace Unit
+{
+    public class BaseUnit : Tower
+    {
+    }
 }

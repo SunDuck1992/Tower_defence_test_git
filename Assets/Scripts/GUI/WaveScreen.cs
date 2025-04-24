@@ -5,124 +5,129 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using YG;
 using Zenject;
+using EnemySpace;
+using Installers;
 
-public class WaveScreen : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private TextMeshProUGUI _countWavetext;
-    [SerializeField] private TextMeshProUGUI _countEnemiesProgressText;
-    [SerializeField] private Slider _progressWaveBar;
-    [SerializeField] private GameObject _backGroundMusic;
-
-    private EnemyManager _enemyManager;
-    private Spawner _spawner;
-    private SceneSettings _sceneSettings;
-
-    public UnityEvent WaveComplete;
-    public event Action OnEndBattle;
-    public event Action OnStartBattle;
-
-    public bool IsBattle { get; private set; }
-    public int WaveCount { get; private set; }
-
-    [Inject]
-    public void Construct(EnemyManager enemyManager, SceneSettings sceneSettings)
+    public class WaveScreen : MonoBehaviour
     {
-        _enemyManager = enemyManager;
-        _spawner = sceneSettings.Spawner;
-        _sceneSettings = sceneSettings;
-    }
+        [SerializeField] private TextMeshProUGUI _countWavetext;
+        [SerializeField] private TextMeshProUGUI _countEnemiesProgressText;
+        [SerializeField] private Slider _progressWaveBar;
+        [SerializeField] private GameObject _backGroundMusic;
 
-    private void Start()
-    {
-        OnShowBuildAreas();
+        private EnemyManager _enemyManager;
+        private Spawner _spawner;
+        private SceneSettings _sceneSettings;
 
-        _enemyManager.EnemyDied += OnUpdateProgressBar;
-        OnEndBattle += OnShowBuildAreas;
-        OnEndBattle += OnDisableMusic;
-        OnEndBattle += OnSaveLeaderData;
-        OnEndBattle += OnSaveWaweInfo;
-        OnEndBattle += OnSaveEnemyLevelUpgrade;
-    }
+        public UnityEvent WaveComplete;
+        public event Action BattleEnded;
+        public event Action BattlStarted;
 
-    private void OnDestroy()
-    {
-        _enemyManager.EnemyDied -= OnUpdateProgressBar;
-        OnEndBattle -= OnShowBuildAreas;
-        OnEndBattle -= OnDisableMusic;
-        OnEndBattle -= OnSaveLeaderData;
-        OnEndBattle -= OnSaveWaweInfo;
-        OnEndBattle -= OnSaveEnemyLevelUpgrade;
-    }
+        public bool IsBattle { get; private set; }
+        public int WaveCount { get; private set; }
 
-    public void StartBattle()
-    {
-        _spawner.SpawnOnClick();
-        _countEnemiesProgressText.text = $"{0} / {_spawner.MaxCountEnemies}";
-        _countWavetext.text = _spawner.WaveCount.ToString();
-        WaveCount = _spawner.WaveCount;
-        _progressWaveBar.maxValue = _spawner.MaxCountEnemies;
-        _progressWaveBar.value = 0;
-        IsBattle = true;
-        OnStartBattle?.Invoke();
-
-        for (int i = 0; i < _sceneSettings.BuildPoints.Count; i++)
+        [Inject]
+        public void Construct(EnemyManager enemyManager, SceneSettings sceneSettings)
         {
-            _sceneSettings.BuildPoints[i].gameObject.SetActive(false);
+            _enemyManager = enemyManager;
+            _spawner = sceneSettings.Spawner;
+            _sceneSettings = sceneSettings;
         }
-    }
 
-    private void OnUpdateProgressBar()
-    {
-        _progressWaveBar.value++;
-        _countEnemiesProgressText.text = $"{_progressWaveBar.value} / {_spawner.MaxCountEnemies}";
-
-        if (_progressWaveBar.value >= _spawner.MaxCountEnemies)
+        private void Start()
         {
-            WaveComplete.Invoke();
-            OnEndBattle?.Invoke();
-            IsBattle = false;
+            OnShowBuildAreas();
+
+            _enemyManager.EnemyDied += OnUpdateProgressBar;
+            BattleEnded += OnShowBuildAreas;
+            BattleEnded += OnDisableMusic;
+            BattleEnded += OnSaveLeaderData;
+            BattleEnded += OnSaveWaweInfo;
+            BattleEnded += OnSaveEnemyLevelUpgrade;
         }
-    }
 
-    private void OnShowBuildAreas()
-    {
-        if (_progressWaveBar.value >= _spawner.MaxCountEnemies)
+        private void OnDestroy()
         {
+            _enemyManager.EnemyDied -= OnUpdateProgressBar;
+            BattleEnded -= OnShowBuildAreas;
+            BattleEnded -= OnDisableMusic;
+            BattleEnded -= OnSaveLeaderData;
+            BattleEnded -= OnSaveWaweInfo;
+            BattleEnded -= OnSaveEnemyLevelUpgrade;
+        }
+
+        public void StartBattle()
+        {
+            _spawner.SpawnOnClick();
+            _countEnemiesProgressText.text = $"{0} / {_spawner.MaxCountEnemies}";
+            _countWavetext.text = _spawner.WaveCount.ToString();
+            WaveCount = _spawner.WaveCount;
+            _progressWaveBar.maxValue = _spawner.MaxCountEnemies;
+            _progressWaveBar.value = 0;
+            IsBattle = true;
+            BattlStarted?.Invoke();
+
             for (int i = 0; i < _sceneSettings.BuildPoints.Count; i++)
             {
-                if (_sceneSettings.BuildPoints[i].WaveLevel <= _spawner.WaveCount)
+                _sceneSettings.BuildPoints[i].gameObject.SetActive(false);
+            }
+        }
+
+        private void OnUpdateProgressBar()
+        {
+            _progressWaveBar.value++;
+            _countEnemiesProgressText.text = $"{_progressWaveBar.value} / {_spawner.MaxCountEnemies}";
+
+            if (_progressWaveBar.value >= _spawner.MaxCountEnemies)
+            {
+                WaveComplete.Invoke();
+                BattleEnded?.Invoke();
+                IsBattle = false;
+            }
+        }
+
+        private void OnShowBuildAreas()
+        {
+            if (_progressWaveBar.value >= _spawner.MaxCountEnemies)
+            {
+                for (int i = 0; i < _sceneSettings.BuildPoints.Count; i++)
                 {
-                    _sceneSettings.BuildPoints[i].gameObject.SetActive(true);
+                    if (_sceneSettings.BuildPoints[i].WaveLevel <= _spawner.WaveCount)
+                    {
+                        _sceneSettings.BuildPoints[i].gameObject.SetActive(true);
+                    }
                 }
             }
         }
-    }
 
-    private void OnSaveLeaderData()
-    {
-        YandexGame.savesData.leaderScore += 1;
-    }
-
-    private void OnSaveWaweInfo()
-    {
-        YandexGame.savesData.waveCount = _spawner.WaveCount;
-        YandexGame.savesData.enemyCount = _spawner.CountEnemies;
-    }
-
-    private void OnDisableMusic()
-    {
-        _backGroundMusic.SetActive(false);
-    }
-
-    private void OnSaveEnemyLevelUpgrade()
-    {
-        if(YandexGame.savesData.upgradeEnemyLevel == -1)
+        private void OnSaveLeaderData()
         {
-            YandexGame.savesData.upgradeEnemyLevel = 1;
+            YandexGame.savesData.leaderScore += 1;
         }
-        else
+
+        private void OnSaveWaweInfo()
         {
-            YandexGame.savesData.upgradeEnemyLevel++;
+            YandexGame.savesData.waveCount = _spawner.WaveCount;
+            YandexGame.savesData.enemyCount = _spawner.CountEnemies;
+        }
+
+        private void OnDisableMusic()
+        {
+            _backGroundMusic.SetActive(false);
+        }
+
+        private void OnSaveEnemyLevelUpgrade()
+        {
+            if (YandexGame.savesData.upgradeEnemyLevel == -1)
+            {
+                YandexGame.savesData.upgradeEnemyLevel = 1;
+            }
+            else
+            {
+                YandexGame.savesData.upgradeEnemyLevel++;
+            }
         }
     }
 }

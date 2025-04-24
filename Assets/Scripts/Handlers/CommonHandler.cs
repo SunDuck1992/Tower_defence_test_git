@@ -1,50 +1,54 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unit;
 
-public static class CommonHandler
+namespace HadlerSpace
 {
-    public static T Find<T>(List<T> targets, Transform owner, float radius)
-        where T : MonoBehaviour
+    public static class CommonHandler
     {
-        float minDistance = float.PositiveInfinity;
-        T target = null;
-
-        targets.ForEach(enemy =>
+        public static T Find<T>(List<T> targets, Transform owner, float radius)
+            where T : MonoBehaviour
         {
-            float distance = Vector3.Distance(owner.position, enemy.transform.position);
+            float minDistance = float.PositiveInfinity;
+            T target = null;
 
-            if (distance <= radius)
+            targets.ForEach(enemy =>
             {
-                if (distance < minDistance)
+                float distance = Vector3.Distance(owner.position, enemy.transform.position);
+
+                if (distance <= radius)
                 {
-                    target = enemy;
-                    minDistance = distance;
+                    if (distance < minDistance)
+                    {
+                        target = enemy;
+                        minDistance = distance;
+                    }
                 }
-            }
-        });
-        return target;
-    }
+            });
+            return target;
+        }
 
-    public static T Find<T>(List<T> targets, Transform owner)
-        where T : GameUnit
-    {
-        return null;
-    }
-
-    public static List<T> FindAll<T>(List<T> targets, Transform owner, float radius)
-        where T : MonoBehaviour
-    {
-        List<T> allTargets = new();
-
-        targets.ForEach(enemy =>
+        public static T Find<T>(List<T> targets, Transform owner)
+            where T : GameUnit
         {
-            float distance = Vector3.Distance(owner.position, enemy.transform.position);
+            return null;
+        }
 
-            if (distance <= radius)
+        public static List<T> FindAll<T>(List<T> targets, Transform owner, float radius)
+            where T : MonoBehaviour
+        {
+            List<T> allTargets = new();
+
+            targets.ForEach(enemy =>
             {
-                allTargets.Add(enemy);
-            }
-        });
-        return allTargets;
+                float distance = Vector3.Distance(owner.position, enemy.transform.position);
+
+                if (distance <= radius)
+                {
+                    allTargets.Add(enemy);
+                }
+            });
+            return allTargets;
+        }
     }
 }

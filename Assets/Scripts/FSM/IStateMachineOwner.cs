@@ -1,4 +1,7 @@
-public interface IStateMachineOwner
+namespace StateSpace
 {
-    public IStateMachine StateMachine { get; }
+    public interface IStateMachineOwner
+    {
+        public IStateMachine StateMachine { get; }
+    }
 }

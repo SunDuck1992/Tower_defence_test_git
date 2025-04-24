@@ -1,9 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = nameof(PlayerConfig), menuName = "Config/" + nameof(PlayerConfig))]
-public class PlayerConfig : ScriptableObject
+namespace Config
 {
-    [SerializeField] private float _damage;
+    [CreateAssetMenu(fileName = nameof(PlayerConfig), menuName = "Config/" + nameof(PlayerConfig))]
+    public class PlayerConfig : ScriptableObject
+    {
+        [SerializeField] private float _damage;
 
-    public float Damage => _damage;
+        public float Damage => _damage;
+    }
 }

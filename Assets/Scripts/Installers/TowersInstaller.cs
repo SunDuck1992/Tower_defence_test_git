@@ -1,13 +1,17 @@
 using UnityEngine;
 using Zenject;
+using TowerSpace;
 
-public class TowersInstaller : MonoInstaller
+namespace Installers
 {
-    [SerializeField] private TowerSettings _towerSettings;
-
-    public override void InstallBindings()
+    public class TowersInstaller : MonoInstaller
     {
-        Container.Bind<TowerSettings>().FromInstance(_towerSettings).AsSingle();
-        Container.Bind<BuildTowersSystem>().AsSingle();
+        [SerializeField] private TowerSettings _towerSettings;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<TowerSettings>().FromInstance(_towerSettings).AsSingle();
+            Container.Bind<BuildTowersSystem>().AsSingle();
+        }
     }
 }

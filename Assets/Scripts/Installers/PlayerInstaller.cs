@@ -1,22 +1,27 @@
 using UnityEngine;
 using Zenject;
+using Config;
+using EnemySpace;
+using PlayerSpace;
 
-
-public class PlayerInstaller : MonoInstaller
+namespace Installers
 {
-    [SerializeField] private PlayerShooter _playerShooter;
-    [SerializeField] private Enemy _enemies;
-    [SerializeField] private PlayerMovement _playerMovement;
-    [SerializeField] private GameConfig _gameConfig;
-
-    public override void InstallBindings()
+    public class PlayerInstaller : MonoInstaller
     {
-        Container.Bind<GameConfigProxy>().FromInstance(new GameConfigProxy(_gameConfig)).AsSingle();
-        Container.Bind<Enemy>().FromInstance(_enemies).AsSingle();
-        Container.Bind<EnemyManager>().AsSingle();
-        Container.Bind<EnemyImprover>().AsSingle();
-        Container.Bind<PlayerShooter>().FromInstance(_playerShooter).AsSingle();
-        Container.Bind<PlayerMovement>().FromInstance(_playerMovement).AsSingle();
-        Container.Bind<PlayerUpgradeSystem>().AsSingle();
+        [SerializeField] private PlayerShooter _playerShooter;
+        [SerializeField] private Enemy _enemies;
+        [SerializeField] private PlayerMovement _playerMovement;
+        [SerializeField] private GameConfig _gameConfig;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<GameConfigProxy>().FromInstance(new GameConfigProxy(_gameConfig)).AsSingle();
+            Container.Bind<Enemy>().FromInstance(_enemies).AsSingle();
+            Container.Bind<EnemyManager>().AsSingle();
+            Container.Bind<EnemyImprover>().AsSingle();
+            Container.Bind<PlayerShooter>().FromInstance(_playerShooter).AsSingle();
+            Container.Bind<PlayerMovement>().FromInstance(_playerMovement).AsSingle();
+            Container.Bind<PlayerUpgradeSystem>().AsSingle();
+        }
     }
 }

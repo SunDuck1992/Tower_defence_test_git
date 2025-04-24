@@ -4852,50 +4852,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2417378046171285032, guid: a5d0cd7aed869a944a12b232915f39d7, type: 3}
   m_PrefabInstance: {fileID: 1029197513}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &254287403
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 254287405}
-  - component: {fileID: 254287404}
-  m_Layer: 0
-  m_Name: CoroutineManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &254287404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254287403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ec8e04dec5d7b469336c2400bd4d08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &254287405
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254287403}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -307.36118, y: -271.4448, z: 240.82314}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &262627589 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 760732622187869087, guid: a76f6d9617149a34eb558cd887e41df8, type: 3}
@@ -20476,36 +20432,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 150
-  DiedComplete:
+  DiedCompleted:
     m_PersistentCalls:
       m_Calls: []
-  DiedStart:
+  DiedStarted:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1674752197}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 8563716228736150039}
-        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: PauseGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   _transformTower: {fileID: 1061716006}
   _shotPoint: {fileID: 0}
   _damage: 0
@@ -41775,7 +41707,6 @@ SceneRoots:
   - {fileID: 1172578084}
   - {fileID: 962162269}
   - {fileID: 2069274946}
-  - {fileID: 254287405}
   - {fileID: 211353972}
   - {fileID: 706622568}
   - {fileID: 715427320}

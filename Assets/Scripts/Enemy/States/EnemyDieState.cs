@@ -1,53 +1,57 @@
 using UnityEngine;
+using StateSpace;
 
-public class EnemyDieState : BaseState<Enemy>
+namespace EnemySpace
 {
-    private float _timer = 1.5f;
-    private int _typeDieCount = 2;
-    private bool _hasDied;
-
-    public override void Enter()
+    public class EnemyDieState : BaseState<Enemy>
     {
-        _hasDied = false;
-        int typeDie = Random.Range(0, _typeDieCount);
+        private float _timer = 1.5f;
+        private int _typeDieCount = 2;
+        private bool _hasDied;
 
-        Owner.Agent.enabled = false;
-        Owner.Animator.SetTrigger("Die");
-        Owner.Animator.SetInteger("TypeDie", typeDie);
-    }
-
-    public override void Update()
-    {
-        if ((Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die02") ||
-             Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die01")) &&
-             !_hasDied)
+        public override void Enter()
         {
-            if (Owner.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            _hasDied = false;
+            int typeDie = Random.Range(0, _typeDieCount);
+
+            Owner.Agent.enabled = false;
+            Owner.Animator.SetTrigger("Die");
+            Owner.Animator.SetInteger("TypeDie", typeDie);
+        }
+
+        public override void Update()
+        {
+            if ((Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die02") ||
+                 Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die01")) &&
+                 !_hasDied)
             {
-                _hasDied = true;
-                Owner.CreateDeathParticle();
+                if (Owner.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+                {
+                    _hasDied = true;
+                    Owner.CreateDeathParticle();
+                }
+            }
+
+            if (_hasDied)
+            {
+                _timer -= Time.deltaTime;
+
+                if (_timer <= 0)
+                {
+                    Owner.StateMachine.SwitchState<EnemyIdleState, Enemy>(Owner);
+                }
             }
         }
 
-        if (_hasDied)
+        public override void Exit()
         {
-            _timer -= Time.deltaTime;
+            Owner.DiedCompleted.Invoke(Owner);
+            Owner.SwitchFreezePartical(false);
 
-            if (_timer <= 0)
+            if (Owner.Target != null && Owner.TargetAttackPoint != null)
             {
-                Owner.StateMachine.SwitchState<EnemyIdleState, Enemy>(Owner);
+                Owner.Target.AttackSector.freePoints.Push(Owner.TargetAttackPoint);
             }
-        }
-    }
-
-    public override void Exit()
-    {
-        Owner.DiedComplete.Invoke(Owner);
-        Owner.SwitchFreezePartical(false);
-
-        if (Owner.Target != null && Owner.TargetAttackPoint != null)
-        {
-            Owner.Target.AttackSector.freePoints.Push(Owner.TargetAttackPoint);
         }
     }
 }

@@ -1,19 +1,22 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = nameof(GameConfig), menuName = "Config/" + nameof(GameConfig))]
-public class GameConfig : ScriptableObject
+namespace Config
 {
-    [SerializeField] private PlayerConfig _playerConfig;
-
-    public PlayerConfig PlayerConfig => _playerConfig;
-}
-
-public class GameConfigProxy
-{
-    public readonly GameConfig Config;
-
-    public GameConfigProxy(GameConfig gameConfig)
+    [CreateAssetMenu(fileName = nameof(GameConfig), menuName = "Config/" + nameof(GameConfig))]
+    public class GameConfig : ScriptableObject
     {
-        Config = gameConfig;
+        [SerializeField] private PlayerConfig _playerConfig;
+
+        public PlayerConfig PlayerConfig => _playerConfig;
+    }
+
+    public class GameConfigProxy
+    {
+        public readonly GameConfig Config;
+
+        public GameConfigProxy(GameConfig gameConfig)
+        {
+            Config = gameConfig;
+        }
     }
 }

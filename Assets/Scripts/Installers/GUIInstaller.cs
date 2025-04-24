@@ -1,16 +1,20 @@
 using UnityEngine;
 using Zenject;
+using UI;
 
-public class GUIInstaller : MonoInstaller
+namespace Installers
 {
-    [SerializeField] private UpgradeScreen _upgradeScreen;
-    [SerializeField] private WaveScreen _waveScreen;
-    [SerializeField] private BuildScreen _buildScreen;
-
-    public override void InstallBindings()
+    public class GUIInstaller : MonoInstaller
     {
-        Container.Bind<UpgradeScreen>().FromInstance(_upgradeScreen).AsSingle();
-        Container.Bind<WaveScreen>().FromInstance(_waveScreen).AsSingle();
-        Container.Bind<BuildScreen>().FromInstance(_buildScreen).AsSingle();
+        [SerializeField] private UpgradeScreen _upgradeScreen;
+        [SerializeField] private WaveScreen _waveScreen;
+        [SerializeField] private BuildScreen _buildScreen;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<UpgradeScreen>().FromInstance(_upgradeScreen).AsSingle();
+            Container.Bind<WaveScreen>().FromInstance(_waveScreen).AsSingle();
+            Container.Bind<BuildScreen>().FromInstance(_buildScreen).AsSingle();
+        }
     }
 }

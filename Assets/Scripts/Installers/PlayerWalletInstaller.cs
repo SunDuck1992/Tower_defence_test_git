@@ -1,11 +1,15 @@
 using Zenject;
+using PlayerSpace;
 
-public class PlayerWalletInstaller : MonoInstaller
+namespace Installers
 {
-    public override void InstallBindings()
+    public class PlayerWalletInstaller : MonoInstaller
     {
-        var playerWallet = new PlayerWallet();
+        public override void InstallBindings()
+        {
+            var playerWallet = new PlayerWallet();
 
-        Container.Bind<PlayerWallet>().FromInstance(playerWallet).AsSingle();
+            Container.Bind<PlayerWallet>().FromInstance(playerWallet).AsSingle();
+        }
     }
 }

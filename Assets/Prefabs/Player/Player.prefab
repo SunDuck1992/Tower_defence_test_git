@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5685903513804977887}
   - component: {fileID: 7905484895110118584}
   - component: {fileID: 845638781192493851}
-  - component: {fileID: 8923865616872159041}
+  - component: {fileID: 6242078229195443699}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -131,6 +131,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550c1da23c306244296a619182303028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHealth: 0
+  DiedCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+  DiedStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  _changeHealthValue: 0
 --- !u!114 &7905484895110118584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,8 +153,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _agent: {fileID: 9215469260636354756}
   _joystick: {fileID: 0}
+  _controller: {fileID: 0}
   _speed: 5
-  _rotationSpeed: 10
+  _shooter: {fileID: 0}
+  _rotate: {fileID: 0}
+  _weaponAnimator: {fileID: 0}
 --- !u!114 &845638781192493851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,9 +170,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2cf479916a4b244b60ca3612c4f743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponPoint: {fileID: 5641898771393277245}
-  _couldown: 0.5
---- !u!114 &8923865616872159041
+  _weaponAnimator: {fileID: 0}
+  _weapons: []
+  _view: {fileID: 0}
+  _rotate: {fileID: 0}
+  _self: {fileID: 0}
+  "_multyplieChang\u0435CharacteristickValue": 0
+  _hitBulletParticle: {fileID: 0}
+  _massiveHitBulletParticle: {fileID: 0}
+--- !u!114 &6242078229195443699
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,11 +187,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5015100265746178956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c134c956f73bc44283467c5b9ee5bca, type: 3}
+  m_Script: {fileID: 11500000, guid: 59be4783450b1294a87cd4c726269ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gold: 100
-  _gem: 5
+  _sectorPoints: 0
+  _radius: 0
 --- !u!1001 &6014417120341472649
 PrefabInstance:
   m_ObjectHideFlags: 0

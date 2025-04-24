@@ -1,64 +1,68 @@
 using UnityEngine;
 using YG;
 using Zenject;
+using PlayerSpace;
 
-public class AdManager : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private ShopScreen _shopScreen;
-    [SerializeField] private GameOver _gameOver;
-
-    private PlayerWallet _playerWallet;
-    private int _gemCountRevard = 3;
-
-    [Inject]
-    public void Construct(PlayerWallet playerWallet)
+    public class AdManager : MonoBehaviour
     {
-        _playerWallet = playerWallet;
-    }
+        [SerializeField] private ShopScreen _shopScreen;
+        [SerializeField] private GameOver _gameOver;
 
-    private void OnEnable()
-    {
-        YandexGame.RewardVideoEvent += OnRevarded;
-    }
+        private PlayerWallet _playerWallet;
+        private int _gemCountRevard = 3;
 
-    private void OnDisable()
-    {
-        YandexGame.RewardVideoEvent -= OnRevarded;
-    }
-
-    public void ShowFullScreenAd()
-    {
-        YandexGame.FullscreenShow();
-    }
-
-    public void CheckOrShowRevardAd(int id)
-    {
-        if (_shopScreen.CheckPurchaseItem(id))
+        [Inject]
+        public void Construct(PlayerWallet playerWallet)
         {
-            _shopScreen.ChangeWeaponButtonClick(id);
-            Time.timeScale = 1;
+            _playerWallet = playerWallet;
         }
-        else
-        {
-            YandexGame.RewVideoShow(id);
-        }
-    }
 
-    private void OnRevarded(int id)
-    {
-        if (id == 1)
+        private void OnEnable()
         {
-            _playerWallet.AddGem(_gemCountRevard);
+            YandexGame.RewardVideoEvent += OnRevarded;
         }
-        if (id == 2)
+
+        private void OnDisable()
         {
-            _shopScreen.ChangeWeaponButtonClick(id);
-            _shopScreen.DisableADImage();
-            YandexGame.savesData.miniGunIsBuyed = true;
+            YandexGame.RewardVideoEvent -= OnRevarded;
         }
-        if (id == 3)
+
+        public void ShowFullScreenAd()
         {
-            _gameOver.TryAgain();
+            YandexGame.FullscreenShow();
+        }
+
+        public void CheckOrShowRevardAd(int id)
+        {
+            if (_shopScreen.CheckPurchaseItem(id))
+            {
+                _shopScreen.ChangeWeaponButtonClick(id);
+                Time.timeScale = 1;
+            }
+            else
+            {
+                YandexGame.RewVideoShow(id);
+            }
+        }
+
+        private void OnRevarded(int id)
+        {
+            if (id == 1)
+            {
+                _playerWallet.AddGem(_gemCountRevard);
+            }
+            if (id == 2)
+            {
+                _shopScreen.ChangeWeaponButtonClick(id);
+                _shopScreen.DisableADImage();
+                YandexGame.savesData.miniGunIsBuyed = true;
+            }
+            if (id == 3)
+            {
+                _gameOver.TryAgain();
+            }
         }
     }
 }

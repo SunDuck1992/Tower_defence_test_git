@@ -1,14 +1,17 @@
-using UnityEngine;
+using TowerSpace;
 
-public class DieMashineGunTowerState : BaseState<MashineGunTower>
+namespace StateSpace
 {
-    public override void Update()
+    public class DieMashineGunTowerState : BaseState<MashineGunTower>
     {
-        Owner.StateMachine.SwitchState<IdleMashineGunTowerState, MashineGunTower>(Owner);
-    }
+        public override void Update()
+        {
+            Owner.StateMachine.SwitchState<IdleMashineGunTowerState, MashineGunTower>(Owner);
+        }
 
-    public override void Exit()
-    {
-        Owner.DiedComplete.Invoke(Owner as Tower);
+        public override void Exit()
+        {
+            Owner.DiedCompleted.Invoke(Owner as Tower);
+        }
     }
 }

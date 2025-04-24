@@ -1,29 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using PlayerSpace;
 
-public class UpgradeScreen : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private List<UpgradeButton> _upgradeButtons;
-
-    private PlayerUpgradeSystem _playerUpgradeSystem;
-
-    [Inject]
-    public void Construct(PlayerUpgradeSystem playerUpgradeSystem)
+    public class UpgradeScreen : MonoBehaviour
     {
-        _playerUpgradeSystem = playerUpgradeSystem;
+        [SerializeField] private List<UpgradeButton> _upgradeButtons;
 
-        for (int i = 0; i < _upgradeButtons.Count; i++)
+        private PlayerUpgradeSystem _playerUpgradeSystem;
+
+        [Inject]
+        public void Construct(PlayerUpgradeSystem playerUpgradeSystem)
         {
-            _upgradeButtons[i].Clicked += _playerUpgradeSystem.OnApplyUpgrade;
+            _playerUpgradeSystem = playerUpgradeSystem;
+
+            for (int i = 0; i < _upgradeButtons.Count; i++)
+            {
+                _upgradeButtons[i].Clicked += _playerUpgradeSystem.OnApplyUpgrade;
+            }
         }
-    }
 
-    private void OnDestroy()
-    {
-        for (int i = 0; i < _upgradeButtons.Count; i++)
+        private void OnDestroy()
         {
-            _upgradeButtons[i].Clicked -= _playerUpgradeSystem.OnApplyUpgrade;
+            for (int i = 0; i < _upgradeButtons.Count; i++)
+            {
+                _upgradeButtons[i].Clicked -= _playerUpgradeSystem.OnApplyUpgrade;
+            }
         }
     }
 }

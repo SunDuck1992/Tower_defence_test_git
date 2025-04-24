@@ -2,34 +2,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AbilityManager : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private WaveScreen _waveScreen;
-    [SerializeField] private List<Button> _buttons;
-
-    private void OnEnable()
+    public class AbilityManager : MonoBehaviour
     {
-        _waveScreen.OnEndBattle += OnTurnOffTheButton;
-    }
+        [SerializeField] private WaveScreen _waveScreen;
+        [SerializeField] private List<Button> _buttons;
 
-    private void OnDisable()
-    {
-        _waveScreen.OnEndBattle -= OnTurnOffTheButton;
-    }
-
-    public void TurnOnTheButton()
-    {
-        for (int i = 0; i < _buttons.Count; i++)
+        private void OnEnable()
         {
-            _buttons[i].interactable = true;
+            _waveScreen.BattleEnded += OnTurnOffTheButton;
         }
-    }
 
-    private void OnTurnOffTheButton()
-    {
-        for (int i = 0; i < _buttons.Count; i++)
+        private void OnDisable()
         {
-            _buttons[i].interactable = false;
+            _waveScreen.BattleEnded -= OnTurnOffTheButton;
+        }
+
+        public void TurnOnTheButton()
+        {
+            for (int i = 0; i < _buttons.Count; i++)
+            {
+                _buttons[i].interactable = true;
+            }
+        }
+
+        private void OnTurnOffTheButton()
+        {
+            for (int i = 0; i < _buttons.Count; i++)
+            {
+                _buttons[i].interactable = false;
+            }
         }
     }
 }

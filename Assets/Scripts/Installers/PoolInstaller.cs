@@ -1,16 +1,23 @@
 using UnityEngine;
 using Zenject;
+using EnemySpace;
+using Pool;
+using PlayerSpace;
+using TowerSpace;
 
-public class PoolInstaller : MonoInstaller
+namespace Installers
 {
-    [SerializeField] private Bullet _bulletPrefab;
-    [SerializeField] private Enemy _enemyPrefab;
-    [SerializeField] private Rocket _rocketPrefab;
-
-    public override void InstallBindings()
+    public class PoolInstaller : MonoInstaller
     {
-        Container.Bind<BulletPool>().FromInstance(new BulletPool(_bulletPrefab)).AsSingle();
-        Container.Bind<EnemyPool>().FromInstance(new EnemyPool(_enemyPrefab, true)).AsSingle();
-        Container.Bind<RocketPool>().FromInstance(new RocketPool(_rocketPrefab)).AsSingle();
+        [SerializeField] private Bullet _bulletPrefab;
+        [SerializeField] private Enemy _enemyPrefab;
+        [SerializeField] private Rocket _rocketPrefab;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<BulletPool>().FromInstance(new BulletPool(_bulletPrefab)).AsSingle();
+            Container.Bind<EnemyPool>().FromInstance(new EnemyPool(_enemyPrefab, true)).AsSingle();
+            Container.Bind<RocketPool>().FromInstance(new RocketPool(_rocketPrefab)).AsSingle();
+        }
     }
 }

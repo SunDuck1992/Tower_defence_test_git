@@ -1,25 +1,28 @@
 using UnityEngine;
 
-public class ArrayBulletShoot : Weapon
+namespace PlayerSpace
 {
-    private int _count;
-    private int _spreadAngle = 5;
-
-    protected override void CreateBullet(Bullet bullet)
+    public class ArrayBulletShoot : Weapon
     {
-        _count++;
+        private int _count;
+        private int _spreadAngle = 5;
 
-        if(_count > CountBullet)
+        protected override void CreateBullet(Bullet bullet)
         {
-            _count = 0;
-            WeaponPoint.localRotation = Quaternion.identity;
-        }
+            _count++;
 
-        if(_count > 0)
-        {
-            WeaponPoint.localRotation = Quaternion.Euler(Vector3.up * (_count == 1 ? -_spreadAngle : _spreadAngle));
-        }
+            if (_count > CountBullet)
+            {
+                _count = 0;
+                WeaponPoint.localRotation = Quaternion.identity;
+            }
+
+            if (_count > 0)
+            {
+                WeaponPoint.localRotation = Quaternion.Euler(Vector3.up * (_count == 1 ? -_spreadAngle : _spreadAngle));
+            }
 
             base.CreateBullet(bullet);
+        }
     }
 }

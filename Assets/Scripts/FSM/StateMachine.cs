@@ -1,29 +1,32 @@
 using System;
 
-public class StateMachine : IStateMachine
+namespace StateSpace
 {
-    public IState CurrentState { get; private set; }
-
-    public void UpdateState()
+    public class StateMachine : IStateMachine
     {
-        CurrentState?.Update();
-    }
+        public IState CurrentState { get; private set; }
 
-    public void SwitchState<T, Owner>(Owner owner, Action<T> callback = null)
-        where T : BaseState<Owner>, new()
-        where Owner : class, IStateMachineOwner
-    {
-        if (CurrentState != null)
+        public void UpdateState()
         {
-            CurrentState.Exit();
-            CurrentState.Dispose();
+            CurrentState?.Update();
         }
 
-        T state = new T();
-        state.Owner = owner;
-        callback?.Invoke(state);
+        public void SwitchState<T, Owner>(Owner owner, Action<T> callback = null)
+            where T : BaseState<Owner>, new()
+            where Owner : class, IStateMachineOwner
+        {
+            if (CurrentState != null)
+            {
+                CurrentState.Exit();
+                CurrentState.Dispose();
+            }
 
-        CurrentState = state;
-        CurrentState.Enter();
+            T state = new T();
+            state.Owner = owner;
+            callback?.Invoke(state);
+
+            CurrentState = state;
+            CurrentState.Enter();
+        }
     }
 }

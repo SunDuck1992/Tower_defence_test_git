@@ -1,33 +1,41 @@
-public class ShootMashineGunTowerState : BaseState<MashineGunTower>
+using Unit;
+using EnemySpace;
+using PlayerSpace;
+using TowerSpace;
+
+namespace StateSpace
 {
-    public GameUnit target;
-    private Bullet _bullet;
-
-    public override void Enter()
+    public class ShootMashineGunTowerState : BaseState<MashineGunTower>
     {
-        _bullet = Owner.BulletPool.Spawn();
-        _bullet.GetTargetPosition(target);
+        public GameUnit target;
+        private Bullet _bullet;
 
-        _bullet.transform.position = Owner.ShotPoint.position;
-        _bullet.transform.forward = Owner.ShotPoint.forward;
-        _bullet.Damage = Owner.Damage;
+        public override void Enter()
+        {
+            _bullet = Owner.BulletPool.Spawn();
+            _bullet.GetTargetPosition(target);
 
-        Owner.CreateShootparticle();
+            _bullet.transform.position = Owner.ShotPoint.position;
+            _bullet.transform.forward = Owner.ShotPoint.forward;
+            _bullet.Damage = Owner.Damage;
 
-        _bullet.HitTower += OnHit;
-        _bullet.Died += OnBulletComplete;
+            Owner.CreateShootparticle();
 
-        Owner.StateMachine.SwitchState<ReloadMashineGunTowerState, MashineGunTower>(Owner);
-    }
+            _bullet.HitedTower += OnHit;
+            _bullet.Died += OnBulletComplete;
 
-    private void OnHit(Enemy enemy)
-    {
-        enemy.TakeDamage(_bullet.Damage);
-    }
+            Owner.StateMachine.SwitchState<ReloadMashineGunTowerState, MashineGunTower>(Owner);
+        }
 
-    private void OnBulletComplete(Bullet bullet)
-    {
-        bullet.HitTower -= OnHit;
-        bullet.Died -= OnBulletComplete;
+        private void OnHit(Enemy enemy)
+        {
+            enemy.TakeDamage(_bullet.Damage);
+        }
+
+        private void OnBulletComplete(Bullet bullet)
+        {
+            bullet.HitedTower -= OnHit;
+            bullet.Died -= OnBulletComplete;
+        }
     }
 }

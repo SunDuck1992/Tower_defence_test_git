@@ -2,18 +2,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
-public class LocalizationImage : MonoBehaviour
+namespace UI
 {
-    private const string EnglishCode = "en";
-    private const string RussianCode = "ru";
-    private const string TurkishCode = "tr";
-
-    [SerializeField] private Image _englishImage;
-    [SerializeField] private Image _russiaImage;
-    [SerializeField] private Image _turkishImage;
-
-    private void Awake()
+    public class LocalizationImage : MonoBehaviour
     {
+        private const string EnglishCode = "en";
+        private const string RussianCode = "ru";
+        private const string TurkishCode = "tr";
+
+        [SerializeField] private Image _englishImage;
+        [SerializeField] private Image _russiaImage;
+        [SerializeField] private Image _turkishImage;
+
+        private void Awake()
+        {
 #if !UNITY_EDITOR
         string languageCode = YandexGame.lang;
 
@@ -36,5 +38,6 @@ public class LocalizationImage : MonoBehaviour
                 break;
         }
 #endif
+        }
     }
 }

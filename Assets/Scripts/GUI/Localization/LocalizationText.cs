@@ -2,18 +2,20 @@ using UnityEngine;
 using TMPro;
 using YG;
 
-public class LocalizationText : MonoBehaviour
+namespace UI
 {
-    private const string EnglishCode = "en";
-    private const string RussianCode = "ru";
-    private const string TurkishCode = "tr";
-
-    [SerializeField] private TextMeshProUGUI _englishText;
-    [SerializeField] private TextMeshProUGUI _russiaText;
-    [SerializeField] private TextMeshProUGUI _turkishText;
-
-    private void Awake()
+    public class LocalizationText : MonoBehaviour
     {
+        private const string EnglishCode = "en";
+        private const string RussianCode = "ru";
+        private const string TurkishCode = "tr";
+
+        [SerializeField] private TextMeshProUGUI _englishText;
+        [SerializeField] private TextMeshProUGUI _russiaText;
+        [SerializeField] private TextMeshProUGUI _turkishText;
+
+        private void Awake()
+        {
 #if !UNITY_EDITOR
         string languageCode = YandexGame.lang;
 
@@ -36,5 +38,6 @@ public class LocalizationText : MonoBehaviour
                 break;
         }
 #endif
+        }
     }
 }

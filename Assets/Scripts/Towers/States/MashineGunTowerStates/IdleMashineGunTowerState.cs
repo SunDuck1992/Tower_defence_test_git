@@ -1,25 +1,29 @@
 using UnityEngine;
+using TowerSpace;
 
-public class IdleMashineGunTowerState : BaseState<MashineGunTower>
+namespace StateSpace
 {
-    public override void Update()
+    public class IdleMashineGunTowerState : BaseState<MashineGunTower>
     {
-        var target = Owner.TargetController.GetTarget(Owner, 15, true);
-
-        if (target != null)
+        public override void Update()
         {
-            Vector3 direction = target.transform.position - Owner.transform.position;
-            Vector3 rotation = Quaternion.Lerp(Owner.TransformTower.rotation, Quaternion.LookRotation(direction), 15 * Time.deltaTime).eulerAngles;
-            rotation.x = 0;
-            rotation.z = 0;
+            var target = Owner.TargetController.GetTarget(Owner, 15, true);
 
-            Owner.TransformTower.eulerAngles = rotation;
-
-            float angle = Vector3.Angle(Owner.TransformTower.forward, direction.normalized);
-
-            if (angle <= 2f)
+            if (target != null)
             {
-                Owner.StateMachine.SwitchState<ShootMashineGunTowerState, MashineGunTower>(Owner, state => state.target = target);
+                Vector3 direction = target.transform.position - Owner.transform.position;
+                Vector3 rotation = Quaternion.Lerp(Owner.TransformTower.rotation, Quaternion.LookRotation(direction), 15 * Time.deltaTime).eulerAngles;
+                rotation.x = 0;
+                rotation.z = 0;
+
+                Owner.TransformTower.eulerAngles = rotation;
+
+                float angle = Vector3.Angle(Owner.TransformTower.forward, direction.normalized);
+
+                if (angle <= 2f)
+                {
+                    Owner.StateMachine.SwitchState<ShootMashineGunTowerState, MashineGunTower>(Owner, state => state.target = target);
+                }
             }
         }
     }

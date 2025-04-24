@@ -5,51 +5,54 @@ using TMPro;
 using UnityEngine;
 using YG;
 using Zenject;
+using PlayerSpace;
 
-public class StoreResources : MonoBehaviour
+namespace UI
 {
-    private const string EnglishCode = "en";
-    private const string RussianCode = "ru";
-    private const string TurkishCode = "tr";
-
-    [SerializeField] private int _costGem;
-    [SerializeField] private TextMeshProUGUI _needMoreText;
-    [SerializeField] private List<LocalizationFont> _localizationFonts;
-
-    private PlayerWallet _playerWallet;
-    private int _gemCount = 1;
-    private float _duration = 2f;
-    private Coroutine _coroutine;
-
-    [Inject]
-    public void Construct(PlayerWallet playerWallet)
+    public class StoreResources : MonoBehaviour
     {
-        _playerWallet = playerWallet;
-    }
+        private const string EnglishCode = "en";
+        private const string RussianCode = "ru";
+        private const string TurkishCode = "tr";
 
-    public void OnClickButtonSellGem()
-    {
-        if (_playerWallet.TrySpendGold(_costGem))
+        [SerializeField] private int _costGem;
+        [SerializeField] private TextMeshProUGUI _needMoreText;
+        [SerializeField] private List<LocalizationFont> _localizationFonts;
+
+        private PlayerWallet _playerWallet;
+        private int _gemCount = 1;
+        private float _duration = 2f;
+        private Coroutine _coroutine;
+
+        [Inject]
+        public void Construct(PlayerWallet playerWallet)
         {
-            _playerWallet.AddGem(_gemCount);
+            _playerWallet = playerWallet;
         }
-        else
+
+        public void OnClickButtonSellGem()
         {
-            _coroutine = StartCoroutine(ChangeText());
+            if (_playerWallet.TrySpendGold(_costGem))
+            {
+                _playerWallet.AddGem(_gemCount);
+            }
+            else
+            {
+                _coroutine = StartCoroutine(ChangeText());
+            }
         }
-    }
 
-    public void OnClickButtonRewardGem(int id)
-    {
-        YandexGame.RewVideoShow(id);
-    }
+        public void OnClickButtonRewardGem(int id)
+        {
+            YandexGame.RewVideoShow(id);
+        }
 
-    private IEnumerator ChangeText()
-    {
-        var nextTexts = _needMoreText;
+        private IEnumerator ChangeText()
+        {
+            var nextTexts = _needMoreText;
 
-        string text = nextTexts.text;
-        TMP_FontAsset asset = nextTexts.font;
+            string text = nextTexts.text;
+            TMP_FontAsset asset = nextTexts.font;
 
 #if !UNITY_EDITOR
         string languageCode = YandexGame.lang;
@@ -82,30 +85,31 @@ public class StoreResources : MonoBehaviour
         }
 #endif
 
-        nextTexts.color = Color.red;
+            nextTexts.color = Color.red;
 
-        yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);
 
-        for (float t = _duration; t >= 0; t -= Time.deltaTime)
-        {
-            Color color = nextTexts.color;
-            color.a = t;
-            nextTexts.color = color;
+            for (float t = _duration; t >= 0; t -= Time.deltaTime)
+            {
+                Color color = nextTexts.color;
+                color.a = t;
+                nextTexts.color = color;
 
-            yield return null;
+                yield return null;
+            }
+
+            nextTexts.text = text;
+            nextTexts.color = Color.white;
+            nextTexts.font = asset;
+
+            StopCoroutine(_coroutine);
         }
-
-        nextTexts.text = text;
-        nextTexts.color = Color.white;
-        nextTexts.font = asset;
-
-        StopCoroutine(_coroutine);
     }
-}
 
-[Serializable]
-public class LocalizationFont
-{
-    public string languageCode;
-    public TMP_FontAsset font;
+    [Serializable]
+    public class LocalizationFont
+    {
+        public string languageCode;
+        public TMP_FontAsset font;
+    }
 }

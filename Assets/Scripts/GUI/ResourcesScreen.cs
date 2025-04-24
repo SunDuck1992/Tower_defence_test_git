@@ -2,61 +2,65 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using Zenject;
+using PlayerSpace;
 
-public class ResourcesScreen : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private TextMeshProUGUI _goldValueText;
-    [SerializeField] private TextMeshProUGUI _gemValueText;
-    [SerializeField] private float _duration;
-
-    private PlayerWallet _playerWallet;
-    private int _currentGold;
-
-    [Inject]
-    public void Construct(PlayerWallet playerWallet)
+    public class ResourcesScreen : MonoBehaviour
     {
-        _playerWallet = playerWallet;
-    }
+        [SerializeField] private TextMeshProUGUI _goldValueText;
+        [SerializeField] private TextMeshProUGUI _gemValueText;
+        [SerializeField] private float _duration;
 
-    private void Start()
-    {
-        _goldValueText.text = _playerWallet.Gold.ToString();
-        _gemValueText.text = _playerWallet.Gem.ToString();
+        private PlayerWallet _playerWallet;
+        private int _currentGold;
 
-        _playerWallet.GoldChanged += OnUpdateGoldDisplay;
-        _playerWallet.GemChanged += OnUpdateResourcesScreen;
-    }
-
-    private void OnDestroy()
-    {
-        _playerWallet.GemChanged -= OnUpdateResourcesScreen;
-        _playerWallet.GoldChanged -= OnUpdateGoldDisplay;
-    }
-
-    private IEnumerator UpdateGoldCourutine(int targetGold)
-    {
-        _currentGold = int.Parse(_goldValueText.text);
-        float elapsedTime = 0f;
-
-        while (elapsedTime < _duration)
+        [Inject]
+        public void Construct(PlayerWallet playerWallet)
         {
-            elapsedTime += Time.unscaledDeltaTime;
-            int newGoldValue = Mathf.RoundToInt(Mathf.Lerp(_currentGold, targetGold, elapsedTime / _duration));
-            _goldValueText.text = newGoldValue.ToString();
-
-            yield return null;
+            _playerWallet = playerWallet;
         }
 
-        _goldValueText.text = targetGold.ToString();
-    }
+        private void Start()
+        {
+            _goldValueText.text = _playerWallet.Gold.ToString();
+            _gemValueText.text = _playerWallet.Gem.ToString();
 
-    private void OnUpdateGoldDisplay(int targetGold)
-    {
-        StartCoroutine(UpdateGoldCourutine(targetGold));
-    }
+            _playerWallet.GoldChanged += OnUpdateGoldDisplay;
+            _playerWallet.GemChanged += OnUpdateResourcesScreen;
+        }
 
-    private void OnUpdateResourcesScreen(int targetGem)
-    {
-        _gemValueText.text = targetGem.ToString();
+        private void OnDestroy()
+        {
+            _playerWallet.GemChanged -= OnUpdateResourcesScreen;
+            _playerWallet.GoldChanged -= OnUpdateGoldDisplay;
+        }
+
+        private IEnumerator UpdateGoldCourutine(int targetGold)
+        {
+            _currentGold = int.Parse(_goldValueText.text);
+            float elapsedTime = 0f;
+
+            while (elapsedTime < _duration)
+            {
+                elapsedTime += Time.unscaledDeltaTime;
+                int newGoldValue = Mathf.RoundToInt(Mathf.Lerp(_currentGold, targetGold, elapsedTime / _duration));
+                _goldValueText.text = newGoldValue.ToString();
+
+                yield return null;
+            }
+
+            _goldValueText.text = targetGold.ToString();
+        }
+
+        private void OnUpdateGoldDisplay(int targetGold)
+        {
+            StartCoroutine(UpdateGoldCourutine(targetGold));
+        }
+
+        private void OnUpdateResourcesScreen(int targetGem)
+        {
+            _gemValueText.text = targetGem.ToString();
+        }
     }
 }

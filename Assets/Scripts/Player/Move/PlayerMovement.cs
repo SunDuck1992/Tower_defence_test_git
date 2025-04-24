@@ -1,75 +1,78 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using Installers;
 
-[RequireComponent(typeof(Rigidbody))]
-
-public class PlayerMovement : MonoBehaviour
+namespace PlayerSpace
 {
-    private const string VerticalDirection = "Vertical";
-    private const string HorizontalDirection = "Horizontal";
-
-    [SerializeField] private NavMeshAgent _agent;
-    [SerializeField] private Joystick _joystick;
-    [SerializeField] private PlayerAnimationController _controller;
-    [SerializeField] private float _speed;
-    [SerializeField] private PlayerShooter _shooter;
-    [SerializeField] private Rotate _rotate;
-    [SerializeField] private Animator _weaponAnimator;
-
-    private Vector3 _movement;
-
-    [Inject]
-    public void Construct(UISettings uISettings)
+    [RequireComponent(typeof(Rigidbody))]
+    public class PlayerMovement : MonoBehaviour
     {
-        _joystick = uISettings.Joystick;
-    }
+        private const string VerticalDirection = "Vertical";
+        private const string HorizontalDirection = "Horizontal";
 
-    private void Update()
-    {
-        Move();
+        [SerializeField] private NavMeshAgent _agent;
+        [SerializeField] private Joystick _joystick;
+        [SerializeField] private PlayerAnimationController _controller;
+        [SerializeField] private float _speed;
+        [SerializeField] private PlayerShooter _shooter;
+        [SerializeField] private Rotate _rotate;
+        [SerializeField] private Animator _weaponAnimator;
 
-        if (!_shooter.IsShooting && _movement != Vector3.zero)
+        private Vector3 _movement;
+
+        [Inject]
+        public void Construct(UISettings uISettings)
         {
-            _rotate.Direction = _movement;
-            _rotate.IsShooting = false;          
-        }
-        
-
-        if(_movement != Vector3.zero)
-        {
-            _weaponAnimator.SetBool("isRunning", true);
-        }
-        else
-        {
-            _weaponAnimator.SetBool("isRunning", false);
-        }
-    }
-
-    private void Move()
-    {
-        float move = 0f;
-
-        float xDirection = _joystick.Horizontal;
-        float zDirection = _joystick.Vertical;
-
-        if (Input.GetAxisRaw(HorizontalDirection) != 0 | Input.GetAxisRaw(VerticalDirection) != 0)
-        {
-            xDirection = Input.GetAxisRaw(HorizontalDirection);
-            zDirection = Input.GetAxisRaw(VerticalDirection);
-
-            move = 1;
+            _joystick = uISettings.Joystick;
         }
 
-        if (_joystick.IsHandled)
+        private void Update()
         {
-            move = 1;
+            Move();
+
+            if (!_shooter.IsShooting && _movement != Vector3.zero)
+            {
+                _rotate.Direction = _movement;
+                _rotate.IsShooting = false;
+            }
+
+
+            if (_movement != Vector3.zero)
+            {
+                _weaponAnimator.SetBool("isRunning", true);
+            }
+            else
+            {
+                _weaponAnimator.SetBool("isRunning", false);
+            }
         }
 
-        _controller.PlayMoveAnimation(move);
+        private void Move()
+        {
+            float move = 0f;
 
-        _movement = new Vector3(xDirection, 0, zDirection);
-        _agent.speed = _speed;
-        _agent.velocity = _movement.normalized * _agent.speed;
+            float xDirection = _joystick.Horizontal;
+            float zDirection = _joystick.Vertical;
+
+            if (Input.GetAxisRaw(HorizontalDirection) != 0 | Input.GetAxisRaw(VerticalDirection) != 0)
+            {
+                xDirection = Input.GetAxisRaw(HorizontalDirection);
+                zDirection = Input.GetAxisRaw(VerticalDirection);
+
+                move = 1;
+            }
+
+            if (_joystick.IsHandled)
+            {
+                move = 1;
+            }
+
+            _controller.PlayMoveAnimation(move);
+
+            _movement = new Vector3(xDirection, 0, zDirection);
+            _agent.speed = _speed;
+            _agent.velocity = _movement.normalized * _agent.speed;
+        }
     }
 }

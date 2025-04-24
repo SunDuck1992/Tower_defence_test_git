@@ -1,19 +1,24 @@
-public class EnemyIdleState : BaseState<Enemy>
+using StateSpace;
+
+namespace EnemySpace
 {
-    private int _maxRadius = 1000;
-
-    public override void Enter()
+    public class EnemyIdleState : BaseState<Enemy>
     {
-        Owner.Target = Owner.TargetController.GetTarget(Owner, _maxRadius);
-    }
+        private int _maxRadius = 1000;
 
-    public override void Update()
-    {
-        if (Owner.Target != null)
+        public override void Enter()
         {
-            Owner.Agent.enabled = true;
+            Owner.Target = Owner.TargetController.GetTarget(Owner, _maxRadius);
+        }
 
-            Owner.StateMachine.SwitchState<EnemyMovementState, Enemy>(Owner);
+        public override void Update()
+        {
+            if (Owner.Target != null)
+            {
+                Owner.Agent.enabled = true;
+
+                Owner.StateMachine.SwitchState<EnemyMovementState, Enemy>(Owner);
+            }
         }
     }
 }

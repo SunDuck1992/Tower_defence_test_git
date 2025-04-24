@@ -1,12 +1,17 @@
-public class RocketTower : Tower
-{
-    public override void Enable()
-    {
-        StateMachine.SwitchState<IdleRocketTowerState, RocketTower>(this);
-    }
+using StateSpace;
 
-    public override void Die()
+namespace TowerSpace
+{
+    public class RocketTower : Tower
     {
-        StateMachine.SwitchState<DieRocketTowerState, RocketTower>(this);
+        public override void Enable()
+        {
+            StateMachine.SwitchState<IdleRocketTowerState, RocketTower>(this);
+        }
+
+        public override void Die()
+        {
+            StateMachine.SwitchState<DieRocketTowerState, RocketTower>(this);
+        }
     }
 }

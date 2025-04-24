@@ -1,19 +1,23 @@
 using UnityEngine;
+using TowerSpace;
 
-public class ReloadMashineGunTowerState : BaseState<MashineGunTower>
+namespace StateSpace
 {
-    private float _fireRate;
-
-    public override void Enter()
+    public class ReloadMashineGunTowerState : BaseState<MashineGunTower>
     {
-        _fireRate = Owner.FireRate + Time.time;
-    }
+        private float _fireRate;
 
-    public override void Update()
-    {
-        if (Time.time > _fireRate)
+        public override void Enter()
         {
-            Owner.StateMachine.SwitchState<IdleMashineGunTowerState, MashineGunTower>(Owner);
+            _fireRate = Owner.FireRate + Time.time;
+        }
+
+        public override void Update()
+        {
+            if (Time.time > _fireRate)
+            {
+                Owner.StateMachine.SwitchState<IdleMashineGunTowerState, MashineGunTower>(Owner);
+            }
         }
     }
 }

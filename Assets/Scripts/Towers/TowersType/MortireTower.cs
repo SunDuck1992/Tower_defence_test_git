@@ -1,3 +1,6 @@
-public class MortireTower : Tower
-{   
+namespace TowerSpace
+{
+    public class MortireTower : Tower
+    {
+    }
 }

@@ -1,19 +1,23 @@
 using UnityEngine;
+using TowerSpace;
 
-public class ReloadRocketTowerState : BaseState<RocketTower>
+namespace StateSpace
 {
-    private float _fireRate;
-
-    public override void Enter()
+    public class ReloadRocketTowerState : BaseState<RocketTower>
     {
-        _fireRate = Owner.FireRate + Time.time;
-    }
+        private float _fireRate;
 
-    public override void Update()
-    {
-        if (Time.time > _fireRate)
+        public override void Enter()
         {
-            Owner.StateMachine.SwitchState<IdleRocketTowerState, RocketTower>(Owner);
+            _fireRate = Owner.FireRate + Time.time;
+        }
+
+        public override void Update()
+        {
+            if (Time.time > _fireRate)
+            {
+                Owner.StateMachine.SwitchState<IdleRocketTowerState, RocketTower>(Owner);
+            }
         }
     }
 }

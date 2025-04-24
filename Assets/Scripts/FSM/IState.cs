@@ -1,7 +1,11 @@
 using System;
-public interface IState : IDisposable
+
+namespace StateSpace
 {
-    public void Enter();
-    public void Update();
-    public void Exit();
+    public interface IState : IDisposable
+    {
+        public void Enter();
+        public void Update();
+        public void Exit();
+    }
 }

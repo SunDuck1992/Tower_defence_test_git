@@ -1,24 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayerSpace;
 
-public class IncreaseManager : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private List<UpgradeButton> _upgradeButtons;
-
-    private void OnEnable()
+    public class IncreaseManager : MonoBehaviour
     {
-        foreach (UpgradeButton upgradeButton in _upgradeButtons)
-        {
-            if (upgradeButton != null)
-            {
-                if (upgradeButton.CountClicked == upgradeButton.MaxLevelUpgrade)
-                {
-                    var button = upgradeButton.GetComponent<Button>();
+        [SerializeField] private List<UpgradeButton> _upgradeButtons;
 
-                    if (button != null)
+        private void OnEnable()
+        {
+            foreach (UpgradeButton upgradeButton in _upgradeButtons)
+            {
+                if (upgradeButton != null)
+                {
+                    if (upgradeButton.CountClicked == upgradeButton.MaxLevelUpgrade)
                     {
-                        button.interactable = false;
+                        var button = upgradeButton.GetComponent<Button>();
+
+                        if (button != null)
+                        {
+                            button.interactable = false;
+                        }
                     }
                 }
             }

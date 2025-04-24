@@ -1,40 +1,43 @@
 using UnityEngine;
 
-public class Rotate : MonoBehaviour
+namespace PlayerSpace
 {
-    [SerializeField] private float _rotationSpeed;
-    [SerializeField] private GameObject _playerView;
-
-    private bool _isShooting;
-
-    public bool IsShooting 
+    public class Rotate : MonoBehaviour
     {
-        get => _isShooting; 
-        set
-        {
-            _isShooting = value;
+        [SerializeField] private float _rotationSpeed;
+        [SerializeField] private GameObject _playerView;
 
-            if (!_isShooting)
+        private bool _isShooting;
+
+        public bool IsShooting
+        {
+            get => _isShooting;
+            set
             {
-                _playerView.transform.localRotation = Quaternion.identity;
+                _isShooting = value;
+
+                if (!_isShooting)
+                {
+                    _playerView.transform.localRotation = Quaternion.identity;
+                }
             }
         }
-    }
 
-    public Vector3 Direction { get; set; }
+        public Vector3 Direction { get; set; }
 
-    private void Update()
-    {
-        Quaternion rotation = Quaternion.LookRotation(Direction);
-        float rotationStep = _rotationSpeed * Time.deltaTime;
-
-        if(_isShooting)
+        private void Update()
         {
-            _playerView.transform.rotation = Quaternion.RotateTowards(_playerView.transform.rotation, rotation, rotationStep);
-        }
-        else
-        {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotationStep);
+            Quaternion rotation = Quaternion.LookRotation(Direction);
+            float rotationStep = _rotationSpeed * Time.deltaTime;
+
+            if (_isShooting)
+            {
+                _playerView.transform.rotation = Quaternion.RotateTowards(_playerView.transform.rotation, rotation, rotationStep);
+            }
+            else
+            {
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotationStep);
+            }
         }
     }
 }

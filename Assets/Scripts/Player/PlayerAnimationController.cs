@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class PlayerAnimationController : MonoBehaviour
+namespace PlayerSpace
 {
-    [SerializeField] private Animator _animator;
-
-    public bool IsShooting { get; set; }
-
-    public void PlayMoveAnimation(float value)
+    public class PlayerAnimationController : MonoBehaviour
     {
-        if (IsShooting)
+        [SerializeField] private Animator _animator;
+
+        public bool IsShooting { get; set; }
+
+        public void PlayMoveAnimation(float value)
         {
-            _animator.SetFloat("Move", value);
+            if (IsShooting)
+            {
+                _animator.SetFloat("Move", value);
+            }
+            else
+            {
+                _animator.SetFloat("Move", value < 0 ? 1 : value);
+            }
         }
-        else
-        {
-            _animator.SetFloat("Move", value < 0? 1 : value);
-        }
-    } 
+    }
 }

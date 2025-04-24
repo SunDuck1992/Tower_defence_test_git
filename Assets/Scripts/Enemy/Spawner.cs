@@ -1,72 +1,75 @@
 using UnityEngine;
 using YG;
 using Zenject;
+using Installers;
 
-public class Spawner : MonoBehaviour
+namespace EnemySpace
 {
-    private int _countEnemies;
-    private int _enemyIncrement = 2;
-    private EnemyManager _enemyManager;
-    private SceneSettings _sceneSettings;
-
-
-    public int CountEnemies => _countEnemies;
-    public int WaveCount { get; private set; }
-    public int MaxCountEnemies { get; private set; }
-
-    [Inject]
-    public void Construct(EnemyManager enemyManager, SceneSettings sceneSettings)
+    public class Spawner : MonoBehaviour
     {
-        _enemyManager = enemyManager;
-        _sceneSettings = sceneSettings;
-    }
+        private int _countEnemies;
+        private int _enemyIncrement = 2;
+        private EnemyManager _enemyManager;
+        private SceneSettings _sceneSettings;
 
-    private void Start()
-    {
-        if(YandexGame.savesData.enemyCount == -1)
-        {
-            _countEnemies = 3;
-        }
-        else
-        {
-            _countEnemies = YandexGame.savesData.enemyCount;
-        }
+        public int CountEnemies => _countEnemies;
+        public int WaveCount { get; private set; }
+        public int MaxCountEnemies { get; private set; }
 
-        if(YandexGame.savesData.waveCount == -1)
+        [Inject]
+        public void Construct(EnemyManager enemyManager, SceneSettings sceneSettings)
         {
-            WaveCount = 0;
-        }
-        else
-        {
-            WaveCount = YandexGame.savesData.waveCount;
-        }
-    }
-
-    public void SpawnOnClick()
-    {
-        for (int i = 0; i < _countEnemies; i++)
-        {
-            Transform point = _sceneSettings.Points[Random.Range(0, _sceneSettings.Points.Count)];
-            _enemyManager.Create(point.position);
+            _enemyManager = enemyManager;
+            _sceneSettings = sceneSettings;
         }
 
-        MaxCountEnemies = _countEnemies;
-        WaveCount++;
-        _countEnemies += _enemyIncrement;
-        
-        SetGoldScaleLevel();
-    }
-
-    private void SetGoldScaleLevel()
-    {
-        if(WaveCount >= 5)
+        private void Start()
         {
-            YandexGame.savesData.goldScaleLevel = 2;
+            if (YandexGame.savesData.enemyCount == -1)
+            {
+                _countEnemies = 3;
+            }
+            else
+            {
+                _countEnemies = YandexGame.savesData.enemyCount;
+            }
+
+            if (YandexGame.savesData.waveCount == -1)
+            {
+                WaveCount = 0;
+            }
+            else
+            {
+                WaveCount = YandexGame.savesData.waveCount;
+            }
         }
 
-        if(WaveCount >= 10)
+        public void SpawnOnClick()
         {
-            YandexGame.savesData.goldScaleLevel = 3;
+            for (int i = 0; i < _countEnemies; i++)
+            {
+                Transform point = _sceneSettings.Points[Random.Range(0, _sceneSettings.Points.Count)];
+                _enemyManager.Create(point.position);
+            }
+
+            MaxCountEnemies = _countEnemies;
+            WaveCount++;
+            _countEnemies += _enemyIncrement;
+
+            SetGoldScaleLevel();
+        }
+
+        private void SetGoldScaleLevel()
+        {
+            if (WaveCount >= 5)
+            {
+                YandexGame.savesData.goldScaleLevel = 2;
+            }
+
+            if (WaveCount >= 10)
+            {
+                YandexGame.savesData.goldScaleLevel = 3;
+            }
         }
     }
 }

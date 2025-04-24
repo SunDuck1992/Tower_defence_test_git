@@ -1,3 +1,6 @@
-public class SingleBulletShoot : Weapon
-{   
+namespace PlayerSpace
+{
+    public class SingleBulletShoot : Weapon
+    {
+    }
 }

@@ -1,26 +1,29 @@
 using UnityEngine;
 
-public class PauseManager : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private GameObject _gameOverPanel;  
-
-    private void Start()
+    public class PauseManager : MonoBehaviour
     {
-        ResumeGame();
-    }
+        [SerializeField] private GameObject _gameOverPanel;
 
-    public void PauseGame()
-    {
-        Time.timeScale = 0;
-    }
-
-    public void ResumeGame()
-    {        
-        if (_gameOverPanel.activeSelf)
+        private void Start()
         {
-            return;
+            ResumeGame();
         }
 
-        Time.timeScale = 1;
+        public void PauseGame()
+        {
+            Time.timeScale = 0;
+        }
+
+        public void ResumeGame()
+        {
+            if (_gameOverPanel.activeSelf)
+            {
+                return;
+            }
+
+            Time.timeScale = 1;
+        }
     }
 }

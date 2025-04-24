@@ -1,30 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AppearanceEnemy : MonoBehaviour
+namespace EnemySpace
 {
-    [SerializeField] private List<GameObject> _bodies;
-    [SerializeField] private List<GameObject> _glowes;
-
-    private void OnEnable()
+    public class AppearanceEnemy : MonoBehaviour
     {
-        int randomBodies = Random.Range(0, _bodies.Count);
-        int randomGlowes = Random.Range(0, _glowes.Count);
+        [SerializeField] private List<GameObject> _bodies;
+        [SerializeField] private List<GameObject> _glowes;
 
-        _bodies[randomBodies].gameObject.SetActive(true);
-        _glowes[randomGlowes].gameObject.SetActive(true);
-    }
-
-    private void OnDisable()
-    {
-        foreach (var body in _bodies)
+        private void OnEnable()
         {
-            body.gameObject.SetActive(false);
+            int randomBodies = Random.Range(0, _bodies.Count);
+            int randomGlowes = Random.Range(0, _glowes.Count);
+
+            _bodies[randomBodies].gameObject.SetActive(true);
+            _glowes[randomGlowes].gameObject.SetActive(true);
         }
-        
-        foreach (var glow in _glowes)
+
+        private void OnDisable()
         {
-            glow.gameObject.SetActive(false);
+            foreach (var body in _bodies)
+            {
+                body.gameObject.SetActive(false);
+            }
+
+            foreach (var glow in _glowes)
+            {
+                glow.gameObject.SetActive(false);
+            }
         }
     }
 }

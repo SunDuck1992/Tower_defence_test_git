@@ -1,12 +1,17 @@
-public class DieRocketTowerState : BaseState<RocketTower>
-{
-    public override void Update()
-    {
-        Owner.StateMachine.SwitchState<IdleRocketTowerState, RocketTower>(Owner);
-    }
+using TowerSpace;
 
-    public override void Exit()
+namespace StateSpace
+{
+    public class DieRocketTowerState : BaseState<RocketTower>
     {
-        Owner.DiedComplete.Invoke(Owner);
+        public override void Update()
+        {
+            Owner.StateMachine.SwitchState<IdleRocketTowerState, RocketTower>(Owner);
+        }
+
+        public override void Exit()
+        {
+            Owner.DiedCompleted.Invoke(Owner);
+        }
     }
 }

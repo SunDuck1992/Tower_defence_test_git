@@ -1,95 +1,102 @@
 using System.Collections;
 using UnityEngine;
+using Unit;
+using Common;
+using StateSpace;
+using Pool;
 
-public abstract class Tower : GameUnit, IStateMachineOwner
+namespace TowerSpace
 {
-    [SerializeField] private Transform _transformTower;
-    [SerializeField] private Transform _shotPoint;
-    [SerializeField] private float _damage;
-    [SerializeField] private float _fireRate;
-    [SerializeField] private ParticleSystem _healParticle;
-    [SerializeField] private ParticleSystem _shootParticle;
-    [SerializeField] private Transform _healParticalPoint;
-
-    private float _improveDamage = 0.3f;
-    private float _improveHealth = 2f;
-    private float _healDelay = 1.5f;
-    private float _currentDamage;
-    private ParticleSystem _particle;
-    private Coroutine _coroutine;
-  
-    public Transform TransformTower => _transformTower;
-    public Transform ShotPoint => _shotPoint;
-    public BuildArea BuildArea { get; set; }
-    public float Damage => _currentDamage;
-    public float FireRate => _fireRate;
-    public IStateMachine StateMachine { get; set; }
-    public TargetController TargetController { get; set; }
-    public BulletPool BulletPool { get; set; }
-    public RocketPool RocketPool { get; set; }
-
-    protected override void Awake()
+    public abstract class Tower : GameUnit, IStateMachineOwner
     {
-        StateMachine = new StateMachine();
-        base.Awake();
-        _currentDamage = _damage;
-    }
+        [SerializeField] private Transform _transformTower;
+        [SerializeField] private Transform _shotPoint;
+        [SerializeField] private float _damage;
+        [SerializeField] private float _fireRate;
+        [SerializeField] private ParticleSystem _healParticle;
+        [SerializeField] private ParticleSystem _shootParticle;
+        [SerializeField] private Transform _healParticalPoint;
 
-    private void Update()
-    {
-       StateMachine.UpdateState();
-    }
+        private float _improveDamage = 0.3f;
+        private float _improveHealth = 2f;
+        private float _healDelay = 1.5f;
+        private float _currentDamage;
+        private ParticleSystem _particle;
+        private Coroutine _coroutine;
 
-    private void OnDisable()
-    {
-        if (_coroutine != null)
+        public Transform TransformTower => _transformTower;
+        public Transform ShotPoint => _shotPoint;
+        public BuildArea BuildArea { get; set; }
+        public float Damage => _currentDamage;
+        public float FireRate => _fireRate;
+        public IStateMachine StateMachine { get; set; }
+        public TargetController TargetController { get; set; }
+        public BulletPool BulletPool { get; set; }
+        public RocketPool RocketPool { get; set; }
+
+        protected override void Awake()
         {
-            StopCoroutine(_coroutine);
+            StateMachine = new StateMachine();
+            base.Awake();
+            _currentDamage = _damage;
         }
-        
-        if(_particle != null)
+
+        private void Update()
         {
-            Destroy(_particle.gameObject);
-        }        
-    }
+            StateMachine.UpdateState();
+        }
 
-    public virtual void Enable()
-    {
-    }
+        private void OnDisable()
+        {
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+            }
 
-    public void Disable()
-    {
-    }
+            if (_particle != null)
+            {
+                Destroy(_particle.gameObject);
+            }
+        }
 
-    public virtual void Die()
-    {
-    }
+        public virtual void Enable()
+        {
+        }
 
-    public void ImproveTower(int level)
-    {
-        _currentDamage = _damage + (level * _improveDamage);
-        _maxHealth = _maxHealth + (level * _improveHealth);
-    }
+        public void Disable()
+        {
+        }
 
-    public void EnableHealParticle()
-    {
-         _particle = Instantiate(_healParticle, _healParticalPoint.position, Quaternion.identity);
-        _particle.transform.localScale = _healParticalPoint.localScale;
-        _particle.transform.rotation = _healParticalPoint.rotation;
-        _particle.transform.SetParent(transform);
+        public virtual void Die()
+        {
+        }
 
-        _coroutine = StartCoroutine(DestroyParticleAfterDelay(_particle, _healDelay));
-    }
+        public void ImproveTower(int level)
+        {
+            _currentDamage = _damage + (level * _improveDamage);
+            _maxHealth = _maxHealth + (level * _improveHealth);
+        }
 
-    public void CreateShootparticle()
-    {
-        Instantiate(_shootParticle, ShotPoint.position, Quaternion.LookRotation(ShotPoint.forward));
-    }
+        public void EnableHealParticle()
+        {
+            _particle = Instantiate(_healParticle, _healParticalPoint.position, Quaternion.identity);
+            _particle.transform.localScale = _healParticalPoint.localScale;
+            _particle.transform.rotation = _healParticalPoint.rotation;
+            _particle.transform.SetParent(transform);
 
-    public IEnumerator DestroyParticleAfterDelay(ParticleSystem particle, float delay)
-    {       
-        yield return new WaitForSeconds(delay);
+            _coroutine = StartCoroutine(DestroyParticleAfterDelay(_particle, _healDelay));
+        }
 
-        Destroy(particle.gameObject);
+        public void CreateShootparticle()
+        {
+            Instantiate(_shootParticle, ShotPoint.position, Quaternion.LookRotation(ShotPoint.forward));
+        }
+
+        public IEnumerator DestroyParticleAfterDelay(ParticleSystem particle, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            Destroy(particle.gameObject);
+        }
     }
 }

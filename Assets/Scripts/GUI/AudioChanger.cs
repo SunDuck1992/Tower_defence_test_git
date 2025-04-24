@@ -2,41 +2,44 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AudioChanger : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private float _duration;
-    [SerializeField] private Button _playButton;
-    [SerializeField] private Button _pauseButton;
-
-    private void Start()
+    public class AudioChanger : MonoBehaviour
     {
-        if (AudioListener.volume > 0)
-        {
-            _playButton.gameObject.SetActive(true);
-            _pauseButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            _playButton.gameObject.SetActive(false);
-            _pauseButton.gameObject.SetActive(true);
-        }
-    }
+        [SerializeField] private float _duration;
+        [SerializeField] private Button _playButton;
+        [SerializeField] private Button _pauseButton;
 
-    public void ChangeVolume(float targetVolume)
-    {
-       StartCoroutine(FadeOut(targetVolume));
-    }
-
-    private IEnumerator FadeOut(float targetVolume)
-    {
-        float startVolume = AudioListener.volume;
-
-        for (float i = 0; i < _duration; i += Time.deltaTime)
+        private void Start()
         {
-            AudioListener.volume = Mathf.Lerp(startVolume, targetVolume, i / _duration);
-            yield return null;
+            if (AudioListener.volume > 0)
+            {
+                _playButton.gameObject.SetActive(true);
+                _pauseButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                _playButton.gameObject.SetActive(false);
+                _pauseButton.gameObject.SetActive(true);
+            }
         }
 
-        AudioListener.volume = targetVolume;
+        public void ChangeVolume(float targetVolume)
+        {
+            StartCoroutine(FadeOut(targetVolume));
+        }
+
+        private IEnumerator FadeOut(float targetVolume)
+        {
+            float startVolume = AudioListener.volume;
+
+            for (float i = 0; i < _duration; i += Time.deltaTime)
+            {
+                AudioListener.volume = Mathf.Lerp(startVolume, targetVolume, i / _duration);
+                yield return null;
+            }
+
+            AudioListener.volume = targetVolume;
+        }
     }
 }

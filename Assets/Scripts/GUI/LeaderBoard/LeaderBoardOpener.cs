@@ -2,42 +2,45 @@ using UnityEngine;
 using YG;
 using YG.Utils.LB;
 
-public class LeaderBoardOpener : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private GameObject _leaderBoard;
-    [SerializeField] private GameObject _authWindow;
-    [SerializeField] private LeaderboardYG _leaderboardYG;
-
-    private void OnDisable()
+    public class LeaderBoardOpener : MonoBehaviour
     {
-        YandexGame.onGetLeaderboard -= OnCheckLeader;
-    }
+        [SerializeField] private GameObject _leaderBoard;
+        [SerializeField] private GameObject _authWindow;
+        [SerializeField] private LeaderboardYG _leaderboardYG;
 
-    public void CheckAuthLeader()
-    {
-        if (YandexGame.auth)
+        private void OnDisable()
         {
-            _leaderBoard.SetActive(true);
-
-            YandexGame.onGetLeaderboard += OnCheckLeader;
+            YandexGame.onGetLeaderboard -= OnCheckLeader;
         }
-        else
+
+        public void CheckAuthLeader()
         {
-            _authWindow.SetActive(true);
+            if (YandexGame.auth)
+            {
+                _leaderBoard.SetActive(true);
+
+                YandexGame.onGetLeaderboard += OnCheckLeader;
+            }
+            else
+            {
+                _authWindow.SetActive(true);
+            }
         }
-    }
 
-    public void Authorization()
-    {
-        YandexGame.AuthDialog();
-    }
-
-    private void OnCheckLeader(LBData lBData)
-    {
-        if(lBData.thisPlayer.score < YandexGame.savesData.leaderScore)
+        public void Authorization()
         {
-            _leaderboardYG.NewScore(YandexGame.savesData.leaderScore);
-            _leaderboardYG.UpdateLB();
+            YandexGame.AuthDialog();
+        }
+
+        private void OnCheckLeader(LBData lBData)
+        {
+            if (lBData.thisPlayer.score < YandexGame.savesData.leaderScore)
+            {
+                _leaderboardYG.NewScore(YandexGame.savesData.leaderScore);
+                _leaderboardYG.UpdateLB();
+            }
         }
     }
 }

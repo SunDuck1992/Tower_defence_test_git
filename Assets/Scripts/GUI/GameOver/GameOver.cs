@@ -2,30 +2,33 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using YG;
 
-public class GameOver : MonoBehaviour
+namespace UI
 {
-    public void RestartGame()
+    public class GameOver : MonoBehaviour
     {
-        YandexGame.ResetSaveProgress();
-        YandexGame.SaveProgress();
+        public void RestartGame()
+        {
+            YandexGame.ResetSaveProgress();
+            YandexGame.SaveProgress();
 
-        TryAgain();
-    }
+            TryAgain();
+        }
 
-    public void TryAgain()
-    {
-        ResetTowerSave();
-        SceneManager.LoadScene(0);
-    }
+        public void TryAgain()
+        {
+            ResetTowerSave();
+            SceneManager.LoadScene(0);
+        }
 
-    public void ShowRevardAd(int id)
-    {
-        YandexGame.RewVideoShow(id);
-    }
+        public void ShowRevardAd(int id)
+        {
+            YandexGame.RewVideoShow(id);
+        }
 
-    private void ResetTowerSave()
-    {
-        YandexGame.savesData.destroyedTowers.Clear();
-        YandexGame.SaveProgress();
+        private void ResetTowerSave()
+        {
+            YandexGame.savesData.destroyedTowers.Clear();
+            YandexGame.SaveProgress();
+        }
     }
 }

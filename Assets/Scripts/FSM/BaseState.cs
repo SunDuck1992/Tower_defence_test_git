@@ -1,18 +1,21 @@
 using System;
 
-public abstract class BaseState<T> : IState
-    where T : class, IStateMachineOwner
+namespace StateSpace
 {
-    public T Owner {  get; set; }
-
-    public void Dispose()
+    public abstract class BaseState<T> : IState
+    where T : class, IStateMachineOwner
     {
-        OnDispose();
-        GC.SuppressFinalize(this);
-    }
+        public T Owner { get; set; }
 
-    public virtual void Enter() { }
-    public virtual void Exit() { }
-    public virtual void Update() { }
-    protected virtual void OnDispose() { }
+        public void Dispose()
+        {
+            OnDispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public virtual void Enter() { }
+        public virtual void Exit() { }
+        public virtual void Update() { }
+        protected virtual void OnDispose() { }
+    }
 }

@@ -6,213 +6,218 @@ using UnityEngine;
 using UnityEngine.UI;
 using YG;
 using Zenject;
+using Installers;
+using PlayerSpace;
+using TowerSpace;
 
-public class BuildScreen : MonoBehaviour
+namespace UI
 {
-    private const string EnglishCode = "en";
-    private const string RussianCode = "ru";
-    private const string TurkishCode = "tr";
-
-    [SerializeField] private GameObject _panel;
-    [SerializeField] private GameObject _secondPanel;
-    [SerializeField] private List<TextMeshProUGUI> _towerCostTexts;
-    [SerializeField] private TextMeshProUGUI _improveLevelText;
-    [SerializeField] private TextMeshProUGUI _improveCostText;
-    [SerializeField] private TextMeshProUGUI _destroyCostText;
-    [SerializeField] private List<Image> _towerImages;
-    [SerializeField] private Image _currentImage;
-    [SerializeField] private Button _increaseButton;
-    [SerializeField] private int _destroycost;
-    [SerializeField] private int _improveCost;
-
-    [SerializeField] private List<LocalizationFont> _localizationFonts;
-
-    private BuildTowersSystem _buildTowerSystem;
-    private SceneSettings _sceneSettings;
-    private PlayerWallet _playerWallet;
-    private Tower _tower;
-    private float _duration = 2f;
-    private bool[] _isCoroutineRunning = new bool[5];
-
-    [Inject]
-    public void Construct(BuildTowersSystem buildTowersSystem, PlayerWallet playerWallet, SceneSettings sceneSettings)
+    public class BuildScreen : MonoBehaviour
     {
-        _playerWallet = playerWallet;
-        _buildTowerSystem = buildTowersSystem;
-        _sceneSettings = sceneSettings;
-        _buildTowerSystem.InteractBuildArea += OnShowBuildScreen;
-        _buildTowerSystem.DeInteractBuildArea += OnHideBuildScreen;
-    }
+        private const string EnglishCode = "en";
+        private const string RussianCode = "ru";
+        private const string TurkishCode = "tr";
 
-    private void Start()
-    {
-        _improveCostText.text = _improveCost.ToString();
-        _destroyCostText.text = _destroycost.ToString();
+        [SerializeField] private GameObject _panel;
+        [SerializeField] private GameObject _secondPanel;
+        [SerializeField] private List<TextMeshProUGUI> _towerCostTexts;
+        [SerializeField] private TextMeshProUGUI _improveLevelText;
+        [SerializeField] private TextMeshProUGUI _improveCostText;
+        [SerializeField] private TextMeshProUGUI _destroyCostText;
+        [SerializeField] private List<Image> _towerImages;
+        [SerializeField] private Image _currentImage;
+        [SerializeField] private Button _increaseButton;
+        [SerializeField] private int _destroycost;
+        [SerializeField] private int _improveCost;
 
-        for (int i = 0; i < _sceneSettings.BuildPoints.Count; i++)
+        [SerializeField] private List<LocalizationFont> _localizationFonts;
+
+        private BuildTowersSystem _buildTowerSystem;
+        private SceneSettings _sceneSettings;
+        private PlayerWallet _playerWallet;
+        private Tower _tower;
+        private float _duration = 2f;
+        private bool[] _isCoroutineRunning = new bool[5];
+
+        [Inject]
+        public void Construct(BuildTowersSystem buildTowersSystem, PlayerWallet playerWallet, SceneSettings sceneSettings)
         {
-            for (int j = 0; j < YandexGame.savesData.buildedAreas.Count; j++)
+            _playerWallet = playerWallet;
+            _buildTowerSystem = buildTowersSystem;
+            _sceneSettings = sceneSettings;
+            _buildTowerSystem.InteractedBuildArea += OnShowBuildScreen;
+            _buildTowerSystem.DeInteractedBuildArea += OnHideBuildScreen;
+        }
+
+        private void Start()
+        {
+            _improveCostText.text = _improveCost.ToString();
+            _destroyCostText.text = _destroycost.ToString();
+
+            for (int i = 0; i < _sceneSettings.BuildPoints.Count; i++)
             {
-                if (_sceneSettings.BuildPoints[i].name == YandexGame.savesData.buildedAreas[j].name && YandexGame.savesData.buildedAreas[j].isBuilded)
+                for (int j = 0; j < YandexGame.savesData.buildedAreas.Count; j++)
                 {
-                    _buildTowerSystem.SetCurrentbuildArea(_sceneSettings.BuildPoints[i]);
+                    if (_sceneSettings.BuildPoints[i].name == YandexGame.savesData.buildedAreas[j].name && YandexGame.savesData.buildedAreas[j].isBuilded)
+                    {
+                        _buildTowerSystem.SetCurrentbuildArea(_sceneSettings.BuildPoints[i]);
 
-                    if (_buildTowerSystem == null)
-                    {
-                        return;
-                    }
-                    if (_buildTowerSystem.TowerSettings == null)
-                    {
-                        return;
-                    }
-                    if (_buildTowerSystem.TowerSettings.Datas == null)
-                    {
-                        return;
-                    }
+                        if (_buildTowerSystem == null)
+                        {
+                            return;
+                        }
+                        if (_buildTowerSystem.TowerSettings == null)
+                        {
+                            return;
+                        }
+                        if (_buildTowerSystem.TowerSettings.Datas == null)
+                        {
+                            return;
+                        }
 
-                    var prefab = _buildTowerSystem.TowerSettings.Datas[YandexGame.savesData.buildedAreas[j].value].Prefab;
+                        var prefab = _buildTowerSystem.TowerSettings.Datas[YandexGame.savesData.buildedAreas[j].value].Prefab;
 
-                    if (prefab == null)
-                    {
-                        return;
-                    }
+                        if (prefab == null)
+                        {
+                            return;
+                        }
 
-                    if (!_sceneSettings.BuildPoints[i].OnBuild)
-                    {
-                        _buildTowerSystem.BuildTower(_buildTowerSystem.TowerSettings.Datas[YandexGame.savesData.buildedAreas[j].value].Prefab);
-                        _tower = _buildTowerSystem.GetBuildTower();
-                        _buildTowerSystem.CurrentBuildArea.SetCurrentTower(_tower);
-                        _buildTowerSystem.CurrentBuildArea.SpriteValue = YandexGame.savesData.buildedAreas[j].value;
+                        if (!_sceneSettings.BuildPoints[i].OnBuild)
+                        {
+                            _buildTowerSystem.BuildTower(_buildTowerSystem.TowerSettings.Datas[YandexGame.savesData.buildedAreas[j].value].Prefab);
+                            _tower = _buildTowerSystem.GetBuildTower();
+                            _buildTowerSystem.CurrentBuildArea.SetCurrentTower(_tower);
+                            _buildTowerSystem.CurrentBuildArea.SpriteValue = YandexGame.savesData.buildedAreas[j].value;
+                        }
                     }
                 }
             }
         }
-    }
 
-    private void OnDestroy()
-    {
-        _buildTowerSystem.InteractBuildArea -= OnShowBuildScreen;
-        _buildTowerSystem.DeInteractBuildArea -= OnHideBuildScreen;
-    }
-
-    public void OnClickButtonBuild(int index)
-    {
-        int costTower = _buildTowerSystem.TowerSettings.Datas[index].Cost;
-
-        if (!_buildTowerSystem.CurrentBuildArea.OnBuild)
+        private void OnDestroy()
         {
-            if (_playerWallet.TrySpendGold(costTower))
-            {
-                _playerWallet.OnSaveWallet();
-                _buildTowerSystem.BuildTower(_buildTowerSystem.TowerSettings.Datas[index].Prefab);
-                _tower = _buildTowerSystem.GetBuildTower();
-                _buildTowerSystem.CurrentBuildArea.SetCurrentTower(_tower);
-                _buildTowerSystem.CurrentBuildArea.SpriteValue = index;
+            _buildTowerSystem.InteractedBuildArea -= OnShowBuildScreen;
+            _buildTowerSystem.DeInteractedBuildArea -= OnHideBuildScreen;
+        }
 
-                if (YandexGame.savesData.buildedAreas.Count == 0)
+        public void OnClickButtonBuild(int index)
+        {
+            int costTower = _buildTowerSystem.TowerSettings.Datas[index].Cost;
+
+            if (!_buildTowerSystem.CurrentBuildArea.OnBuild)
+            {
+                if (_playerWallet.TrySpendGold(costTower))
                 {
-                    YandexGame.savesData.buildedAreas.Add(new BuildedAreaInfo(_buildTowerSystem.CurrentBuildArea.name, index, true));
+                    _playerWallet.OnSaveWallet();
+                    _buildTowerSystem.BuildTower(_buildTowerSystem.TowerSettings.Datas[index].Prefab);
+                    _tower = _buildTowerSystem.GetBuildTower();
+                    _buildTowerSystem.CurrentBuildArea.SetCurrentTower(_tower);
+                    _buildTowerSystem.CurrentBuildArea.SpriteValue = index;
+
+                    if (YandexGame.savesData.buildedAreas.Count == 0)
+                    {
+                        YandexGame.savesData.buildedAreas.Add(new BuildedAreaInfo(_buildTowerSystem.CurrentBuildArea.name, index, true));
+                    }
+                    else
+                    {
+                        bool areaFound = false;
+
+                        for (int i = 0; i < YandexGame.savesData.buildedAreas.Count; i++)
+                        {
+                            if (YandexGame.savesData.buildedAreas[i].name == _buildTowerSystem.CurrentBuildArea.name)
+                            {
+                                YandexGame.savesData.buildedAreas[i].isBuilded = true;
+                                YandexGame.savesData.buildedAreas[i].value = index;
+                                areaFound = true;
+
+                                break;
+                            }
+                        }
+
+                        if (!areaFound)
+                        {
+                            YandexGame.savesData.buildedAreas.Add(new BuildedAreaInfo(_buildTowerSystem.CurrentBuildArea.name, index, true));
+                        }
+                    }
+
+                    YandexGame.SaveProgress();
                 }
                 else
                 {
-                    bool areaFound = false;
+                    if (!_isCoroutineRunning[index])
+                    {
+                        _isCoroutineRunning[index] = true;
+                        StartCoroutine(ChangeText(index));
+                    }
+                }
+            }
+        }
+
+        public void OnClickButtonDestroy(int index)
+        {
+            if (_buildTowerSystem.CurrentBuildArea.OnBuild)
+            {
+                if (_playerWallet.TrySpendGold(_destroycost))
+                {
+                    _buildTowerSystem.CurrentBuildArea.DestroyCurrentTower();
 
                     for (int i = 0; i < YandexGame.savesData.buildedAreas.Count; i++)
                     {
                         if (YandexGame.savesData.buildedAreas[i].name == _buildTowerSystem.CurrentBuildArea.name)
                         {
-                            YandexGame.savesData.buildedAreas[i].isBuilded = true;
-                            YandexGame.savesData.buildedAreas[i].value = index;
-                            areaFound = true;
-
-                            break;
+                            YandexGame.savesData.buildedAreas[i].isBuilded = false;
+                            _playerWallet.OnSaveWallet();
+                            YandexGame.SaveProgress();
                         }
                     }
-
-                    if (!areaFound)
-                    {
-                        YandexGame.savesData.buildedAreas.Add(new BuildedAreaInfo(_buildTowerSystem.CurrentBuildArea.name, index, true));
-                    }
                 }
-
-                YandexGame.SaveProgress();
-            }
-            else
-            {
-                if (!_isCoroutineRunning[index])
+                else
                 {
-                    _isCoroutineRunning[index] = true;
-                    StartCoroutine(ChangeText(index));
-                }
-            }
-        }
-    }
-
-    public void OnClickButtonDestroy(int index)
-    {
-        if (_buildTowerSystem.CurrentBuildArea.OnBuild)
-        {
-            if (_playerWallet.TrySpendGold(_destroycost))
-            {
-                _buildTowerSystem.CurrentBuildArea.DestroyCurrentTower();
-
-                for (int i = 0; i < YandexGame.savesData.buildedAreas.Count; i++)
-                {
-                    if (YandexGame.savesData.buildedAreas[i].name == _buildTowerSystem.CurrentBuildArea.name)
+                    if (!_isCoroutineRunning[index])
                     {
-                        YandexGame.savesData.buildedAreas[i].isBuilded = false;
-                        _playerWallet.OnSaveWallet();
-                        YandexGame.SaveProgress();
+                        _isCoroutineRunning[index] = true;
+                        StartCoroutine(ChangeText(index));
                     }
                 }
             }
-            else
+        }
+
+        public void OnClickButtonImprove(int index)
+        {
+            var tower = _buildTowerSystem.CurrentBuildArea.CurrentTower as Tower;
+
+            if (tower != null && _buildTowerSystem.CurrentBuildArea.ImproveLevel < _buildTowerSystem.CurrentBuildArea.MaxImproveLevel)
             {
-                if (!_isCoroutineRunning[index])
+                if (_playerWallet.TrySpendGold(_improveCost))
                 {
-                    _isCoroutineRunning[index] = true;
-                    StartCoroutine(ChangeText(index));
+                    _playerWallet.OnSaveWallet();
+                    _buildTowerSystem.CurrentBuildArea.IncreaseImproveLevel(_buildTowerSystem);
+                    tower.ImproveTower(_buildTowerSystem.CurrentBuildArea.ImproveLevel);
+                    _improveLevelText.text = _buildTowerSystem.CurrentBuildArea.ImproveLevel.ToString();
+                    YandexGame.SaveProgress();
+                }
+                else
+                {
+                    if (!_isCoroutineRunning[index])
+                    {
+                        _isCoroutineRunning[index] = true;
+                        StartCoroutine(ChangeText(index));
+                    }
                 }
             }
-        }
-    }
 
-    public void OnClickButtonImprove(int index)
-    {
-        var tower = _buildTowerSystem.CurrentBuildArea.CurrentTower as Tower;
-
-        if (tower != null && _buildTowerSystem.CurrentBuildArea.ImproveLevel < _buildTowerSystem.CurrentBuildArea.MaxImproveLevel)
-        {
-            if (_playerWallet.TrySpendGold(_improveCost))
+            if (_buildTowerSystem.CurrentBuildArea.ImproveLevel == _buildTowerSystem.CurrentBuildArea.MaxImproveLevel)
             {
-                _playerWallet.OnSaveWallet();
-                _buildTowerSystem.CurrentBuildArea.IncreaseImproveLevel(_buildTowerSystem);
-                tower.ImproveTower(_buildTowerSystem.CurrentBuildArea.ImproveLevel);
-                _improveLevelText.text = _buildTowerSystem.CurrentBuildArea.ImproveLevel.ToString();
-                YandexGame.SaveProgress();
-            }
-            else
-            {
-                if (!_isCoroutineRunning[index])
-                {
-                    _isCoroutineRunning[index] = true;
-                    StartCoroutine(ChangeText(index));
-                }
+                _increaseButton.interactable = false;
             }
         }
 
-        if (_buildTowerSystem.CurrentBuildArea.ImproveLevel == _buildTowerSystem.CurrentBuildArea.MaxImproveLevel)
+        private IEnumerator ChangeText(int index)
         {
-            _increaseButton.interactable = false;
-        }
-    }
+            var nextTexts = _towerCostTexts[index];
 
-    private IEnumerator ChangeText(int index)
-    {
-        var nextTexts = _towerCostTexts[index];
-
-        string text = nextTexts.text;
-        TMP_FontAsset asset = nextTexts.font;
+            string text = nextTexts.text;
+            TMP_FontAsset asset = nextTexts.font;
 
 #if !UNITY_EDITOR
         string languageCode = YandexGame.lang;
@@ -245,69 +250,70 @@ public class BuildScreen : MonoBehaviour
         }
 #endif
 
-        nextTexts.color = Color.red;
+            nextTexts.color = Color.red;
 
-        yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);
 
-        for (float t = _duration; t >= 0; t -= Time.deltaTime)
-        {
-            Color color = nextTexts.color;
-            color.a = t;
-            nextTexts.color = color;
+            for (float t = _duration; t >= 0; t -= Time.deltaTime)
+            {
+                Color color = nextTexts.color;
+                color.a = t;
+                nextTexts.color = color;
 
-            yield return null;
+                yield return null;
+            }
+
+            nextTexts.text = text;
+            nextTexts.color = Color.white;
+            nextTexts.font = asset;
+
+            _isCoroutineRunning[index] = false;
         }
 
-        nextTexts.text = text;
-        nextTexts.color = Color.white;
-        nextTexts.font = asset;
-
-        _isCoroutineRunning[index] = false;
-    }
-
-    private void OnShowBuildScreen(BuildArea buildArea)
-    {
-        if (_buildTowerSystem.TowerAreaLocations.ContainsKey(buildArea))
+        private void OnShowBuildScreen(BuildArea buildArea)
         {
-            _secondPanel.SetActive(true);
-            _currentImage.sprite = _buildTowerSystem.TowerSettings.Datas[_buildTowerSystem.CurrentBuildArea.SpriteValue].Sprite;
-            _improveLevelText.text = _buildTowerSystem.CurrentBuildArea.ImproveLevel.ToString();
-
-            if (_buildTowerSystem.CurrentBuildArea.ImproveLevel < _buildTowerSystem.CurrentBuildArea.MaxImproveLevel)
+            if (_buildTowerSystem.TowerAreaLocations.ContainsKey(buildArea))
             {
-                _increaseButton.interactable = true;
+                _secondPanel.SetActive(true);
+                _currentImage.sprite = _buildTowerSystem.TowerSettings.Datas[_buildTowerSystem.CurrentBuildArea.SpriteValue].Sprite;
+                _improveLevelText.text = _buildTowerSystem.CurrentBuildArea.ImproveLevel.ToString();
+
+                if (_buildTowerSystem.CurrentBuildArea.ImproveLevel < _buildTowerSystem.CurrentBuildArea.MaxImproveLevel)
+                {
+                    _increaseButton.interactable = true;
+                }
+                else
+                {
+                    _increaseButton.interactable = false;
+                }
             }
             else
             {
-                _increaseButton.interactable = false;
+                _panel.SetActive(true);
+
+                for (int i = 0; i < _towerCostTexts.Count; i++)
+                {
+                    _towerCostTexts[i].text = _buildTowerSystem.TowerSettings.Datas[i].Cost.ToString();
+                }
+
+                for (int i = 0; i < _towerImages.Count; i++)
+                {
+                    _towerImages[i].sprite = _buildTowerSystem.TowerSettings.Datas[i].Sprite;
+                }
             }
         }
-        else
+
+        private void OnHideBuildScreen()
         {
-            _panel.SetActive(true);
-
-            for (int i = 0; i < _towerCostTexts.Count; i++)
-            {
-                _towerCostTexts[i].text = _buildTowerSystem.TowerSettings.Datas[i].Cost.ToString();
-            }
-
-            for (int i = 0; i < _towerImages.Count; i++)
-            {
-                _towerImages[i].sprite = _buildTowerSystem.TowerSettings.Datas[i].Sprite;
-            }
+            _panel.SetActive(false);
+            _secondPanel.SetActive(false);
         }
-    }
 
-    private void OnHideBuildScreen()
-    {
-        _panel.SetActive(false);
-        _secondPanel.SetActive(false);
-    }   
-
-    [Serializable]
-    public class LocalizationFont
-    {
-        public string languageCode;
-        public TMP_FontAsset font;
+        [Serializable]
+        public class LocalizationFont
+        {
+            public string languageCode;
+            public TMP_FontAsset font;
+        }
     }
 }

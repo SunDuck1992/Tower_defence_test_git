@@ -1,51 +1,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackSector : MonoBehaviour
+namespace Common
 {
-    [SerializeField] private int _sectorPoints;
-    [SerializeField] private float _radius;
-
-    private Transform[] _points;
-    public Stack<Transform> freePoints = new Stack<Transform>();
-
-    private void Start()
+    public class AttackSector : MonoBehaviour
     {
-        float angle = 360 / (float)_sectorPoints;
-        float currentAngle = 0;
+        [SerializeField] private int _sectorPoints;
+        [SerializeField] private float _radius;
 
-        _points = new Transform[_sectorPoints];
+        private Transform[] _points;
+        public Stack<Transform> freePoints = new Stack<Transform>();
 
-        for (int i = 0; i < _sectorPoints; i++)
+        private void Start()
         {
-            _points[i] = new GameObject().transform;
-            _points[i].position = GetPointOnCircule(currentAngle);
-            _points[i].SetParent(transform);
-            freePoints.Push(_points[i]);
+            float angle = 360 / (float)_sectorPoints;
+            float currentAngle = 0;
 
-            currentAngle += angle;
+            _points = new Transform[_sectorPoints];
+
+            for (int i = 0; i < _sectorPoints; i++)
+            {
+                _points[i] = new GameObject().transform;
+                _points[i].position = GetPointOnCircule(currentAngle);
+                _points[i].SetParent(transform);
+                freePoints.Push(_points[i]);
+
+                currentAngle += angle;
+            }
         }
-    }
 
-    private void OnDrawGizmos()
-    {
-        float angle = 360 / (float)_sectorPoints;
-        float currentAngle = 0;
-        Gizmos.color = Color.red;
-
-        for (int i = 0; i < _sectorPoints; i++)
+        private void OnDrawGizmos()
         {
-            Gizmos.DrawSphere(GetPointOnCircule(currentAngle), 0.1f);
-            currentAngle += angle;
+            float angle = 360 / (float)_sectorPoints;
+            float currentAngle = 0;
+            Gizmos.color = Color.red;
+
+            for (int i = 0; i < _sectorPoints; i++)
+            {
+                Gizmos.DrawSphere(GetPointOnCircule(currentAngle), 0.1f);
+                currentAngle += angle;
+            }
         }
-    }
 
-    private Vector3 GetPointOnCircule(float angle)
-    {
-        Vector3 point = transform.position;
-        point.x += _radius * Mathf.Cos(angle * Mathf.Deg2Rad);
-        point.z += _radius * Mathf.Sin(angle * Mathf.Deg2Rad);
+        private Vector3 GetPointOnCircule(float angle)
+        {
+            Vector3 point = transform.position;
+            point.x += _radius * Mathf.Cos(angle * Mathf.Deg2Rad);
+            point.z += _radius * Mathf.Sin(angle * Mathf.Deg2Rad);
 
-        return point;
+            return point;
+        }
     }
 }

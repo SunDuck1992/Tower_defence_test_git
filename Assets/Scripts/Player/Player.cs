@@ -2,46 +2,51 @@ using System;
 using UnityEngine;
 using YG;
 using Zenject;
+using Unit;
+using Common;
 
-public class Player : GameUnit
+namespace PlayerSpace
 {
-    [SerializeField] private float _changeHealthValue;
+    public class Player : GameUnit
+    {
+        [SerializeField] private float _changeHealthValue;
 
-    private int _maxIncreaseHealthLevel = 100;
-    private PlayerUpgradeSystem _playerUpgradeSystem;
+        private int _maxIncreaseHealthLevel = 100;
+        private PlayerUpgradeSystem _playerUpgradeSystem;
 
-    public event Action MaxHealthLevelIncreased;
+        public event Action MaxHealthLevelIncreased;
 
-    private void Start()
-    {    
-        if(YandexGame.savesData.upgradeHealthLevel != -1)
+        private void Start()
         {
-            _maxHealth += _changeHealthValue * YandexGame.savesData.upgradeHealthLevel;
+            if (YandexGame.savesData.upgradeHealthLevel != -1)
+            {
+                _maxHealth += _changeHealthValue * YandexGame.savesData.upgradeHealthLevel;
+            }
         }
-    }
 
-    [Inject]
-    public void Construct(PlayerUpgradeSystem playerUpgradeSystem, TargetController targetController)
-    {
-        _playerUpgradeSystem = playerUpgradeSystem;
-        _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged += OnIncreaseHealth;
-        targetController.AddTarget(this, true);
-    }
-
-    private void OnDestroy()
-    {
-        _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged -= OnIncreaseHealth;
-    }
-
-    private void OnIncreaseHealth()
-    {
-        if(_maxIncreaseHealthLevel >= YandexGame.savesData.upgradeHealthLevel)
+        [Inject]
+        public void Construct(PlayerUpgradeSystem playerUpgradeSystem, TargetController targetController)
         {
-            _maxHealth += _changeHealthValue;
+            _playerUpgradeSystem = playerUpgradeSystem;
+            _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged += OnIncreaseHealth;
+            targetController.AddTarget(this, true);
         }
-        else
+
+        private void OnDestroy()
         {
-            MaxHealthLevelIncreased?.Invoke();
+            _playerUpgradeSystem.UpgradeData.UpgradeHealthLevel.ValueChanged -= OnIncreaseHealth;
+        }
+
+        private void OnIncreaseHealth()
+        {
+            if (_maxIncreaseHealthLevel >= YandexGame.savesData.upgradeHealthLevel)
+            {
+                _maxHealth += _changeHealthValue;
+            }
+            else
+            {
+                MaxHealthLevelIncreased?.Invoke();
+            }
         }
     }
 }
