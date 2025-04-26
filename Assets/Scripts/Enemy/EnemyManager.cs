@@ -57,7 +57,7 @@ namespace EnemySpace
                 {
                     var enemy = _targetController.Enemies[i] as Enemy;
                     enemy.ChangeSpeedModifyier(enemy.SlowSpeed);
-                    enemy.Animator.SetFloat("Speed", enemy.SlowSpeed);
+                    enemy.Animator.SetFloat(AnimationConst.Speed, enemy.SlowSpeed);
                     enemy.SwitchFreezePartical(true);
                 }
             }
@@ -69,7 +69,7 @@ namespace EnemySpace
             {
                 var enemy = _targetController.Enemies[i] as Enemy;
                 enemy.ChangeSpeedModifyier(enemy.FullSpeed);
-                enemy.Animator.SetFloat("Speed", enemy.FullSpeed);
+                enemy.Animator.SetFloat(AnimationConst.Speed, enemy.FullSpeed);
                 enemy.SwitchFreezePartical(false);
             }
         }

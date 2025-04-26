@@ -40,11 +40,11 @@ namespace PlayerSpace
 
             if (_movement != Vector3.zero)
             {
-                _weaponAnimator.SetBool("isRunning", true);
+                _weaponAnimator.SetBool(AnimationConst.IsRunning, true);
             }
             else
             {
-                _weaponAnimator.SetBool("isRunning", false);
+                _weaponAnimator.SetBool(AnimationConst.IsRunning, false);
             }
         }
 

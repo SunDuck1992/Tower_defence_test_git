@@ -105,11 +105,4 @@ namespace UI
             StopCoroutine(_coroutine);
         }
     }
-
-    [Serializable]
-    public class LocalizationFont
-    {
-        public string languageCode;
-        public TMP_FontAsset font;
-    }
 }

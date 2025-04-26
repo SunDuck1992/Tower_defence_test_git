@@ -15,14 +15,14 @@ namespace EnemySpace
             int typeDie = Random.Range(0, _typeDieCount);
 
             Owner.Agent.enabled = false;
-            Owner.Animator.SetTrigger("Die");
-            Owner.Animator.SetInteger("TypeDie", typeDie);
+            Owner.Animator.SetTrigger(AnimationConst.Die);
+            Owner.Animator.SetInteger(AnimationConst.TypeDie, typeDie);
         }
 
         public override void Update()
         {
-            if ((Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die02") ||
-                 Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName("Die01")) &&
+            if ((Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName(AnimationConst.TypeDieSecond) ||
+                 Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName(AnimationConst.TypeDieFirst)) &&
                  !_hasDied)
             {
                 if (Owner.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)

@@ -12,8 +12,8 @@ namespace EnemySpace
             int typeAttack = Random.Range(0, _typeAttackCount);
 
             Owner.transform.forward = Owner.Target.transform.position - Owner.transform.position;
-            Owner.Animator.SetTrigger("Attack");
-            Owner.Animator.SetInteger("TypeAttack", typeAttack);
+            Owner.Animator.SetTrigger(AnimationConst.Attack);
+            Owner.Animator.SetInteger(AnimationConst.TypeAttack, typeAttack);
 
             Owner.Listener.Attack.AddListener(OnAttack);
         }

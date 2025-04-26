@@ -308,12 +308,5 @@ namespace UI
             _panel.SetActive(false);
             _secondPanel.SetActive(false);
         }
-
-        [Serializable]
-        public class LocalizationFont
-        {
-            public string languageCode;
-            public TMP_FontAsset font;
-        }
     }
 }

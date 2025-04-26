@@ -12,11 +12,11 @@ namespace PlayerSpace
         {
             if (IsShooting)
             {
-                _animator.SetFloat("Move", value);
+                _animator.SetFloat(AnimationConst.Move, value);
             }
             else
             {
-                _animator.SetFloat("Move", value < 0 ? 1 : value);
+                _animator.SetFloat(AnimationConst.Move, value < 0 ? 1 : value);
             }
         }
     }

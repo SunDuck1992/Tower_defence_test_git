@@ -11,6 +11,8 @@ namespace UI
         [SerializeField] private Slider _slider;
         [SerializeField] private bool _isHideble;
 
+        private float _duration = 2f;
+
         private void Start()
         {
             _slider.value = _slider.maxValue;
@@ -32,7 +34,7 @@ namespace UI
         {
             _slider.gameObject.SetActive(true);
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(_duration);
 
             _slider.gameObject.SetActive(false);
         }

@@ -46,13 +46,13 @@ namespace EnemySpace
             }
             else
             {
-                Owner.Animator.SetBool("isGo", true);
+                Owner.Animator.SetBool(AnimationConst.IsGo, true);
             }
         }
 
         public override void Exit()
         {
-            Owner.Animator.SetBool("isGo", false);
+            Owner.Animator.SetBool(AnimationConst.IsGo, false);
 
             Owner.Agent.SetDestination(Owner.transform.position);
         }

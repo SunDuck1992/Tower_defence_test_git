@@ -54,7 +54,7 @@ namespace UI
         {
             var item = _items[index];
 
-            if (item.isBuyed)
+            if (item.IsBuyed)
             {
                 _playerShooter.ChangeWeapon(index);
                 ChangeButtonSprite(index);
@@ -63,12 +63,12 @@ namespace UI
             }
             else
             {
-                if (_playerWallet.TrySpendGold(item.cost))
+                if (_playerWallet.TrySpendGold(item.Cost))
                 {
                     _playerShooter.ChangeWeapon(index);
                     ChangeButtonSprite(index);
-                    item.isBuyed = true;
-                    YandexGame.savesData.weaponsIsBuyed[index] = item.isBuyed;
+                    item.Buy();
+                    YandexGame.savesData.weaponsIsBuyed[index] = item.IsBuyed;
                     YandexGame.savesData.weaponIndex = index;
                     _weaponPanel.SetActive(false);
                 }
@@ -83,16 +83,19 @@ namespace UI
         {
             var item = _items[index];
 
-            return item.isBuyed;
+            return item.IsBuyed;
         }
 
         public void ChangeButtonSprite()
         {
             for (int i = 0; i < _items.Count; i++)
             {
-                _items[i].isBuyed = YandexGame.savesData.weaponsIsBuyed[i];
+                if(YandexGame.savesData.weaponsIsBuyed[i])
+                {
+                    _items[i].Buy();
+                }
 
-                if (_items[i].isBuyed == true)
+                if (_items[i].IsBuyed == true)
                 {
                     ChangeButtonSprite(i);
                 }
@@ -134,7 +137,7 @@ namespace UI
             {
                 if (_buttons[i] != _buttons[index])
                 {
-                    if (_items[i].isBuyed)
+                    if (_items[i].IsBuyed)
                     {
                         _buttons[i].sprite = _buyedSprite;
                     }
@@ -198,20 +201,6 @@ namespace UI
             nextTexts.font = asset;
 
             StopCoroutine(_coroutine);
-        }
-
-        [Serializable]
-        private class ItemSettings
-        {
-            public int cost;
-            public bool isBuyed;
-        }
-
-        [Serializable]
-        public class LocalizationFont
-        {
-            public string languageCode;
-            public TMP_FontAsset font;
         }
     }
 }
