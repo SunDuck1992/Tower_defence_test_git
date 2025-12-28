@@ -25,7 +25,7 @@ public class ButtonHandler : MonoBehaviour
             for (int i = 0; i < _buttonsWithIndex.Count; i++)
             {
                 int index = i;
-                _buttonsWithIndex[i].WeaponButton.onClick.AddListener(() => HandleButtonClickWithIndex(_buttonsWithIndex[index].WeaponButton, _buttonsWithIndex[index].Index));
+                _buttonsWithIndex[index].WeaponButton.onClick.AddListener(() => HandleButtonClickWithIndex(_buttonsWithIndex[index].WeaponButton, _buttonsWithIndex[index].Index));
             }
         }
     }

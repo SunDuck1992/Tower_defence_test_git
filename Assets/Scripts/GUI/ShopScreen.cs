@@ -69,8 +69,8 @@ namespace UI
 
         public void ChangeWeaponButtonClick(Button button, int index)
         {
-            if (_weapon1BuyButton || _weapon2BuyButton == button)
-            {
+            if (_weapon1BuyButton == button || _weapon2BuyButton == button)
+            {              
                 var item = _items[index];
 
                 if (item.IsBuyed)

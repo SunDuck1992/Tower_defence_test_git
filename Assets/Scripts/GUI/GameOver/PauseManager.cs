@@ -9,6 +9,7 @@ namespace UI
         [SerializeField] private GameObject _gameOverPanel;
         [SerializeField] private Button _pauseButton;
         [SerializeField] private Button _pauseButtonWeapon;
+        [SerializeField] private Button _pauseGamebookButton;
         [SerializeField] private Button _resumeLeaderBoardButton;
         [SerializeField] private Button _resumeAuthExitButton;
         [SerializeField] private Button _resumeAuthLeaderBoardButton;
@@ -49,7 +50,7 @@ namespace UI
 
         public void PauseGame(Button button)
         {
-            if (_pauseButton || _pauseButtonWeapon == button)
+            if (_pauseButton || _pauseButtonWeapon || _pauseGamebookButton == button)
             {
                 Time.timeScale = 0;
             }

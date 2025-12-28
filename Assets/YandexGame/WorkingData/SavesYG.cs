@@ -1,4 +1,3 @@
-п»ї
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,19 +8,19 @@ namespace YG
     [Serializable]
     public class SavesYG
     {
-        // "РўРµС…РЅРёС‡РµСЃРєРёРµ СЃРѕС…СЂР°РЅРµРЅРёСЏ" РґР»СЏ СЂР°Р±РѕС‚С‹ РїР»Р°РіРёРЅР° (РќРµ СѓРґР°Р»СЏС‚СЊ)
+        // "Технические сохранения" для работы плагина (Не удалять)
         public int idSave;
         public bool isFirstSession = true;
         public string language = "ru";
         public bool promptDone;
 
-        // РўРµСЃС‚РѕРІС‹Рµ СЃРѕС…СЂР°РЅРµРЅРёСЏ РґР»СЏ РґРµРјРѕ СЃС†РµРЅС‹
-        // РњРѕР¶РЅРѕ СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РєРѕРґ, РЅРѕ С‚РѕРіРґР° СѓРґР°Р»РёС‚Рµ Рё РґРµРјРѕ (РїР°РїРєР° Example)
-        public int money = 1;                       // РњРѕР¶РЅРѕ Р·Р°РґР°С‚СЊ РїРѕР»СЏРј Р·РЅР°С‡РµРЅРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+        // Тестовые сохранения для демо сцены
+        // Можно удалить этот код, но тогда удалите и демо (папка Example)
+        public int money = 1;                       // Можно задать полям значения по умолчанию
         public string newPlayerName = "Hello!";
         public bool[] openLevels = new bool[3];
 
-        // Р’Р°С€Рё СЃРѕС…СЂР°РЅРµРЅРёСЏ
+        // Ваши сохранения
 
         public int leaderScore = 0;
 
@@ -55,13 +54,13 @@ namespace YG
         //public List<BuildedAreaInfo> buildedAreaInfos = new List<BuildedAreaInfo>();
         //public Dictionary<BuildArea, int> buildedAreas = new Dictionary<BuildArea, int>();
 
-        // РџРѕР»СЏ (СЃРѕС…СЂР°РЅРµРЅРёСЏ) РјРѕР¶РЅРѕ СѓРґР°Р»СЏС‚СЊ Рё СЃРѕР·РґР°РІР°С‚СЊ РЅРѕРІС‹Рµ. РџСЂРё РѕР±РЅРѕРІР»РµРЅРёРё РёРіСЂС‹ СЃРѕС…СЂР°РЅРµРЅРёСЏ Р»РѕРјР°С‚СЊСЃСЏ РЅРµ РґРѕР»Р¶РЅС‹
+        // Поля (сохранения) можно удалять и создавать новые. При обновлении игры сохранения ломаться не должны
 
 
-        // Р’С‹ РјРѕР¶РµС‚Рµ РІС‹РїРѕР»РЅРёС‚СЊ РєР°РєРёРµ С‚Рѕ РґРµР№СЃС‚РІРёСЏ РїСЂРё Р·Р°РіСЂСѓР·РєРµ СЃРѕС…СЂР°РЅРµРЅРёР№
+        // Вы можете выполнить какие то действия при загрузке сохранений
         public SavesYG()
         {
-            // Р”РѕРїСѓСЃС‚РёРј, Р·Р°РґР°С‚СЊ Р·РЅР°С‡РµРЅРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РґР»СЏ РѕС‚РґРµР»СЊРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
+            // Допустим, задать значения по умолчанию для отдельных элементов массива
 
             openLevels[1] = true;
             weaponsIsBuyed[0] = true;
@@ -71,15 +70,15 @@ namespace YG
     [Serializable]
     public class BuildedAreaInfo
     {
-        public string name; // РР·РјРµРЅРµРЅРѕ РЅР° РїРѕР»Рµ
-        public int value;   // РР·РјРµРЅРµРЅРѕ РЅР° РїРѕР»Рµ
+        public string name; // Изменено на поле
+        public int value;   // Изменено на поле
         public bool isBuilded;
         public int improveLevel = -1;
 
-        // РџСѓСЃС‚РѕР№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ СЃРµСЂРёР°Р»РёР·Р°С†РёРё
+        // Пустой конструктор для сериализации
         public BuildedAreaInfo() { }
 
-        // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё
+        // Конструктор с параметрами
         public BuildedAreaInfo(string name, int prefabValue, bool flag)
         {
             this.name = name;
