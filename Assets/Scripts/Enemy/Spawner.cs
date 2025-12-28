@@ -9,6 +9,11 @@ namespace EnemySpace
     {
         private int _countEnemies;
         private int _enemyIncrement = 2;
+        private int _firstGoldScaleLevel = 2;
+        private int _secondGoldScaleLevel = 3;
+        private int _startCountEnemies = 3;
+        private int _firstLevelControlPoint = 5;
+        private int _secondLevelControlPoint = 10;
         private EnemyManager _enemyManager;
         private SceneSettings _sceneSettings;
 
@@ -27,7 +32,7 @@ namespace EnemySpace
         {
             if (YandexGame.savesData.enemyCount == -1)
             {
-                _countEnemies = 3;
+                _countEnemies = _startCountEnemies;
             }
             else
             {
@@ -61,14 +66,14 @@ namespace EnemySpace
 
         private void SetGoldScaleLevel()
         {
-            if (WaveCount >= 5)
+            if (WaveCount >= _firstLevelControlPoint)
             {
-                YandexGame.savesData.goldScaleLevel = 2;
+                YandexGame.savesData.goldScaleLevel = _firstGoldScaleLevel;
             }
 
-            if (WaveCount >= 10)
+            if (WaveCount >= _secondLevelControlPoint)
             {
-                YandexGame.savesData.goldScaleLevel = 3;
+                YandexGame.savesData.goldScaleLevel = _secondGoldScaleLevel;
             }
         }
     }

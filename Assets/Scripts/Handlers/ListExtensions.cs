@@ -4,9 +4,9 @@ using Unit;
 
 namespace HadlerSpace
 {
-    public static class CommonHandler
+    public static class ListExtensions
     {
-        public static T Find<T>(List<T> targets, Transform owner, float radius)
+        public static T Find<T>(this List<T> targets, Transform owner, float radius)
             where T : MonoBehaviour
         {
             float minDistance = float.PositiveInfinity;
@@ -34,7 +34,7 @@ namespace HadlerSpace
             return null;
         }
 
-        public static List<T> FindAll<T>(List<T> targets, Transform owner, float radius)
+        public static List<T> FindAll<T>(this List<T> targets, Transform owner, float radius)
             where T : MonoBehaviour
         {
             List<T> allTargets = new();

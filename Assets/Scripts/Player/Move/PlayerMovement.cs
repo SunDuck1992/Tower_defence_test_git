@@ -16,7 +16,7 @@ namespace PlayerSpace
         [SerializeField] private PlayerAnimationController _controller;
         [SerializeField] private float _speed;
         [SerializeField] private PlayerShooter _shooter;
-        [SerializeField] private Rotate _rotate;
+        [SerializeField] private Rotation _rotate;
         [SerializeField] private Animator _weaponAnimator;
 
         private Vector3 _movement;

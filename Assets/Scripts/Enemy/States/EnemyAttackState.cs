@@ -20,7 +20,7 @@ namespace EnemySpace
 
         public override void Exit()
         {
-            Owner.Listener.Attack.RemoveAllListeners();
+            Owner.Listener.Attack.RemoveListener(OnAttack);
         }
 
         private void OnAttack()

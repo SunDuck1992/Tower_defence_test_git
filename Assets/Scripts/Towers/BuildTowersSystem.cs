@@ -138,7 +138,9 @@ namespace TowerSpace
 
         private void Destroy(GameUnit gameUnit)
         {
-            gameUnit.DiedCompleted.RemoveAllListeners();
+            _uiSettings.RepairTowersButton.EnableBonus.RemoveListener(RepairTowers);
+            _uiSettings.RepairTowersButton.DisableBonus.RemoveListener(RepairTowers);
+            //gameUnit.DiedCompleted.RemoveAllListeners();
 
             if (gameUnit is Tower tower)
             {

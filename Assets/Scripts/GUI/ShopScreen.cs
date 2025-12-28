@@ -27,26 +27,75 @@ namespace UI
         [SerializeField] private Image _ADImage;
         [SerializeField] private List<LocalizationFont> _localizationFonts;
 
+        [SerializeField] private Button _shopOpenButton;
+        [SerializeField] private Button _weapon1BuyButton;
+        [SerializeField] private Button _weapon2BuyButton;
+        [SerializeField] private Button _weapon3BuyButton;
+
         private PlayerShooter _playerShooter;
         private PlayerWallet _playerWallet;
         private SceneSettings _sceneSettings;
+        private ButtonHandler _buttonHandler;
         private Coroutine _coroutine;
         private float _duration = 2f;
         private int _levelForMiniGun = 7;
 
         [Inject]
-        public void Construct(PlayerShooter playerShooter, PlayerWallet playerWallet, SceneSettings sceneSettings)
+        public void Construct(PlayerShooter playerShooter, PlayerWallet playerWallet, SceneSettings sceneSettings, ButtonHandler buttonHandler)
         {
             _playerShooter = playerShooter;
             _playerWallet = playerWallet;
             _sceneSettings = sceneSettings;
+            _buttonHandler = buttonHandler;
         }
 
         private void Start()
         {
+            _buttonHandler.OnButtonClicked += ChangeButtonSprite;
+            _buttonHandler.OnButtonClicked += CheckToBuyMiniGun;
+            _buttonHandler.OnButtonClickedWithIndex += ChangeWeaponButtonClick;
+
             if (YandexGame.savesData.miniGunIsBuyed)
             {
                 DisableADImage();
+            }
+        }
+
+        private void OnDisable()
+        {
+            _buttonHandler.OnButtonClicked -= ChangeButtonSprite;
+            _buttonHandler.OnButtonClicked -= CheckToBuyMiniGun;
+        }
+
+        public void ChangeWeaponButtonClick(Button button, int index)
+        {
+            if (_weapon1BuyButton || _weapon2BuyButton == button)
+            {
+                var item = _items[index];
+
+                if (item.IsBuyed)
+                {
+                    _playerShooter.ChangeWeapon(index);
+                    ChangeButtonSprite(index);
+                    YandexGame.savesData.weaponIndex = index;
+                    _weaponPanel.SetActive(false);
+                }
+                else
+                {
+                    if (_playerWallet.TrySpendGold(item.Cost))
+                    {
+                        _playerShooter.ChangeWeapon(index);
+                        ChangeButtonSprite(index);
+                        item.Buy();
+                        YandexGame.savesData.weaponsIsBuyed[index] = item.IsBuyed;
+                        YandexGame.savesData.weaponIndex = index;
+                        _weaponPanel.SetActive(false);
+                    }
+                    else
+                    {
+                        _coroutine = StartCoroutine(ChangeText(index));
+                    }
+                }
             }
         }
 
@@ -86,32 +135,38 @@ namespace UI
             return item.IsBuyed;
         }
 
-        public void ChangeButtonSprite()
+        public void ChangeButtonSprite(Button button)
         {
-            for (int i = 0; i < _items.Count; i++)
+            if (_shopOpenButton == button)
             {
-                if(YandexGame.savesData.weaponsIsBuyed[i])
+                for (int i = 0; i < _items.Count; i++)
                 {
-                    _items[i].Buy();
+                    if (YandexGame.savesData.weaponsIsBuyed[i])
+                    {
+                        _items[i].Buy();
+                    }
+
+                    if (_items[i].IsBuyed == true)
+                    {
+                        ChangeButtonSprite(i);
+                    }
                 }
 
-                if (_items[i].IsBuyed == true)
+                if (YandexGame.savesData.weaponIndex != -1)
                 {
-                    ChangeButtonSprite(i);
+                    ChangeButtonSprite(YandexGame.savesData.weaponIndex);
                 }
-            }
-
-            if (YandexGame.savesData.weaponIndex != -1)
-            {
-                ChangeButtonSprite(YandexGame.savesData.weaponIndex);
             }
         }
 
-        public void CheckToBuyMiniGun()
+        public void CheckToBuyMiniGun(Button button)
         {
-            if (_levelForMiniGun <= _sceneSettings.Spawner.WaveCount)
+            if (_shopOpenButton == button)
             {
-                _miniGunButton.interactable = true;
+                if (_levelForMiniGun <= _sceneSettings.Spawner.WaveCount)
+                {
+                    _miniGunButton.interactable = true;
+                }
             }
         }
 

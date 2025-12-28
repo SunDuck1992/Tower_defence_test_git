@@ -35,11 +35,11 @@ namespace Common
         {
             if (isTower)
             {
-                return CommonHandler.Find(_enemies, gameUnit.transform, radius);
+                return _enemies.Find(gameUnit.transform, radius);
             }
             else
             {
-                List<GameUnit> targets = CommonHandler.FindAll(_towers, gameUnit.transform, radius);
+                List<GameUnit> targets = _towers.FindAll(gameUnit.transform, radius);
 
                 GameUnit target = null;
 

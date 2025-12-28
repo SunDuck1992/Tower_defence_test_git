@@ -14,6 +14,7 @@ namespace PlayerSpace
         private Transform _targetPosition;
         private bool _hasHitTarget;
         private Coroutine _coroutine;
+        private int _flyTimeToDestruction = 5;
 
         public event Action<Bullet> Died;
         public event Action<Enemy> Hited;
@@ -72,7 +73,7 @@ namespace PlayerSpace
 
         private IEnumerator SelfDestructionCoroutine()
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(_flyTimeToDestruction);
 
             if (!_hasHitTarget)
             {

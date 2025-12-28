@@ -22,7 +22,6 @@ namespace Unit
         public float MaxHealth => _maxHealth;
         public AttackSector AttackSector { get; private set; }
 
-
         protected virtual void Awake()
         {
             AttackSector = GetComponent<AttackSector>();

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace PlayerSpace
 {
-    public class Rotate : MonoBehaviour
+    public class Rotation : MonoBehaviour
     {
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private GameObject _playerView;

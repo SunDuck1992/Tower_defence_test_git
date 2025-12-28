@@ -16,10 +16,12 @@ namespace UI
         [SerializeField] private TextMeshProUGUI _countEnemiesProgressText;
         [SerializeField] private Slider _progressWaveBar;
         [SerializeField] private GameObject _backGroundMusic;
+        [SerializeField] private Button _startBattleButton;
 
         private EnemyManager _enemyManager;
         private Spawner _spawner;
         private SceneSettings _sceneSettings;
+        private ButtonHandler _buttonHandler;
 
         public UnityEvent WaveComplete;
         public event Action BattleEnded;
@@ -29,11 +31,12 @@ namespace UI
         public int WaveCount { get; private set; }
 
         [Inject]
-        public void Construct(EnemyManager enemyManager, SceneSettings sceneSettings)
+        public void Construct(EnemyManager enemyManager, SceneSettings sceneSettings, ButtonHandler buttonHandler)
         {
             _enemyManager = enemyManager;
             _spawner = sceneSettings.Spawner;
             _sceneSettings = sceneSettings;
+            _buttonHandler = buttonHandler;
         }
 
         private void Start()
@@ -46,6 +49,7 @@ namespace UI
             BattleEnded += OnSaveLeaderData;
             BattleEnded += OnSaveWaweInfo;
             BattleEnded += OnSaveEnemyLevelUpgrade;
+            _buttonHandler.OnButtonClicked += StartBattle;
         }
 
         private void OnDestroy()
@@ -56,23 +60,27 @@ namespace UI
             BattleEnded -= OnSaveLeaderData;
             BattleEnded -= OnSaveWaweInfo;
             BattleEnded -= OnSaveEnemyLevelUpgrade;
+            _buttonHandler.OnButtonClicked -= StartBattle;
         }
 
-        public void StartBattle()
+        public void StartBattle(Button button)
         {
-            _spawner.SpawnOnClick();
-            _countEnemiesProgressText.text = $"{0} / {_spawner.MaxCountEnemies}";
-            _countWavetext.text = _spawner.WaveCount.ToString();
-            WaveCount = _spawner.WaveCount;
-            _progressWaveBar.maxValue = _spawner.MaxCountEnemies;
-            _progressWaveBar.value = 0;
-            IsBattle = true;
-            BattlStarted?.Invoke();
-
-            for (int i = 0; i < _sceneSettings.BuildPoints.Count; i++)
+            if(_startBattleButton == button)
             {
-                _sceneSettings.BuildPoints[i].gameObject.SetActive(false);
-            }
+                _spawner.SpawnOnClick();
+                _countEnemiesProgressText.text = $"{0} / {_spawner.MaxCountEnemies}";
+                _countWavetext.text = _spawner.WaveCount.ToString();
+                WaveCount = _spawner.WaveCount;
+                _progressWaveBar.maxValue = _spawner.MaxCountEnemies;
+                _progressWaveBar.value = 0;
+                IsBattle = true;
+                BattlStarted?.Invoke();
+
+                for (int i = 0; i < _sceneSettings.BuildPoints.Count; i++)
+                {
+                    _sceneSettings.BuildPoints[i].gameObject.SetActive(false);
+                }
+            }           
         }
 
         private void OnUpdateProgressBar()

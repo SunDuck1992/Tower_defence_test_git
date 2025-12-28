@@ -7,11 +7,11 @@ namespace EnemySpace
     {
         private float _timer = 1.5f;
         private int _typeDieCount = 2;
-        private bool _hasDied;
+        private bool _isDied;
 
         public override void Enter()
         {
-            _hasDied = false;
+            _isDied = false;
             int typeDie = Random.Range(0, _typeDieCount);
 
             Owner.Agent.enabled = false;
@@ -23,16 +23,16 @@ namespace EnemySpace
         {
             if ((Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName(AnimationConst.TypeDieSecond) ||
                  Owner.Animator.GetCurrentAnimatorStateInfo(0).IsName(AnimationConst.TypeDieFirst)) &&
-                 !_hasDied)
+                 !_isDied)
             {
                 if (Owner.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
                 {
-                    _hasDied = true;
+                    _isDied = true;
                     Owner.CreateDeathParticle();
                 }
             }
 
-            if (_hasDied)
+            if (_isDied)
             {
                 _timer -= Time.deltaTime;
 

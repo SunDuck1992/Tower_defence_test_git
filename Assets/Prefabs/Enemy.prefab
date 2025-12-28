@@ -267,34 +267,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 10
-  DiedComplete:
+  DiedCompleted:
     m_PersistentCalls:
       m_Calls: []
-  DiedStart:
+  DiedStarted:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6757149698265665325}
-        m_TargetAssemblyTypeName: Enemy, Assembly-CSharp
-        m_MethodName: Die
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _agent: {fileID: 8304202302485096984}
   _speed: 3.5
   _animator: {fileID: 2253924864348352941}
   _listener: {fileID: 4871270214736357002}
   _damage: 1
-  _duration: 1
   _award: 30
   _deathParticlePoint: {fileID: 4756780899119643166}
   _hitParticlePoint: {fileID: 146162212559125371}
-  _bulletTarfet: {fileID: 9117604277439165930}
+  _bulletTarget: {fileID: 9117604277439165930}
   _deathParticle: {fileID: 4544945786045599424, guid: 3e36cd98b6368784fb4d659e48c6f887, type: 3}
   _hitParticle: {fileID: 1460296630926518430, guid: bfa9777543ea20549be50a25d75b87c9, type: 3}
   _freezePartical: {fileID: 4255009308854995203}
@@ -355,8 +342,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59be4783450b1294a87cd4c726269ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sectorPoints: 0
-  _radius: 0
+  _sectorPoints: 3
+  _radius: 2
 --- !u!114 &8438821926467846312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,7 +389,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

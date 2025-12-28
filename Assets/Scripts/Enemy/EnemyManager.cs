@@ -9,16 +9,17 @@ using PlayerSpace;
 
 namespace EnemySpace
 {
-    public class EnemyManager
+    public class EnemyManager : IDisposable
     {
         private readonly EnemyPool _enemyPool;
         private readonly UISettings _uiSettings;
         private readonly TargetController _targetController;
         private readonly PlayerWallet _playerWallet;
         private readonly EnemyImprover _enemyImprover;
+        private bool _disposed = false;
 
         public EnemyManager(EnemyPool enemyPool, UISettings uISettings, TargetController targetController,
-                            PlayerWallet playerWallet, EnemyImprover enemyImprover)
+                                           PlayerWallet playerWallet, EnemyImprover enemyImprover)
         {
             _enemyPool = enemyPool;
             _uiSettings = uISettings;
@@ -26,17 +27,36 @@ namespace EnemySpace
             _playerWallet = playerWallet;
             _enemyImprover = enemyImprover;
 
-            _uiSettings.SlowEnemyButton.EnableBonus.AddListener(ActivateSlowEnemy);
-            _uiSettings.SlowEnemyButton.DisableBonus.AddListener(DeActivateSlowEnemy);
+            _uiSettings.SlowEnemyButton.EnableBonus.AddListener(ManageSlowEnemy);
+            _uiSettings.SlowEnemyButton.DisableBonus.AddListener(ManageSlowEnemy);
         }
 
         ~EnemyManager()
         {
-            _uiSettings.SlowEnemyButton.EnableBonus.RemoveAllListeners();
-            _uiSettings.SlowEnemyButton.DisableBonus.RemoveAllListeners();
+            Dispose(false);
         }
 
         public event Action EnemyDied;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _uiSettings.SlowEnemyButton.EnableBonus.RemoveListener(ManageSlowEnemy);
+                    _uiSettings.SlowEnemyButton.DisableBonus.RemoveListener(ManageSlowEnemy);
+                }
+
+                _disposed = true;
+            }
+        }
 
         public void Create(Vector3 point)
         {
@@ -49,36 +69,46 @@ namespace EnemySpace
             enemy.DiedStarted.AddListener(CleanTarget);
         }
 
-        private void ActivateSlowEnemy(int cost)
-        {
+        private void ManageSlowEnemy(int cost)
+        {         
             if (_playerWallet.TrySpendGem(cost))
             {
                 for (int i = 0; i < _targetController.Enemies.Count; i++)
                 {
                     var enemy = _targetController.Enemies[i] as Enemy;
-                    enemy.ChangeSpeedModifyier(enemy.SlowSpeed);
-                    enemy.Animator.SetFloat(AnimationConst.Speed, enemy.SlowSpeed);
-                    enemy.SwitchFreezePartical(true);
+
+                    if (_uiSettings.SlowEnemyButton.IsActive)
+                    {
+                        enemy.ChangeSpeedModifyier(enemy.SlowSpeed);
+                        enemy.Animator.SetFloat(AnimationConst.Speed, enemy.SlowSpeed);
+                        enemy.SwitchFreezePartical(true);
+                    }
+                    else
+                    {
+                        enemy.ChangeSpeedModifyier(enemy.FullSpeed);
+                        enemy.Animator.SetFloat(AnimationConst.Speed, enemy.FullSpeed);
+                        enemy.SwitchFreezePartical(false);
+                    }                   
                 }
             }
         }
 
-        private void DeActivateSlowEnemy(int cost)
-        {
-            for (int i = 0; i < _targetController.Enemies.Count; i++)
-            {
-                var enemy = _targetController.Enemies[i] as Enemy;
-                enemy.ChangeSpeedModifyier(enemy.FullSpeed);
-                enemy.Animator.SetFloat(AnimationConst.Speed, enemy.FullSpeed);
-                enemy.SwitchFreezePartical(false);
-            }
-        }
+        //private void DeActivateSlowEnemy(int cost)
+        //{
+        //    for (int i = 0; i < _targetController.Enemies.Count; i++)
+        //    {
+        //        var enemy = _targetController.Enemies[i] as Enemy;
+        //        enemy.ChangeSpeedModifyier(enemy.FullSpeed);
+        //        enemy.Animator.SetFloat(AnimationConst.Speed, enemy.FullSpeed);
+        //        enemy.SwitchFreezePartical(false);
+        //    }
+        //}
 
         private void Destroy(GameUnit gameUnit)
         {
             var enemy = gameUnit as Enemy;
-            gameUnit.DiedCompleted.RemoveAllListeners();
-            gameUnit.DiedStarted.RemoveAllListeners();
+            gameUnit.DiedCompleted.RemoveListener(Destroy);
+            gameUnit.DiedStarted.RemoveListener(CleanTarget);
             EnemyDied?.Invoke();
         }
 
@@ -88,5 +118,7 @@ namespace EnemySpace
             _targetController.RemoveTarget(gameUnit);
             _playerWallet.AddGold(enemy.Award * YandexGame.savesData.goldScaleLevel);
         }
+
+       
     }
 }

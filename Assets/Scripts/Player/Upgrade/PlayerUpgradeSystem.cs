@@ -1,17 +1,7 @@
-using System;
 using YG;
-using React;
 
 namespace PlayerSpace
 {
-    [Serializable]
-    public class UpgradeData
-    {
-        public readonly ReactValue<float> UpgradeDamageLevel = new ReactValue<float>();
-        public readonly ReactValue<float> UpgradeShootSpeedLevel = new ReactValue<float>();
-        public readonly ReactValue<float> UpgradeHealthLevel = new ReactValue<float>();
-    }
-
     public class PlayerUpgradeSystem
     {
         public PlayerUpgradeSystem()

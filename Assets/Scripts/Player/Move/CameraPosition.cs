@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace PlayerSpace
 {
-    public class CoordinateFromCamera : MonoBehaviour
+    public class CameraPosition : MonoBehaviour
     {
         [SerializeField] private PlayerMovement _playerMovement;
 

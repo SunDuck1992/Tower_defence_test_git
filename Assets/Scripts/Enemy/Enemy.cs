@@ -58,15 +58,11 @@ namespace EnemySpace
 
         public void ImproveCharacteristic(float health, float damage)
         {
-            if (YandexGame.savesData.upgradeEnemyLevel == -1)
-            {
-                return;
-            }
-            else
+            if (YandexGame.savesData.upgradeEnemyLevel != -1)
             {
                 _maxHealth = ConstHealth + (health * YandexGame.savesData.upgradeEnemyLevel);
                 _damage = ConstDamage + (damage * YandexGame.savesData.upgradeEnemyLevel);
-            }
+            }           
         }
 
         public void Die()
@@ -94,9 +90,9 @@ namespace EnemySpace
             _freezePartical.SetActive(value);
         }
 
-        public void DestroyTarget()
-        {
-            Target = null;
-        }
+        //public void DestroyTarget()
+        //{
+        //    Target = null;
+        //}
     }
 }

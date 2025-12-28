@@ -54,8 +54,8 @@ namespace UI
 
                 StartCoroutine(StartTimer());
 
-                EnableBonus.Invoke(_cost);
                 IsActive = true;
+                EnableBonus.Invoke(_cost);
             }
         }
 
@@ -66,8 +66,8 @@ namespace UI
             _isButtonPressed = false;
             StopCoroutine(StartTimer());
 
-            DisableBonus.Invoke(_cost);
             IsActive = false;
+            DisableBonus.Invoke(_cost);
         }
 
         private void OnInteractButton(int countGem)

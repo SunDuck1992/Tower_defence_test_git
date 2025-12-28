@@ -5,10 +5,10 @@ using YG;
 using Zenject;
 using Unit;
 using Common;
-using Config;
 using EnemySpace;
 using Installers;
 using Pool;
+using UI;
 
 namespace PlayerSpace
 {
@@ -20,13 +20,14 @@ namespace PlayerSpace
         [SerializeField] private Animator _weaponAnimator;
         [SerializeField] private List<Weapon> _weapons;
         [SerializeField] private Transform _view;
-        [SerializeField] private Rotate _rotate;
+        [SerializeField] private Rotation _rotate;
         [SerializeField] private GameUnit _self;
         [SerializeField] private float _multyplieChangåCharacteristickValue;
         [SerializeField] private ParticleSystem _hitBulletParticle;
         [SerializeField] private ParticleSystem _massiveHitBulletParticle;
 
         private UISettings _uISettings;
+        private WaveScreen _waveScreen;
         private float _damage;
         private BulletPool _bulletPool;
         private PlayerUpgradeSystem _playerUpgradeSystem;
@@ -37,22 +38,26 @@ namespace PlayerSpace
         private PlayerWallet _playerWallet;
         private float _couldown;
         private float _currentDistance;
+        private Coroutine _shootCourutine;
 
         public Weapon CurrentWeapon { get; private set; }
         public bool IsShooting { get; private set; }
 
         [Inject]
-        public void Construct(BulletPool bulletPool, PlayerUpgradeSystem playerUpgradeSystem, GameConfigProxy gameConfigProxy,
-                              UISettings uISettings, TargetController targetController, PlayerWallet playerWallet)
+        public void Construct(BulletPool bulletPool, PlayerUpgradeSystem playerUpgradeSystem,
+                              UISettings uISettings, TargetController targetController, PlayerWallet playerWallet, WaveScreen waveScreen)
         {
+            _waveScreen = waveScreen;
             _targetController = targetController;
             _uISettings = uISettings;
             _bulletPool = bulletPool;
             _playerWallet = playerWallet;
             _playerUpgradeSystem = playerUpgradeSystem;
-            _damage = gameConfigProxy.Config.PlayerConfig.Damage;
 
             YandexGame.GetDataEvent += OnSetCurrentWeapon;
+            _waveScreen.BattlStarted += OnStartShooting;
+            _waveScreen.BattleEnded += OnStopShooting;
+            
             OnSetCurrentWeapon();
 
             _playerUpgradeSystem.UpgradeData.UpgradeDamageLevel.ValueChanged += OnUpdateDamage;
@@ -64,17 +69,17 @@ namespace PlayerSpace
             _couldown = CurrentWeapon.FireRate;
         }
 
-        ~PlayerShooter()
-        {
-            _uISettings.MassDamageButton.EnableBonus.RemoveAllListeners();
-            _uISettings.MassDamageButton.DisableBonus.RemoveAllListeners();
-        }
+        //~PlayerShooter()
+        //{
+        //    _uISettings.MassDamageButton.EnableBonus.RemoveListener(ActivateMassDamage);
+        //    _uISettings.MassDamageButton.DisableBonus.RemoveListener(DeactivateMassDamage);
+        //}
 
         private void Start()
         {
             OnUpdateShootSpeed();
             OnUpdateDamage();
-            StartCoroutine(Shoot());
+            //StartCoroutine(Shoot());
         }
 
         private void Update()
@@ -98,6 +103,11 @@ namespace PlayerSpace
             _playerUpgradeSystem.UpgradeData.UpgradeDamageLevel.ValueChanged -= OnUpdateDamage;
             _playerUpgradeSystem.UpgradeData.UpgradeShootSpeedLevel.ValueChanged -= OnUpdateShootSpeed;
             YandexGame.GetDataEvent -= OnSetCurrentWeapon;
+            _waveScreen.BattlStarted -= OnStartShooting;
+            _waveScreen.BattleEnded -= OnStopShooting;
+
+            _uISettings.MassDamageButton.EnableBonus.RemoveListener(ActivateMassDamage);
+            _uISettings.MassDamageButton.DisableBonus.RemoveListener(DeactivateMassDamage);
         }
 
         public void ChangeWeapon(int indexWeapon)
@@ -156,9 +166,22 @@ namespace PlayerSpace
             enemy.TakeDamage(_damage);
         }
 
+        private void OnStartShooting()
+        {
+            _shootCourutine = StartCoroutine(Shoot());
+        }
+
+        private void OnStopShooting()
+        {
+            if(_shootCourutine != null)
+            {
+                StopCoroutine(_shootCourutine);
+            }
+        }
+
         private IEnumerator Shoot()
         {
-            while (true)
+            while (_waveScreen.IsBattle)
             {
                 _target = _targetController.GetTarget(_self, 16, true);
 
